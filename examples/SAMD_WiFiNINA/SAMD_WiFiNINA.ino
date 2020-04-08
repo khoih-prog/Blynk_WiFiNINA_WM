@@ -148,7 +148,7 @@ String BlynkServer = "blynk-cloud.com";
 //char pass[] = "****";
 
 char ssid[] = "HueNet1";
-char pass[] = "jenniqqs";
+char pass[] = "****";
 
 #endif
 
