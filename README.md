@@ -160,19 +160,19 @@ That's it.
 If it cannot connect to the Blynk server in 30 seconds, it will switch to `Configuration Mode`. You will see your built-in LED turned ON. In `Configuration Mode`, it starts a configurable access point, default called `Teensy4_XXXXXX`, `SAMD_XXXXXX`, `DUE_XXXXXX`,`Mega_XXXXXX` or `STM32_XXXXXX`. Connect to it using password `MyTeensy4_XXXXXX`, `MySAMD_XXXXXX`, `MyDUE_XXXXXX`, `MyMega_XXXXXX` or `MySTM32_XXXXXX`.
 
 <p align="center">
-    <img src="https://github.com/khoih-prog/Blynk_Esp8266AT_WM/blob/master/pics/AccessPoint.jpg">
+    <img src="https://github.com/khoih-prog/Blynk_WiFiNINA_WM/blob/master/pics/AccessPoint.jpg">
 </p>
 
 After you connected, please, go to http://192.168.4.1 or the AP IP you specified.
 
 <p align="center">
-    <img src="https://github.com/khoih-prog/Blynk_Esp8266AT_WM/blob/master/pics/Main.png">
+    <img src="https://github.com/khoih-prog/Blynk_WiFiNINA_WM/blob/master/pics/Main.png">
 </p>
 
 Enter your credentials : WiFi SSID/Password, Blynk Server, Port and Token, Board Name.
 
 <p align="center">
-    <img src="https://github.com/khoih-prog/Blynk_Esp8266AT_WM/blob/master/pics/Config_Portal.png">
+    <img src="https://github.com/khoih-prog/Blynk_WiFiNINA_WM/blob/master/pics/Config_Portal.png">
 </p>
 
 Then click `Save`. After you restarted, you will see your built-in LED turned OFF. That means, it connected to your Blynk server successfully.
