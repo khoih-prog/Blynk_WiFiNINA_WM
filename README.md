@@ -2,6 +2,13 @@
 
 [![arduino-library-badge](https://www.ardu-badge.com/badge/Blynk_WiFiNINA_WM.svg?)](https://www.ardu-badge.com/Blynk_WiFiNINA_WM)
 
+### New Releases v1.0.1
+
+1. Add support to ***SAM DUE, Teensy (4.0, 3.x, LC), STM32.***
+2. AVR Mega can use dynamic parameters or not, depending on memory availability
+3. Support 63 chars WPA2 WiFi password
+4. Permit to input special chars such as ***%*** and ***#*** into data fields. Thanks to [brondolin](https://github.com/brondolin) to provide the amazing fix.
+
 ### New Releases v1.0.0
 
 1. This release of very-easy-to-use will help you to eliminate hardcoding your Wifi and Blynk credentials for Mega/Teensy boards running WiFiNINA shields, and updating/reflashing every time when you need to change them.
@@ -9,7 +16,7 @@
 3. When WiFi and/or Blynk connection is lost, the WM will try auto-reconnect.
 4. `Config Portal Static IP address, Name and Password.`
 5. `Static IP address, Gateway, Subnet Mask.`
-6. Currently support AVR Mega and SAMD (ZERO, MKR, NANO_33_IOT, M0, M0 Pro, AdaFruit CIRCUITPLAYGROUND_EXPRESS, etc.) boards
+6. Currently support AVR Mega and SAMD (ZERO, MKR, ***NANO_33_IOT***, M0, M0 Pro, AdaFruit CIRCUITPLAYGROUND_EXPRESS, etc.) boards
 7. Enhance GUI.
 
 To help you to eliminate `hardcoding` your Wifi and Blynk credentials for Mega/Teensy boards running WiFiNINA modules/shields, and updating/reflashing every time when you need to change them. Configuration data are saved in configurable location in EEPROM/Flash.
@@ -51,17 +58,30 @@ Another way to install is to:
 ### How to use
 
 In your code, to use WiFiManager Blynk features, replace
-1. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_AVR_WM.h`   for Mega boards.
-2. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_SAMD_WM.h`  for SAMD boards.
+
+1. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_SAMD_WM.h`    for SAMD boards.
+2. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_Teensy_WM.h`  for Teensy boards.
+3. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_DUE_WM.h`     for SAM DUE boards.
+4. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_STM32_WM.h`   for STM32 boards.
+5. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_AVR_WM.h`     for Mega boards using dynamic parameters.
+6. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_AVR_WM_Small.h` for Mega boards not using dynamic parameters if not enough memory.
 
 to use Blynk only, with hardcoded Credentials, replace
-1. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_AVR.h`   for Mega boards.
-2. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_SAMD.h`  for SAMD boards.
+1. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_SAMD.h`    for SAMD boards.
+2. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_Teensy.h`  for Teensy boards.
+3. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_DUE.h`     for SAM DUE boards.
+4. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_STM32.h`   for STM32 boards.
+5. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_AVR.h`     for Mega boards.
 
 to use EEPROM to save your configuration data.
 
-EEPROM_SIZE can be specified from 256 to 4096 bytes for Mega boards.
-For SAMD boards, data is stored in FlashStorage using 256-byte block.
+### EEPROM info
+
+1. EEPROM_SIZE can be specified from 256 to 4096 bytes for Mega boards.
+2. For SAMD21 boards, data is stored in FlashStorage using 256-byte block. For SAMD51 boards, data is stored in FlashStorage using 8-Kbyte block.
+3. For SAM DUE boards, data is stored in EEPROM-simulating DueFlashStorage.
+4. For Teensy 4.0 boards, EEPROM_SIZE is around 1 Kbytes.
+4. For STM32 boards, EEPROM_SIZE presence depends on the selected boards.
 
 ### How to add dynamic parameters from sketch
 
@@ -70,7 +90,7 @@ For SAMD boards, data is stored in FlashStorage using 256-byte block.
 ```
 /////////////// Start dynamic Credentials ///////////////
 
-//Defined in <BlynkSimpleEsp32_GSM_WFM.h>
+//Defined in <BlynkSimpleWiFiNINA_SAMD_WM.h>
 /**************************************
   #define MAX_ID_LEN                5
   #define MAX_DISPLAY_NAME_LEN      16
@@ -117,9 +137,27 @@ uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSiz
 
 ```
 
+If you don't need to add dynamic parameters, use the following in skecth
+
+```
+/////////////// Start dynamic Credentials ///////////////
+
+MenuItem myMenuItems [] =
+{
+};
+
+uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSize;
+/////// // End dynamic Credentials ///////////
+
+```
+
 See examples 
-1. [Mega_WiFiNINA](examples/Mega_WiFiNINA)
-2. [SAMD_WiFiNINA](examples/SAMD_WiFiNINA)
+
+1. [SAMD_WiFiNINA](examples/SAMD_WiFiNINA)
+2. [Teensy_WiFiNINA](examples/Teensy_WiFiNINA)
+3. [SAM_DUE_WiFiNINA](examples/SAM_DUE_WiFiNINA)
+4. [STM32_WiFiNINA](examples/STM32_WiFiNINA)
+5. [Mega_WiFiNINA](examples/Mega_WiFiNINA)
 
 ```
 // Force some params in Blynk, only valid for library version 1.0.0 and later
@@ -339,7 +377,7 @@ Please take a look at examples, as well.
 
 /////////////// Start dynamic Credentials ///////////////
 
-//Defined in <BlynkSimpleEsp32_GSM_WFM.h>
+//Defined in <BlynkSimpleWiFiNINA_SAMD_WM.h>
 /**************************************
   #define MAX_ID_LEN                5
   #define MAX_DISPLAY_NAME_LEN      16
@@ -512,6 +550,12 @@ void loop()
   check_status();
 }
 ```
+### New Releases v1.0.1
+
+1. Add support to SAM DUE, Teensy (4.0, 3.x, LC), STM32.
+2. AVR Mega can select to use dynamic parameters or not, depending on memory availability
+3. Support 63 chars WPA2 WiFi password
+4. Permit to input special chars such as ***%*** and ***#*** into data fields. Thanks to [brondolin](https://github.com/brondolin) to provide the amazing fix.
 
 ### New Releases v1.0.0
 
@@ -522,6 +566,10 @@ void loop()
 5. `Static IP address, Gateway, Subnet Mask.`
 6. Currently support AVR Mega and SAMD (ZERO, MKR, NANO_33_IOT, M0, M0 Pro, AdaFruit CIRCUITPLAYGROUND_EXPRESS, etc.) boards
 7. Enhance GUI.
+
+### Contributions and thanks
+
+1. Thanks to [brondolin](https://github.com/brondolin) to provide the amazing fix to permit input special chars such as ***%*** and ***#*** into data fields.
 
 ## Contributing
 
