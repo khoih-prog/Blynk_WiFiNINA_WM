@@ -1,6 +1,6 @@
 /****************************************************************************************************************************
-   SAMD_WiFiNINA.ino
-   For SAMD using WiFiNINA Shield/Module
+   SAM_DUE_WiFiNINA.ino
+   For SAM DUE using WiFiNINA Shield/Module
 
    Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE and SAMD boards (https://github.com/khoih-prog/Blynk_WiFiNINA_WM)
    to enable easy configuration/reconfiguration and autoconnect/autoreconnect of WiFiNINA/Blynk
@@ -8,7 +8,7 @@
    Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
    Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WM
    Licensed under MIT license
-   Version: 1.0.0
+   Version: 1.0.1
 
    Original Blynk Library author:
    @file       BlynkSimpleWiFiNINA.h
@@ -29,44 +29,29 @@
 #define WIFININA_DEBUG_OUTPUT     Serial
 #define BLYNK_PRINT Serial
 
-#if    ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
-      || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) || defined(ARDUINO_SAMD_MKRWAN1310) \
-      || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) \
-      || defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) )
-#if defined(WIFININA_USE_SAMD)
-#undef WIFININA_USE_SAMD
-#undef WIFI_USE_SAMD
+#if ( defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__) )
+#if defined(WIFININA_USE_SAM_DUE)
+#undef WIFININA_USE_SAM_DUE
+#undef WIFI_USE_SAM_DUE
 #endif
-#define WIFININA_USE_SAMD      true
-#define WIFI_USE_SAMD          true
-#else
-#error This code is intended to run only on the SAMD boards ! Please check your Tools->Board setting.
+#define WIFININA_USE_SAM_DUE      true
+#define WIFI_USE_SAM_DUE          true
+#warning Use SAM_DUE architecture
 #endif
 
-#if defined(WIFININA_USE_SAMD)
+#if ( defined(ESP8266) || defined(ESP32) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA) || \
+      defined(CORE_TEENSY) || defined(CORE_TEENSY) || !(WIFININA_USE_SAM_DUE) )
+#error This code is intended to run on the SAM DUE platform! Please check your Tools->Board setting.
+#endif
 
-#if defined(ARDUINO_SAMD_ZERO)
-#define BOARD_TYPE      "SAMD Zero"
-#elif defined(ARDUINO_SAMD_MKR1000)
-#define BOARD_TYPE      "SAMD MKR1000"
-#elif defined(ARDUINO_SAMD_MKRWIFI1010)
-#define BOARD_TYPE      "SAMD MKRWIFI1010"
-#elif defined(ARDUINO_SAMD_NANO_33_IOT)
-#define BOARD_TYPE      "SAMD NANO_33_IOT"
-#elif defined(ARDUINO_SAMD_MKRFox1200)
-#define BOARD_TYPE      "SAMD MKRFox1200"
-#elif ( defined(ARDUINO_SAMD_MKRWAN1300) || defined(ARDUINO_SAMD_MKRWAN1310) )
-#define BOARD_TYPE      "SAMD MKRWAN13X0"
-#elif defined(ARDUINO_SAMD_MKRGSM1400)
-#define BOARD_TYPE      "SAMD MKRGSM1400"
-#elif defined(ARDUINO_SAMD_MKRNB1500)
-#define BOARD_TYPE      "SAMD MKRNB1500"
-#elif defined(ARDUINO_SAMD_MKRVIDOR4000)
-#define BOARD_TYPE      "SAMD MKRVIDOR4000"
-#elif defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS)
-#define BOARD_TYPE      "SAMD ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS"
+#if defined(WIFININA_USE_SAM_DUE)
+
+#if defined(ARDUINO_SAM_DUE)
+#define BOARD_TYPE      "SAM DUE"
+#elif defined(__SAM3X8E__)
+#define BOARD_TYPE      "SAM SAM3X8E"
 #else
-#define BOARD_TYPE      "SAMD Unknown"
+#define BOARD_TYPE      "SAM Unknown"
 #endif
 #endif
 
@@ -74,15 +59,15 @@
 // Config data Size currently is 128 bytes)
 #define EEPROM_START     0
 
-//#define USE_BLYNK_WM      true
-#define USE_BLYNK_WM      false
+#define USE_BLYNK_WM      true
+//#define USE_BLYNK_WM      false
 
 #if USE_BLYNK_WM
-#include <BlynkSimpleWiFiNINA_SAMD_WM.h>
+#include <BlynkSimpleWiFiNINA_DUE_WM.h>
 
 /////////////// Start dynamic Credentials ///////////////
 
-//Defined in <BlynkSimpleWiFiNINA_SAMD_WM.h>
+//Defined in <BlynkSimpleWiFiNINA_DUE_WM.h>
 /**************************************
   #define MAX_ID_LEN                5
   #define MAX_DISPLAY_NAME_LEN      16
@@ -128,7 +113,7 @@ uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSiz
 /////// // End dynamic Credentials ///////////
 
 #else
-#include <BlynkSimpleWiFiNINA_SAMD.h>
+#include <BlynkSimpleWiFiNINA_DUE.h>
 
 #define USE_LOCAL_SERVER      true
 
@@ -145,10 +130,7 @@ String BlynkServer = "blynk-cloud.com";
 #define BLYNK_SERVER_HARDWARE_PORT    8080
 
 // Your WiFi credentials.
-//char ssid[] = "****";
-//char pass[] = "****";
-
-char ssid[] = "HueNet1";
+char ssid[] = "****";
 char pass[] = "****";
 
 #endif
@@ -205,8 +187,8 @@ void setup()
 #if USE_BLYNK_WM
   Serial.println(F("Start Blynk_WM"));
   Blynk.setConfigPortalIP(IPAddress(192, 168, 120, 1));
-  //Blynk.setConfigPortal("SAMD", "MySAMD");
-  Blynk.begin("SAMD-WiFiNINA");
+  //Blynk.setConfigPortal("SAMDUE", "MySAMDUE");
+  Blynk.begin("SAM-DUE-WiFiNINA");
 #else
   Serial.println(F("Start Blynk"));
   Blynk.begin(auth, ssid, pass, BlynkServer.c_str(), BLYNK_SERVER_HARDWARE_PORT);

@@ -1,6 +1,6 @@
 /****************************************************************************************************************************
-   BlynkSimpleWiFiNINA_AVR.h
-   For AVR boards using WiFiNINA Shields
+   BlynkSimpleWiFiNINA_DUE.h
+   For SAM DUE boards using WiFiNINA Shields
 
    Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE and SAMD boards (https://github.com/khoih-prog/Blynk_WiFiNINA_WM)
    to enable easy configuration/reconfiguration and autoconnect/autoreconnect of WiFiNINA/Blynk
@@ -25,15 +25,18 @@
  *****************************************************************************************************************************/
 
 
-#ifndef BlynkSimpleWiFiNINA_AVR_h
-#define BlynkSimpleWiFiNINA_AVR_h
+#ifndef BlynkSimpleWiFiNINA_DUE_h
+#define BlynkSimpleWiFiNINA_DUE_h
 
-#if ( defined(ESP8266) || defined(ESP32) || defined(CORE_TEENSY) )
-#error This code is not intended to run on the ESP8266, ESP32 nor Teensy platform! Please check your Tools->Board setting.
+#if ( defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__) )
+#if defined(BLYNK_WIFININA_USE_SAM_DUE)
+#undef BLYNK_WIFININA_USE_SAM_DUE
+#endif
+#define BLYNK_WIFININA_USE_SAM_DUE      true
 #endif
 
-#if !( defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA) )
-#error This code is intended to run on the Mega2560 platform! Please check your Tools->Board setting.
+#if ( defined(ESP8266) || defined(ESP32) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA) || defined(CORE_TEENSY) || !(BLYNK_WIFININA_USE_SAM_DUE) )
+#error This code is intended to run on the SAM DUE platform! Please check your Tools->Board setting.
 #endif
 
 #ifndef BLYNK_INFO_CONNECTION
@@ -68,13 +71,12 @@ public:
     {
         int status = WiFi.status();
         // check for the presence of the shield:
-        if (status == WL_NO_MODULE) 
-        {
+        if (status == WL_NO_MODULE) {
             BLYNK_LOG1(BLYNK_F("NoNINA"));
             return;
         }
 
-        BLYNK_LOG2(BLYNK_F("FW:"), WiFi.firmwareVersion());
+        BLYNK_LOG2(BLYNK_F("WiFiNINA Firmware Version: "), WiFi.firmwareVersion());
 
         // attempt to connect to Wifi network:
         while (status != WL_CONNECTED) 
@@ -99,8 +101,7 @@ public:
             }
 
             millis_time_t started = BlynkMillis();
-            while ((status != WL_CONNECTED) &&
-                  (BlynkMillis() - started < 10000))
+            while ((status != WL_CONNECTED) && (BlynkMillis() - started < 10000))
             {
                 BlynkDelay(200);
                 status = WiFi.status();
@@ -159,4 +160,4 @@ BlynkWifiCommon Blynk(_blynkTransport);
 
 #include <BlynkWidgets.h>
 
-#endif    //BlynkSimpleWiFiNINA_AVR_h
+#endif    //BlynkSimpleWiFiNINA_DUE_h

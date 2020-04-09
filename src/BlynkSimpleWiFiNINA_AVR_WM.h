@@ -1,6 +1,6 @@
 /****************************************************************************************************************************
-   BlynkSimpleWiFiNINA_SAMD_WM.h
-   For SAMD boards using WiFiNINA Shields
+   BlynkSimpleWiFiNINA_AVR_WM.h
+   For AVR boards using WiFiNINA Shields
 
    Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE and SAMD boards (https://github.com/khoih-prog/Blynk_WiFiNINA_WM)
    to enable easy configuration/reconfiguration and autoconnect/autoreconnect of WiFiNINA/Blynk
@@ -25,21 +25,15 @@
  *****************************************************************************************************************************/
 
 
-#ifndef BlynkSimpleWiFiNINA_SAMD_WM_h
-#define BlynkSimpleWiFiNINA_SAMD_WM_h
+#ifndef BlynkSimpleWiFiNINA_AVR_WM_h
+#define BlynkSimpleWiFiNINA_AVR_WM_h
 
-#if    ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
-      || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) || defined(ARDUINO_SAMD_MKRWAN1310) \
-      || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) \
-      || defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) )
-#if defined(BLYNK_WIFININA_USE_SAMD)
-#undef BLYNK_WIFININA_USE_SAMD
-#endif
-#define BLYNK_WIFININA_USE_SAMD      true
+#if ( defined(ESP8266) || defined(ESP32) || defined(CORE_TEENSY) )
+#error This code is not intended to run on the ESP8266, ESP32 nor Teensy platform! Please check your Tools->Board setting.
 #endif
 
-#if ( defined(ESP8266) || defined(ESP32) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA) || defined(CORE_TEENSY) || !(BLYNK_WIFININA_USE_SAMD) )
-#error This code is intended to run on the SAMD platform! Please check your Tools->Board setting.
+#if !( defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA) )
+#error This code is intended to run on the Mega2560 platform! Please check your Tools->Board setting.
 #endif
 
 #ifndef BLYNK_INFO_CONNECTION
@@ -63,10 +57,7 @@
 
 #include "WiFiNINA_Pinout_Generic.h"
 #include <WiFiWebServer.h>
-
-// Include EEPROM-like API for FlashStorage
-//#include <FlashAsEEPROM.h>                //https://github.com/cmaglie/FlashStorage
-#include <FlashAsEEPROM_SAMD.h>                //https://github.com/khoih-prog/FlashStorage_SAMD
+#include <EEPROM.h>
 
 //NEW
 #define MAX_ID_LEN                5
@@ -102,7 +93,7 @@ typedef struct Configuration
 uint16_t CONFIG_DATA_SIZE = sizeof(Blynk_WM_Configuration);
 
 // -- HTML page fragments
-const char WIFININA_HTML_HEAD[]     /*PROGMEM*/ = "<!DOCTYPE html><html><head><title>SAMD_WM_NINA_Lite</title><style>div,input{padding:5px;font-size:1em;}input{width:95%;}body{text-align: center;}button{background-color:#16A1E7;color:#fff;line-height:2.4rem;font-size:1.2rem;width:100%;}fieldset{border-radius:0.3rem;margin:0px;}</style></head><div style=\"text-align:left;display:inline-block;min-width:260px;\"><fieldset><div><label>SSID</label><input value=\"[[id]]\"id=\"id\"><div></div></div>\
+const char WIFININA_HTML_HEAD[]     /*PROGMEM*/ = "<!DOCTYPE html><html><head><title>MEGA_WM_NINA</title><style>div,input{padding:5px;font-size:1em;}input{width:95%;}body{text-align: center;}button{background-color:#16A1E7;color:#fff;line-height:2.4rem;font-size:1.2rem;width:100%;}fieldset{border-radius:0.3rem;margin:0px;}</style></head><div style=\"text-align:left;display:inline-block;min-width:260px;\"><fieldset><div><label>SSID</label><input value=\"[[id]]\"id=\"id\"><div></div></div>\
 <div><label>PWD</label><input value=\"[[pw]]\"id=\"pw\"><div></div></div></fieldset>\
 <fieldset><div><label>Server</label><input value=\"[[sv]]\"id=\"sv\"><div></div></div>\
 <div><label>Port</label><input value=\"[[pt]]\"id=\"pt\"><div></div></div>\
@@ -155,7 +146,7 @@ public:
             return false;
         }
 
-        BLYNK_LOG2(BLYNK_F("WiFiNINA Firmware Version: "), WiFi.firmwareVersion());
+        BLYNK_LOG2(BLYNK_F("FW:"), WiFi.firmwareVersion());
 
         // attempt to connect to Wifi network:
         while (status != WL_CONNECTED) 
@@ -232,7 +223,7 @@ public:
 
       if (iHostname[0] == 0)
       {
-        String _hostname = "SAMD-WiFiNINA";
+        String _hostname = "Mega-NINA";
 
         _hostname.toUpperCase();
 
@@ -245,7 +236,7 @@ public:
         getRFC952_hostname(iHostname);
       }
 
-      BLYNK_LOG2(BLYNK_F("RFC925 Hostname = "), RFC952_hostname);
+      BLYNK_LOG2(BLYNK_F("Hostname="), RFC952_hostname);
 
       if (getConfigData())
       {
@@ -498,32 +489,9 @@ public:
     }
 
     void resetFunc()
-    {    
-#if ( defined(__SAMD51__) || defined(__SAMD51J20A__) || defined(__SAMD51J19A__) || defined(__SAMD51G19A__)  )
-      // For SAMD51
-      // see Table 17-5 Timeout Period (valid values 0-11)
-      WDT->CONFIG.reg = 5; 
-      WDT->CTRLA.reg = WDT_CTRLA_ENABLE;
-      // To check if OK or bit.ENABLE/CLEAR
-      while (WDT->SYNCBUSY.bit.WEN == 1);
-      
-      // use the WDT watchdog timer to force a system reset.
-      WDT->CLEAR.reg= 0x00;
-      // To check if OK or bit.ENABLE/CLEAR
-      while (WDT->SYNCBUSY.bit.WEN == 1);
-#else   
-      // For SAMD21, etc
-      // see Table 17-5 Timeout Period (valid values 0-11)
-      WDT->CONFIG.reg = 5; 
-      WDT->CTRL.reg = WDT_CTRL_ENABLE;
-      while (WDT->STATUS.bit.SYNCBUSY == 1);
-      
-      // use the WDT watchdog timer to force a system reset.
-      WDT->CLEAR.reg= 0x00;
-      while (WDT->STATUS.bit.SYNCBUSY == 1);
-#endif      
+    {
+      asm volatile ("jmp 0");
     }
-
 
   private:
     String ipAddress = "0.0.0.0";
@@ -589,13 +557,36 @@ public:
 
     void displayWiFiData(void)
     {
-      BLYNK_LOG6(BLYNK_F("IP = "), IPAddressToString(WiFi.localIP()), BLYNK_F(", GW = "), IPAddressToString(WiFi.gatewayIP()),
-                 BLYNK_F(", SN = "), IPAddressToString(WiFi.subnetMask()));
+      BLYNK_LOG6(BLYNK_F("IP="), IPAddressToString(WiFi.localIP()), BLYNK_F(",GW="), IPAddressToString(WiFi.gatewayIP()),
+                 BLYNK_F(",SN="), IPAddressToString(WiFi.subnetMask()));
     }
 
 
-#define BLYNK_BOARD_TYPE   "SHD_WiFiNINA"
+#define BLYNK_BOARD_TYPE   "SHD_NINA"
 #define NO_CONFIG           "blank"
+
+#ifndef EEPROM_SIZE
+#define EEPROM_SIZE     4096
+#else
+#if (EEPROM_SIZE > 4096)
+#warning EEPROM_SIZE must be <= 4096. Reset to 4096
+#undef EEPROM_SIZE
+#define EEPROM_SIZE     4096
+#endif
+#if (EEPROM_SIZE < CONFIG_DATA_SIZE)
+#warning EEPROM_SIZE must be > CONFIG_DATA_SIZE. Reset to 512
+#undef EEPROM_SIZE
+#define EEPROM_SIZE     512
+#endif
+#endif
+
+#ifndef EEPROM_START
+#define EEPROM_START     0
+#else
+#if (EEPROM_START + CONFIG_DATA_SIZE > EEPROM_SIZE)
+#error EPROM_START + CONFIG_DATA_SIZE > EEPROM_SIZE. Please adjust.
+#endif
+#endif
 
     int calcChecksum()
     {
@@ -609,21 +600,15 @@ public:
     }
     
     uint16_t totalDataSize = 0;
-
+    
     bool EEPROM_get()
     {
-      // It's too bad that emulate EEPROM.read()/write() can only deal with bytes. 
-      // Have to read/write each byte. To rewrite the library
-      
       uint16_t offset = EEPROM_START;
-                
-      uint8_t* _pointer = (uint8_t *) &Blynk_WM_config;
       
-      for (int i = 0; i < sizeof(Blynk_WM_config); i++, _pointer++, offset++)
-      {              
-        *_pointer = EEPROM.read(offset);
-      }
-           
+      EEPROM.get(offset, Blynk_WM_config);
+      
+      offset += sizeof(Blynk_WM_config);
+      
       int checkSum = 0;
       int readCheckSum;
       
@@ -631,24 +616,20 @@ public:
    
       for (int i = 0; i < NUM_MENU_ITEMS; i++)
       {       
-        _pointer = (uint8_t *) myMenuItems[i].pdata;
+        char* _pointer = myMenuItems[i].pdata;
         totalDataSize += myMenuItems[i].maxlen;
                
-        for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++, _pointer++, offset++)
+        for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++,_pointer++,offset++)
         {
-          *_pointer = EEPROM.read(offset);          
+          *_pointer = EEPROM.read(offset);
+          
           checkSum += *_pointer;  
          }       
       }
       
-      _pointer = (uint8_t *) &readCheckSum;
+      EEPROM.get(offset, readCheckSum);
       
-      for (int i = 0; i < sizeof(readCheckSum); i++, _pointer++, offset++)
-      {                  
-        *_pointer = EEPROM.read(offset);
-      }
-         
-      BLYNK_LOG4(F("CrCCSum="), checkSum, F(",CrRCSum="), readCheckSum);
+      BLYNK_LOG4(F("CrCCsum="), checkSum, F(",CrRCsum="), readCheckSum);
       
       if ( checkSum != readCheckSum)
       {
@@ -660,23 +641,17 @@ public:
     
     void EEPROM_put()
     {
-      // It's too bad that emulate EEPROM.read()/writ() can only deal with bytes. 
-      // Have to read/write each byte. To rewrite the library
-      
       uint16_t offset = EEPROM_START;
-           
-      uint8_t* _pointer = (uint8_t *) &Blynk_WM_config;
       
-      for (int i = 0; i < sizeof(Blynk_WM_config); i++, _pointer++, offset++)
-      {              
-        EEPROM.write(offset, *_pointer);
-      }
-           
+      EEPROM.put(offset, Blynk_WM_config);
+      
+      offset += sizeof(Blynk_WM_config);
+      
       int checkSum = 0;
     
       for (int i = 0; i < NUM_MENU_ITEMS; i++)
       {       
-        _pointer = (uint8_t *) myMenuItems[i].pdata;
+        char* _pointer = myMenuItems[i].pdata;
         
         BLYNK_LOG4(F("pdata="), myMenuItems[i].pdata, F(",len="), myMenuItems[i].maxlen);
                      
@@ -688,23 +663,16 @@ public:
          }
       }
       
-      _pointer = (uint8_t *) &checkSum;
-      
-      for (int i = 0; i < sizeof(checkSum); i++, _pointer++, offset++)
-      {              
-        EEPROM.write(offset, *_pointer);
-      }
-      
-      EEPROM.commit();
+      EEPROM.put(offset, checkSum);
       
       BLYNK_LOG2(F("CrCCSum="), checkSum);
-    }   
+    }
 
     bool getConfigData()
     {
       bool credDataValid;   
       
-      hadConfigData = false;    
+      hadConfigData = false;  
       
       credDataValid = EEPROM_get();
 
@@ -713,7 +681,7 @@ public:
       BLYNK_LOG4(BLYNK_F("CCSum="), calChecksum, BLYNK_F(",RCSsum="), Blynk_WM_config.checkSum);
 
       if ( (strncmp(Blynk_WM_config.header, BLYNK_BOARD_TYPE, strlen(BLYNK_BOARD_TYPE)) != 0) ||
-           (calChecksum != Blynk_WM_config.checkSum)  || !credDataValid )
+           (calChecksum != Blynk_WM_config.checkSum) || !credDataValid )
       {
         memset(&Blynk_WM_config, 0, sizeof(Blynk_WM_config));
 
@@ -790,7 +758,7 @@ public:
 
       while ( (WiFi.status() != WL_CONNECTED) && ( 0 < timeout ) && ( (millis() - currMillis) < (unsigned long) timeout )  )
       {
-        BLYNK_LOG2(BLYNK_F("con2WF:millis="), millis() - currMillis);
+        BLYNK_LOG2(BLYNK_F("con2WF:ms="), millis() - currMillis);
 
         if (connectWiFi(Blynk_WM_config.wifi_ssid, Blynk_WM_config.wifi_pw))
         {
@@ -815,7 +783,7 @@ public:
 
       return wifi_connected;
     }
-
+    
     // NEW
     String root_html_template;
        
@@ -865,7 +833,7 @@ public:
         {
           String result = createHTML();
 
-          BLYNK_LOG1(BLYNK_F("h:repl"));
+          //BLYNK_LOG1(BLYNK_F("h:repl"));
 
           // Reset configTimeout to stay here until finished.
           configTimeout = 0;
@@ -883,6 +851,8 @@ public:
           }
 
           server->send(200, "text/html", result);
+          //BLYNK_LOG1(BLYNK_F("h:sent"));
+
           return;
         }
 
@@ -950,11 +920,11 @@ public:
         // NEW
         if (number_items_Updated == NUM_CONFIGURABLE_ITEMS + NUM_MENU_ITEMS)
         {
-          BLYNK_LOG1(BLYNK_F("h:UpdEEPROM"));
+          //BLYNK_LOG1(BLYNK_F("h:UpdEEPROM"));
 
           saveConfigData();
 
-          BLYNK_LOG1(BLYNK_F("h:Rst"));
+          //BLYNK_LOG1(BLYNK_F("h:Rst"));
 
           // TO DO : what command to reset
           // Delay then reset the board after save data
@@ -973,8 +943,8 @@ public:
         String randomNum = String(random(0xFFFFFF), HEX);
         randomNum.toUpperCase();
 
-        portal_ssid = "SAMD_NINA_" + randomNum;
-        portal_pass = "MySAMD_NINA_" + randomNum;
+        portal_ssid = "Mega_" + randomNum;
+        portal_pass = "MyMega_" + randomNum;
       }
 
       WiFi.config(portal_apIP);
@@ -1020,4 +990,4 @@ BlynkWifiCommon Blynk(_blynkTransport);
 
 #include <BlynkWidgets.h>
 
-#endif    //BlynkSimpleWiFiNINA_SAMD_WM_h
+#endif    //BlynkSimpleWiFiNINA_AVR_WM_h
