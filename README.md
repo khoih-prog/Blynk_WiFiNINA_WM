@@ -137,7 +137,7 @@ uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSiz
 
 ```
 
-If you don't need to add dynamic parameters, use the following in skecth
+If you don't need to add dynamic parameters, use the following in sketch
 
 ```
 /////////////// Start dynamic Credentials ///////////////
