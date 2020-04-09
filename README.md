@@ -298,9 +298,8 @@ void loop()
 
 ## TO DO
 
- 1. Same features for other boards using WiFiNINA WiFi shields such as STM32, Teensy, SAM DUE.
- 2. Add MultiWiFi feature to enable reconnect to the best / available WiFi AP.
- 3. Add MultiBlynk feature to enable reconnect to the best / available Blynk Server.
+ 1. Add MultiWiFi feature to enable reconnect to the best / available WiFi AP.
+ 2. Add MultiBlynk feature to enable reconnect to the best / available Blynk Server.
 
 
 ## DONE
@@ -314,6 +313,7 @@ void loop()
  7. Add configurable Static IP, GW, Subnet Mask IP Addresses.
  8. Enable dynamic custom data
  9. Add checksum for more reliable data
+10. Same features for other boards using WiFiNINA WiFi shields such as STM32, Teensy, SAM DUE.
 
 ## Example
 Please take a look at examples, as well.
@@ -428,11 +428,8 @@ uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSiz
 #define USE_LOCAL_SERVER      true
 
 #if USE_LOCAL_SERVER
-//char auth[] = "****";
-//String BlynkServer = "account.duckdns.org";
-
-char auth[] = "dpjQumZ-qT8MZnwAUd2F8ZM0DfEM_WCP";   //RFID Gas
-String BlynkServer = "khoih.duckdns.org";
+char auth[] = "****";
+String BlynkServer = "account.duckdns.org";
 
 //String BlynkServer = "192.168.2.112";
 #else
@@ -443,16 +440,10 @@ String BlynkServer = "blynk-cloud.com";
 #define BLYNK_SERVER_HARDWARE_PORT    8080
 
 // Your WiFi credentials.
-//char ssid[] = "****";
-//char pass[] = "****";
-
-char ssid[] = "HueNet1";
-char pass[] = "jenniqqs";
+char ssid[] = "****";
+char pass[] = "****";
 
 #endif
-
-// Your Megay <-> ESP8266 baud rate:
-#define ESP8266_BAUD 115200
 
 void heartBeatPrint(void)
 {
@@ -514,6 +505,7 @@ void setup()
 #endif
 }
 
+#if USE_BLYNK_WM
 void displayCredentials(void)
 {
   Serial.println("Your stored Credentials :");
@@ -523,11 +515,14 @@ void displayCredentials(void)
     Serial.println(String(myMenuItems[i].displayName) + " = " + myMenuItems[i].pdata);
   }
 }
+#endif
 
 void loop()
 {
   Blynk.run();
+  check_status();
 
+#if USE_BLYNK_WM
   static bool displayedCredentials = false;
 
   if (!displayedCredentials)
@@ -546,8 +541,7 @@ void loop()
       }
     }
   }
-    
-  check_status();
+#endif
 }
 ```
 ### New Releases v1.0.1
