@@ -67,6 +67,16 @@
 #define BOARD_TYPE      "SAMD MKRVIDOR4000"
 #elif defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS)
 #define BOARD_TYPE      "SAMD ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS"
+#elif defined(__SAMD21G18A__)
+#define BOARD_TYPE      "SAMD21G18A"
+#elif defined(__SAMD51G19A__)
+#define BOARD_TYPE      "SAMD51G19"
+#elif defined(__SAMD51J19A__)
+#define BOARD_TYPE      "SAMD51J19A"
+#elif defined(__SAMD51J20A__)
+#define BOARD_TYPE      "SAMD51J20A"
+#elif defined(__SAMD51__)
+#define BOARD_TYPE      "SAMD51"
 #else
 #define BOARD_TYPE      "SAMD Unknown"
 #endif
