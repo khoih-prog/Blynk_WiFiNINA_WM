@@ -6,9 +6,9 @@
    to enable easy configuration/reconfiguration and autoconnect/autoreconnect of WiFiNINA/Blynk
 
    Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
-   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WM
+   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
    Licensed under MIT license
-   Version: 1.0.1
+   Version: 1.0.2
 
    Original Blynk Library author:
    @file       BlynkSimpleWiFiNINA.h
@@ -22,16 +22,18 @@
    ------- -----------  ----------   -----------
     1.0.0   K Hoang      07/04/2020  Initial coding
     1.0.1   K Hoang      09/04/2020  Add support to SAM DUE, Teensy, STM32
+    1.0.2   K Hoang      15/04/2020  Fix bug. Add SAMD51 support.
  *****************************************************************************************************************************/
 
 
 #ifndef BlynkSimpleWiFiNINA_SAMD_h
 #define BlynkSimpleWiFiNINA_SAMD_h
 
-#if    ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
-      || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) || defined(ARDUINO_SAMD_MKRWAN1310) \
-      || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) \
-      || defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) )
+#if ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
+   || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) \
+   || defined(ARDUINO_SAMD_MKRWAN1310) || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) \
+   || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) || defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) \
+   || defined(__SAMD51__) || defined(__SAMD51J20A__) || defined(__SAMD51J19A__) || defined(__SAMD51G19A__) )
 #if defined(BLYNK_WIFININA_USE_SAMD)
 #undef BLYNK_WIFININA_USE_SAMD
 #endif

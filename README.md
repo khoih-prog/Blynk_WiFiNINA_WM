@@ -2,6 +2,11 @@
 
 [![arduino-library-badge](https://www.ardu-badge.com/badge/Blynk_WiFiNINA_WM.svg?)](https://www.ardu-badge.com/Blynk_WiFiNINA_WM)
 
+### New Releases v1.0.2
+
+1. Add support to ***SAM51 (Itsy-Bitsy M4, Metro M4, Grand Central M4, Feather M4 Express, etc.)***.
+2. Fix bug
+
 ### New Releases v1.0.1
 
 1. Add support to ***SAM DUE, Teensy (4.0, 3.x, LC), STM32.***
@@ -37,7 +42,7 @@ With version `v1.0.0` or later, you now can configure:
  8. [`Functional-VLPP library`](https://github.com/khoih-prog/functional-vlpp) to use server's lambda function. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/Functional-Vlpp.svg?)](https://www.ardu-badge.com/Functional-Vlpp)
  9. [`WiFiNINA_Generic library v1.5.0 or later`](https://github.com/khoih-prog/WiFiNINA_Generic)
 10. [`WiFiWebServer library`](https://github.com/khoih-prog/WiFiWebServer). To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiWebServer.svg?)](https://www.ardu-badge.com/WiFiWebServer)
-11. [`FlashStorage_SAMD library v1.0.0`](https://github.com/khoih-prog/FlashStorage_SAMD) for SAMD21 and SAMD51 boards (ZERO, MKR, NANO_33_IOT, M0, M0 Pro, AdaFruit Itsy-Bitsy M4, etc.)
+11. [`FlashStorage_SAMD library v1.0.0`](https://github.com/khoih-prog/FlashStorage_SAMD) for SAMD21 and SAMD51 boards (ZERO, MKR, ***NANO_33_IOT***, M0, M0 Pro, ***AdaFruit Itsy-Bitsy M4***, etc.)
 12. [`DueFlashStorage library`](https://github.com/sebnil/DueFlashStorage) for SAM DUE
 
 ## Installation
@@ -88,6 +93,8 @@ to use EEPROM to save your configuration data.
 - To add custom parameters, just modify from the example below
 
 ```
+#define USE_DYNAMIC_PARAMETERS      true
+
 /////////////// Start dynamic Credentials ///////////////
 
 //Defined in <BlynkSimpleWiFiNINA_SAMD_WM.h>
@@ -104,23 +111,25 @@ to use EEPROM to save your configuration data.
   } MenuItem;
 **************************************/
 
+#if USE_DYNAMIC_PARAMETERS
+
 #define MAX_MQTT_SERVER_LEN      34
-char MQTT_Server  [MAX_MQTT_SERVER_LEN]   = "";
+char MQTT_Server  [MAX_MQTT_SERVER_LEN + 1]   = "";
 
 #define MAX_MQTT_PORT_LEN        6
-char MQTT_Port   [MAX_MQTT_PORT_LEN]  = "";
+char MQTT_Port   [MAX_MQTT_PORT_LEN+ 1]  = "";
 
 #define MAX_MQTT_USERNAME_LEN      34
-char MQTT_UserName  [MAX_MQTT_USERNAME_LEN]   = "";
+char MQTT_UserName  [MAX_MQTT_USERNAME_LEN + 1]   = "";
 
 #define MAX_MQTT_PW_LEN        34
-char MQTT_PW   [MAX_MQTT_PW_LEN]  = "";
+char MQTT_PW   [MAX_MQTT_PW_LEN + 1]  = "";
 
 #define MAX_MQTT_SUBS_TOPIC_LEN      34
-char MQTT_SubsTopic  [MAX_MQTT_SUBS_TOPIC_LEN]   = "";
+char MQTT_SubsTopic  [MAX_MQTT_SUBS_TOPIC_LEN + 1]   = "";
 
 #define MAX_MQTT_PUB_TOPIC_LEN       34
-char MQTT_PubTopic   [MAX_MQTT_PUB_TOPIC_LEN]  = "";
+char MQTT_PubTopic   [MAX_MQTT_PUB_TOPIC_LEN + 1]  = "";
 
 MenuItem myMenuItems [] =
 {
@@ -133,6 +142,15 @@ MenuItem myMenuItems [] =
 };
 
 uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSize;
+
+#else
+
+MenuItem myMenuItems [] = {};
+
+uint16_t NUM_MENU_ITEMS = 0;
+
+#endif    //USE_DYNAMIC_PARAMETERS
+
 /////// // End dynamic Credentials ///////////
 
 ```
@@ -140,15 +158,7 @@ uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSiz
 If you don't need to add dynamic parameters, use the following in sketch
 
 ```
-/////////////// Start dynamic Credentials ///////////////
-
-MenuItem myMenuItems [] =
-{
-};
-
-uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSize;
-/////// // End dynamic Credentials ///////////
-
+#define USE_DYNAMIC_PARAMETERS      false
 ```
 
 See examples 
@@ -314,9 +324,10 @@ void loop()
  8. Enable dynamic custom data
  9. Add checksum for more reliable data
 10. Same features for other boards using WiFiNINA WiFi shields such as STM32, Teensy, SAM DUE.
+11. Same features for other boards using SAMD51 besides SAMD21.
 
-## Example
-Please take a look at examples, as well.
+## Example [Teensy_WiFiNINA](examples/Teensy_WiFiNINA)
+Please take a look at other examples, as well.
 
 ```
 /* Comment this out to disable prints and save space */
@@ -324,60 +335,51 @@ Please take a look at examples, as well.
 #define WIFININA_DEBUG_OUTPUT     Serial
 #define BLYNK_PRINT Serial
 
-#if    ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
-      || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) || defined(ARDUINO_SAMD_MKRWAN1310) \
-      || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) \
-      || defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) )
-#if defined(WIFININA_USE_SAMD)
-#undef WIFININA_USE_SAMD
-#undef WIFI_USE_SAMD
-#endif
-#define WIFININA_USE_SAMD      true
-#define WIFI_USE_SAMD          true
-#else
-#error This code is intended to run only on the SAMD boards ! Please check your Tools->Board setting.
+#if ( defined(ESP8266) || defined(ESP32) || defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) || !defined(CORE_TEENSY) )
+#error This code is intended to run on Teensy platform! Please check your Tools->Board setting.
 #endif
 
-#if defined(WIFININA_USE_SAMD)
-
-#if defined(ARDUINO_SAMD_ZERO)
-#define BOARD_TYPE      "SAMD Zero"
-#elif defined(ARDUINO_SAMD_MKR1000)
-#define BOARD_TYPE      "SAMD MKR1000"
-#elif defined(ARDUINO_SAMD_MKRWIFI1010)
-#define BOARD_TYPE      "SAMD MKRWIFI1010"
-#elif defined(ARDUINO_SAMD_NANO_33_IOT)
-#define BOARD_TYPE      "SAMD NANO_33_IOT"
-#elif defined(ARDUINO_SAMD_MKRFox1200)
-#define BOARD_TYPE      "SAMD MKRFox1200"
-#elif ( defined(ARDUINO_SAMD_MKRWAN1300) || defined(ARDUINO_SAMD_MKRWAN1310) )
-#define BOARD_TYPE      "SAMD MKRWAN13X0"
-#elif defined(ARDUINO_SAMD_MKRGSM1400)
-#define BOARD_TYPE      "SAMD MKRGSM1400"
-#elif defined(ARDUINO_SAMD_MKRNB1500)
-#define BOARD_TYPE      "SAMD MKRNB1500"
-#elif defined(ARDUINO_SAMD_MKRVIDOR4000)
-#define BOARD_TYPE      "SAMD MKRVIDOR4000"
-#elif defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS)
-#define BOARD_TYPE      "SAMD ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS"
-#else
-#define BOARD_TYPE      "SAMD Unknown"
-#endif
+#ifdef CORE_TEENSY  
+  #if defined(WIFININA_USE_TEENSY)
+    #undef WIFININA_USE_TEENSY
+    #undef WIFI_USE_TEENSY
+  #endif
+  #define WIFININA_USE_TEENSY      true
+  #define WIFI_USE_TEENSY          true
+  #warning Use Teensy architecture
+  
+  #if defined(__IMXRT1062__)
+    #define BOARD_TYPE      "TEENSY 4.0"
+  #elif defined(__MK66FX1M0__)
+    #define BOARD_TYPE "Teensy 3.6"
+  #elif defined(__MK64FX512__)
+    #define BOARD_TYPE "Teensy 3.5"
+  #elif defined(__MKL26Z64__)
+    #define BOARD_TYPE "Teensy LC"
+  #elif defined(__MK20DX256__)
+    #define BOARD_TYPE "Teensy 3.2-3.1"
+  #elif defined(__MK20DX128__)
+    #define BOARD_TYPE "Teensy 3.0"
+  #elif ( defined(__AVR_AT90USB1286__) || defined(__AVR_ATmega32U4__) )
+    #error "Teensy 2.0 and 2.0++ not supported"
+  #endif
 #endif
 
 // Start location in EEPROM to store config data. Default 0
 // Config data Size currently is 128 bytes)
-#define EEPROM_START     1024
+#define EEPROM_START     0
 
 #define USE_BLYNK_WM      true
 //#define USE_BLYNK_WM      false
 
 #if USE_BLYNK_WM
-#include <BlynkSimpleWiFiNINA_SAMD_WM.h>
+#include <BlynkSimpleWiFiNINA_Teensy_WM.h>
+
+#define USE_DYNAMIC_PARAMETERS      true
 
 /////////////// Start dynamic Credentials ///////////////
 
-//Defined in <BlynkSimpleWiFiNINA_SAMD_WM.h>
+//Defined in <BlynkSimpleWiFiNINA_Teensy_WM.h>
 /**************************************
   #define MAX_ID_LEN                5
   #define MAX_DISPLAY_NAME_LEN      16
@@ -391,23 +393,25 @@ Please take a look at examples, as well.
   } MenuItem;
 **************************************/
 
+#if USE_DYNAMIC_PARAMETERS
+
 #define MAX_MQTT_SERVER_LEN      34
-char MQTT_Server  [MAX_MQTT_SERVER_LEN]   = "";
+char MQTT_Server  [MAX_MQTT_SERVER_LEN + 1]   = "";
 
 #define MAX_MQTT_PORT_LEN        6
-char MQTT_Port   [MAX_MQTT_PORT_LEN]  = "";
+char MQTT_Port   [MAX_MQTT_PORT_LEN+ 1]  = "";
 
 #define MAX_MQTT_USERNAME_LEN      34
-char MQTT_UserName  [MAX_MQTT_USERNAME_LEN]   = "";
+char MQTT_UserName  [MAX_MQTT_USERNAME_LEN + 1]   = "";
 
 #define MAX_MQTT_PW_LEN        34
-char MQTT_PW   [MAX_MQTT_PW_LEN]  = "";
+char MQTT_PW   [MAX_MQTT_PW_LEN + 1]  = "";
 
 #define MAX_MQTT_SUBS_TOPIC_LEN      34
-char MQTT_SubsTopic  [MAX_MQTT_SUBS_TOPIC_LEN]   = "";
+char MQTT_SubsTopic  [MAX_MQTT_SUBS_TOPIC_LEN + 1]   = "";
 
 #define MAX_MQTT_PUB_TOPIC_LEN       34
-char MQTT_PubTopic   [MAX_MQTT_PUB_TOPIC_LEN]  = "";
+char MQTT_PubTopic   [MAX_MQTT_PUB_TOPIC_LEN + 1]  = "";
 
 MenuItem myMenuItems [] =
 {
@@ -420,10 +424,19 @@ MenuItem myMenuItems [] =
 };
 
 uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSize;
+
+#else
+
+MenuItem myMenuItems [] = {};
+
+uint16_t NUM_MENU_ITEMS = 0;
+
+#endif    //USE_DYNAMIC_PARAMETERS
+
 /////// // End dynamic Credentials ///////////
 
 #else
-#include <BlynkSimpleWiFiNINA_SAMD.h>
+#include <BlynkSimpleWiFiNINA_Teensy.h>
 
 #define USE_LOCAL_SERVER      true
 
@@ -495,17 +508,17 @@ void setup()
   Serial.println("\nStart Blynk_WiFiNINA_WM using WiFiNINA_Shield on " + String(BOARD_TYPE));
 
 #if USE_BLYNK_WM
-  Serial.println(F("Start Blynk_WM"));
+  Serial.println("Start Blynk_WM");
   Blynk.setConfigPortalIP(IPAddress(192, 168, 120, 1));
-  //Blynk.setConfigPortal("SAMD", "MySAMD");
-  Blynk.begin("SAMD-WiFiNINA");
+  //Blynk.setConfigPortal("Teensy4", "MyTeensy4");
+  Blynk.begin("Teensy40-WiFiNINA");
 #else
-  Serial.println(F("Start Blynk"));
+  Serial.println("Start Blynk");
   Blynk.begin(auth, ssid, pass, BlynkServer.c_str(), BLYNK_SERVER_HARDWARE_PORT);
 #endif
 }
 
-#if USE_BLYNK_WM
+#if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
 void displayCredentials(void)
 {
   Serial.println("Your stored Credentials :");
@@ -522,7 +535,7 @@ void loop()
   Blynk.run();
   check_status();
 
-#if USE_BLYNK_WM
+#if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
   static bool displayedCredentials = false;
 
   if (!displayedCredentials)
@@ -544,6 +557,11 @@ void loop()
 #endif
 }
 ```
+### New Releases v1.0.2
+
+1. Add support to ***SAM51 (Itsy-Bitsy M4, Metro M4, Grand Central M4, Feather M4 Express, etc.)***.
+2. Fix bug
+
 ### New Releases v1.0.1
 
 1. Add support to SAM DUE, Teensy (4.0, 3.x, LC), STM32.

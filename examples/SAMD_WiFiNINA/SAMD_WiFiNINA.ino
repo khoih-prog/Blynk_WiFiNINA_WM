@@ -6,9 +6,9 @@
    to enable easy configuration/reconfiguration and autoconnect/autoreconnect of WiFiNINA/Blynk
 
    Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
-   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WM
+   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
    Licensed under MIT license
-   Version: 1.0.0
+   Version: 1.0.2
 
    Original Blynk Library author:
    @file       BlynkSimpleWiFiNINA.h
@@ -22,6 +22,7 @@
    ------- -----------  ----------   -----------
     1.0.0   K Hoang      07/04/2020  Initial coding
     1.0.1   K Hoang      09/04/2020  Add support to SAM DUE, Teensy, STM32
+    1.0.2   K Hoang      15/04/2020  Fix bug. Add SAMD51 support.
  *****************************************************************************************************************************/
 
 /* Comment this out to disable prints and save space */
@@ -29,10 +30,11 @@
 #define WIFININA_DEBUG_OUTPUT     Serial
 #define BLYNK_PRINT Serial
 
-#if    ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
-      || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) || defined(ARDUINO_SAMD_MKRWAN1310) \
-      || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) \
-      || defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) )
+#if ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
+   || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) \
+   || defined(ARDUINO_SAMD_MKRWAN1310) || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) \
+   || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) || defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) \
+   || defined(__SAMD51__) || defined(__SAMD51J20A__) || defined(__SAMD51J19A__) || defined(__SAMD51G19A__) )
 #if defined(WIFININA_USE_SAMD)
 #undef WIFININA_USE_SAMD
 #undef WIFI_USE_SAMD
@@ -74,11 +76,13 @@
 // Config data Size currently is 128 bytes)
 #define EEPROM_START     0
 
-//#define USE_BLYNK_WM      true
-#define USE_BLYNK_WM      false
+#define USE_BLYNK_WM      true
+//#define USE_BLYNK_WM      false
 
 #if USE_BLYNK_WM
 #include <BlynkSimpleWiFiNINA_SAMD_WM.h>
+
+#define USE_DYNAMIC_PARAMETERS      true
 
 /////////////// Start dynamic Credentials ///////////////
 
@@ -96,23 +100,25 @@
   } MenuItem;
 **************************************/
 
+#if USE_DYNAMIC_PARAMETERS
+
 #define MAX_MQTT_SERVER_LEN      34
-char MQTT_Server  [MAX_MQTT_SERVER_LEN]   = "";
+char MQTT_Server  [MAX_MQTT_SERVER_LEN + 1]   = "";
 
 #define MAX_MQTT_PORT_LEN        6
-char MQTT_Port   [MAX_MQTT_PORT_LEN]  = "";
+char MQTT_Port   [MAX_MQTT_PORT_LEN+ 1]  = "";
 
 #define MAX_MQTT_USERNAME_LEN      34
-char MQTT_UserName  [MAX_MQTT_USERNAME_LEN]   = "";
+char MQTT_UserName  [MAX_MQTT_USERNAME_LEN + 1]   = "";
 
 #define MAX_MQTT_PW_LEN        34
-char MQTT_PW   [MAX_MQTT_PW_LEN]  = "";
+char MQTT_PW   [MAX_MQTT_PW_LEN + 1]  = "";
 
 #define MAX_MQTT_SUBS_TOPIC_LEN      34
-char MQTT_SubsTopic  [MAX_MQTT_SUBS_TOPIC_LEN]   = "";
+char MQTT_SubsTopic  [MAX_MQTT_SUBS_TOPIC_LEN + 1]   = "";
 
 #define MAX_MQTT_PUB_TOPIC_LEN       34
-char MQTT_PubTopic   [MAX_MQTT_PUB_TOPIC_LEN]  = "";
+char MQTT_PubTopic   [MAX_MQTT_PUB_TOPIC_LEN + 1]  = "";
 
 MenuItem myMenuItems [] =
 {
@@ -125,6 +131,15 @@ MenuItem myMenuItems [] =
 };
 
 uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSize;
+
+#else
+
+MenuItem myMenuItems [] = {};
+
+uint16_t NUM_MENU_ITEMS = 0;
+
+#endif    //USE_DYNAMIC_PARAMETERS
+
 /////// // End dynamic Credentials ///////////
 
 #else
@@ -213,7 +228,7 @@ void setup()
 #endif
 }
 
-#if USE_BLYNK_WM
+#if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
 void displayCredentials(void)
 {
   Serial.println("Your stored Credentials :");
@@ -230,7 +245,7 @@ void loop()
   Blynk.run();
   check_status();
 
-#if USE_BLYNK_WM
+#if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
   static bool displayedCredentials = false;
 
   if (!displayedCredentials)

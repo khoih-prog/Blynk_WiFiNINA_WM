@@ -6,9 +6,9 @@
    to enable easy configuration/reconfiguration and autoconnect/autoreconnect of WiFiNINA/Blynk
 
    Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
-   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WM
+   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
    Licensed under MIT license
-   Version: 1.0.1
+   Version: 1.0.2
 
    Original Blynk Library author:
    @file       BlynkSimpleWiFiNINA.h
@@ -22,16 +22,18 @@
    ------- -----------  ----------   -----------
     1.0.0   K Hoang      07/04/2020  Initial coding
     1.0.1   K Hoang      09/04/2020  Add support to SAM DUE, Teensy, STM32
+    1.0.2   K Hoang      15/04/2020  Fix bug. Add SAMD51 support.
  *****************************************************************************************************************************/
 
 
 #ifndef BlynkSimpleWiFiNINA_SAMD_WM_h
 #define BlynkSimpleWiFiNINA_SAMD_WM_h
 
-#if    ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
-      || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) || defined(ARDUINO_SAMD_MKRWAN1310) \
-      || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) \
-      || defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) )
+#if ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
+   || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) \
+   || defined(ARDUINO_SAMD_MKRWAN1310) || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) \
+   || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) || defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) \
+   || defined(__SAMD51__) || defined(__SAMD51J20A__) || defined(__SAMD51J19A__) || defined(__SAMD51G19A__) )
 #if defined(BLYNK_WIFININA_USE_SAMD)
 #undef BLYNK_WIFININA_USE_SAMD
 #endif
@@ -491,7 +493,8 @@ public:
       
       for (int i = 0; i < NUM_MENU_ITEMS; i++)
       {
-        memset(myMenuItems[i].pdata, 0, myMenuItems[i].maxlen);
+        // Actual size of pdata is [maxlen + 1]
+        memset(myMenuItems[i].pdata, 0, myMenuItems[i].maxlen + 1);
       }
       
       EEPROM_put();
@@ -633,6 +636,9 @@ public:
       {       
         _pointer = (uint8_t *) myMenuItems[i].pdata;
         totalDataSize += myMenuItems[i].maxlen;
+        
+        // Actual size of pdata is [maxlen + 1]
+        memset(myMenuItems[i].pdata, 0, myMenuItems[i].maxlen + 1);
                
         for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++, _pointer++, offset++)
         {
@@ -719,7 +725,8 @@ public:
 
         for (int i = 0; i < NUM_MENU_ITEMS; i++)
         {
-          memset(myMenuItems[i].pdata, 0, myMenuItems[i].maxlen);
+          // Actual size of pdata is [maxlen + 1]
+          memset(myMenuItems[i].pdata, 0, myMenuItems[i].maxlen + 1);  
         }
 
         // Including Credentials CSum
@@ -735,7 +742,7 @@ public:
         
         for (int i = 0; i < NUM_MENU_ITEMS; i++)
         {
-          strncpy(myMenuItems[i].pdata, NO_CONFIG, myMenuItems[i].maxlen - 1);
+          strncpy(myMenuItems[i].pdata, NO_CONFIG, myMenuItems[i].maxlen);
         }
         
         // Don't need
@@ -817,9 +824,7 @@ public:
     }
 
     // NEW
-    String root_html_template;
-       
-    String createHTML(void)
+    void createHTML(String& root_html_template)
     {
       String pitem;
       
@@ -849,7 +854,7 @@ public:
       
       root_html_template += String(WIFININA_HTML_SCRIPT_END) + WIFININA_HTML_END;
       
-      return root_html_template;     
+      return;     
     }
 
     void handleRequest()
@@ -863,7 +868,8 @@ public:
 
         if (key == "" && value == "")
         {
-          String result = createHTML();
+          String result;
+          createHTML(result);
 
           BLYNK_LOG1(BLYNK_F("h:repl"));
 
@@ -938,10 +944,13 @@ public:
             BLYNK_LOG4(F("h:"), myMenuItems[i].id, F("="), value.c_str() );
             number_items_Updated++;
 
-            if ((int) strlen(value.c_str()) < myMenuItems[i].maxlen - 1)
+            // Actual size of pdata is [maxlen + 1]
+            memset(myMenuItems[i].pdata, 0, myMenuItems[i].maxlen + 1);
+
+            if ((int) strlen(value.c_str()) < myMenuItems[i].maxlen)
               strcpy(myMenuItems[i].pdata, value.c_str());
             else
-              strncpy(myMenuItems[i].pdata, value.c_str(), myMenuItems[i].maxlen - 1);
+              strncpy(myMenuItems[i].pdata, value.c_str(), myMenuItems[i].maxlen);
           }
         }
 

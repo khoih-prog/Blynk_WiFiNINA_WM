@@ -6,9 +6,9 @@
    to enable easy configuration/reconfiguration and autoconnect/autoreconnect of WiFiNINA/Blynk
 
    Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
-   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WM
+   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
    Licensed under MIT license
-   Version: 1.0.1
+   Version: 1.0.2
 
    Original Blynk Library author:
    @file       BlynkSimpleWiFiNINA.h
@@ -22,6 +22,7 @@
    ------- -----------  ----------   -----------
     1.0.0   K Hoang      07/04/2020  Initial coding
     1.0.1   K Hoang      09/04/2020  Add support to SAM DUE, Teensy, STM32
+    1.0.2   K Hoang      15/04/2020  Fix bug. Add SAMD51 support.
  *****************************************************************************************************************************/
 
 /* Comment this out to disable prints and save space */
@@ -48,8 +49,8 @@
 
 // Be careful, you may run out of memory if turn this on to use dynamic parameters
 // Use false if you have not enough memory to run
-//#define USE_DYNAMIC_PARAMETERS      false
-#define USE_DYNAMIC_PARAMETERS      true
+#define USE_DYNAMIC_PARAMETERS      false
+//#define USE_DYNAMIC_PARAMETERS      true
 
 #if USE_BLYNK_WM
 
@@ -73,22 +74,22 @@
 **************************************/
 
 #define MAX_MQTT_SERVER_LEN      34
-char MQTT_Server  [MAX_MQTT_SERVER_LEN]   = "";
+char MQTT_Server  [MAX_MQTT_SERVER_LEN + 1]   = "";
 
 #define MAX_MQTT_PORT_LEN        6
-char MQTT_Port   [MAX_MQTT_PORT_LEN]  = "";
+char MQTT_Port   [MAX_MQTT_PORT_LEN+ 1]  = "";
 
 #define MAX_MQTT_USERNAME_LEN      34
-char MQTT_UserName  [MAX_MQTT_USERNAME_LEN]   = "";
+char MQTT_UserName  [MAX_MQTT_USERNAME_LEN + 1]   = "";
 
 #define MAX_MQTT_PW_LEN        34
-char MQTT_PW   [MAX_MQTT_PW_LEN]  = "";
+char MQTT_PW   [MAX_MQTT_PW_LEN + 1]  = "";
 
 #define MAX_MQTT_SUBS_TOPIC_LEN      34
-char MQTT_SubsTopic  [MAX_MQTT_SUBS_TOPIC_LEN]   = "";
+char MQTT_SubsTopic  [MAX_MQTT_SUBS_TOPIC_LEN + 1]   = "";
 
 #define MAX_MQTT_PUB_TOPIC_LEN       34
-char MQTT_PubTopic   [MAX_MQTT_PUB_TOPIC_LEN]  = "";
+char MQTT_PubTopic   [MAX_MQTT_PUB_TOPIC_LEN + 1]  = "";
 
 MenuItem myMenuItems [] =
 {
@@ -188,8 +189,41 @@ void setup()
 #endif
 }
 
+#if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
+void displayCredentials(void)
+{
+  Serial.println("Your stored Credentials :");
+
+  for (int i = 0; i < NUM_MENU_ITEMS; i++)
+  {
+    Serial.println(String(myMenuItems[i].displayName) + " = " + myMenuItems[i].pdata);
+  }
+}
+#endif
+
 void loop()
 {
   Blynk.run();
   check_status();
+
+#if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
+  static bool displayedCredentials = false;
+
+  if (!displayedCredentials)
+  {
+    for (int i = 0; i < NUM_MENU_ITEMS; i++)
+    {
+      if (!strlen(myMenuItems[i].pdata))
+      {
+        break;
+      }
+
+      if ( i == (NUM_MENU_ITEMS - 1) )
+      {
+        displayedCredentials = true;
+        displayCredentials();
+      }
+    }
+  }
+#endif
 }
