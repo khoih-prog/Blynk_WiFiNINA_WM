@@ -1,6 +1,6 @@
 /****************************************************************************************************************************
-   BlynkSimpleWiFiNINA_AVR.h
-   For AVR boards using WiFiNINA Shields
+   BlynkSimpleWiFiNINA_nRF52.h
+   For nRF52 boards using WiFiNINA Shields
 
    Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32 and SAMD boards 
    (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
@@ -29,13 +29,23 @@
  *****************************************************************************************************************************/
 
 
-#ifndef BlynkSimpleWiFiNINA_AVR_h
-#define BlynkSimpleWiFiNINA_AVR_h
+#ifndef BlynkSimpleWiFiNINA_nRF52_h
+#define BlynkSimpleWiFiNINA_nRF52_h
 
-#if ( defined(ESP8266) || defined(ESP32) || defined(__SAMD21G18A__) || defined(__SAMD51__) || defined(__SAMD51J20A__)\
-   || defined(__SAMD51J19A__) || defined(__SAMD51G19A__) || defined(NRF52_SERIES) || defined(ARDUINO_NRF52_ADAFRUIT)\
-   || defined(CORE_TEENSY) || defined(ARDUINO_SAM_DUE) || !(defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA)) )
-#error This code is intended to run on the Mega2560 platform! Please check your Tools->Board setting.
+#if ( defined(NRF52840_FEATHER) || defined(NRF52832_FEATHER) || defined(NRF52_SERIES) || defined(ARDUINO_NRF52_ADAFRUIT) || \
+        defined(NRF52840_FEATHER_SENSE) || defined(NRF52840_ITSYBITSY) || defined(NRF52840_CIRCUITPLAY) || defined(NRF52840_CLUE) || \
+        defined(NRF52840_METRO) || defined(NRF52840_PCA10056) || defined(PARTICLE_XENON) || defined(NINA_B302_ublox) )
+  #if defined(BLYNK_WIFININA_USE_NRF528XX)
+    #undef BLYNK_WIFININA_USE_NRF528XX
+  #endif
+  #define BLYNK_WIFININA_USE_NRF528XX      true
+#endif
+
+#if ( defined(ESP8266) || defined(ESP32) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA) || defined(__SAMD21G18A__)\
+   || defined(__SAMD51__) || defined(__SAMD51J20A__) || defined(__SAMD51J19A__) || defined(__SAMD51G19A__) || defined(CORE_TEENSY)\
+   || defined(ARDUINO_SAM_DUE) || defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)\
+   ||defined(STM32F4) || defined(STM32F7) || !(BLYNK_WIFININA_USE_NRF528XX) )
+#error This code is intended to run on the nRF52 platform! Please check your Tools->Board setting.
 #endif
 
 #ifndef BLYNK_INFO_CONNECTION
@@ -70,13 +80,12 @@ public:
     {
         int status = WiFi.status();
         // check for the presence of the shield:
-        if (status == WL_NO_MODULE) 
-        {
+        if (status == WL_NO_MODULE) {
             BLYNK_LOG1(BLYNK_F("NoNINA"));
             return;
         }
 
-        BLYNK_LOG2(BLYNK_F("FW:"), WiFi.firmwareVersion());
+        BLYNK_LOG2(BLYNK_F("WiFiNINA Firmware Version: "), WiFi.firmwareVersion());
 
         // attempt to connect to Wifi network:
         while (status != WL_CONNECTED) 
@@ -101,8 +110,7 @@ public:
             }
 
             millis_time_t started = BlynkMillis();
-            while ((status != WL_CONNECTED) &&
-                  (BlynkMillis() - started < 10000))
+            while ((status != WL_CONNECTED) && (BlynkMillis() - started < 10000))
             {
                 BlynkDelay(200);
                 status = WiFi.status();
@@ -161,4 +169,4 @@ BlynkWifiCommon Blynk(_blynkTransport);
 
 #include <BlynkWidgets.h>
 
-#endif    //BlynkSimpleWiFiNINA_AVR_h
+#endif    //BlynkSimpleWiFiNINA_nRF52_h

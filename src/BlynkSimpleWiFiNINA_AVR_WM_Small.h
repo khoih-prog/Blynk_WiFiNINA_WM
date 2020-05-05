@@ -2,13 +2,14 @@
    BlynkSimpleWiFiNINA_AVR_WM.h
    For AVR boards using WiFiNINA Shields
 
-   Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE and SAMD boards (https://github.com/khoih-prog/Blynk_WiFiNINA_WM)
-   to enable easy configuration/reconfiguration and autoconnect/autoreconnect of WiFiNINA/Blynk
+   Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32 and SAMD boards 
+   (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
+   autoconnect/autoreconnect of WiFiNINA/Blynk
 
    Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
-   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WM
+   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
    Licensed under MIT license
-   Version: 1.0.2
+   Version: 1.0.3
 
    Original Blynk Library author:
    @file       BlynkSimpleWiFiNINA.h
@@ -23,6 +24,8 @@
     1.0.0   K Hoang      07/04/2020  Initial coding
     1.0.1   K Hoang      09/04/2020  Add support to SAM DUE, Teensy, STM32
     1.0.2   K Hoang      15/04/2020  Fix bug. Add SAMD51 support.
+    1.0.3   K Hoang      05/05/2020  Add nRF52 support, MultiWiFi/Blynk, Configurable Config Portal Title, 
+                                     Default Config Data and DRD. Update examples.
  *****************************************************************************************************************************/
 
 
@@ -68,8 +71,8 @@ typedef struct Configuration
   char wifi_ssid      [32];
   char wifi_pw        [64];
   char blynk_server   [32];
-  int  blynk_port;
   char blynk_token    [36];
+  int  blynk_port; 
   int  checkSum;
 } Blynk_WM_Configuration;
 
@@ -81,12 +84,12 @@ uint16_t CONFIG_DATA_SIZE = sizeof(Blynk_WM_Configuration);
 body{text-align: center;}button{background-color:#16A1E7;color:#fff;line-height:2.4rem;font-size:1.2rem;width:100%;}fieldset{border-radius:0.3rem;margin:0px;}\
 </style></head><div style=\"text-align:left;display:inline-block;min-width:260px;\">\
 <fieldset><div><label>SSID</label><input id=\"id\"><div></div></div><div><label>PWD</label><input id=\"pw\"><div></div></div></fieldset>\
-<fieldset><div><label>Server</label><input id=\"sv\"><div></div></div><div><label>Port</label><input id=\"pt\"><div></div></div>\
-<div><label>Token</label><input id=\"tk\"><div></div></div></fieldset>\
+<fieldset><div><label>Server</label><input id=\"sv\"><div></div></div><div><label>Token</label><input id=\"tk\"><div></div></div>\
+<div><label>Port</label><input value=\"[[pt]]\"id=\"pt\"><div></div></div></fieldset>\
 <button onclick=\"sv()\">Save</button></div><script id=\"jsbin-javascript\">\
 function udVal(key,val){var request=new XMLHttpRequest();var url='/?key='+key+'&value='+encodeURIComponent(val);request.open('GET',url,false);request.send(null);}\
 function sv(){udVal('id',document.getElementById('id').value);udVal('pw',document.getElementById('pw').value);udVal('sv',document.getElementById('sv').value);\
-udVal('pt',document.getElementById('pt').value);udVal('tk',document.getElementById('tk').value);alert('Updated');}</script></html>"
+udVal('tk',document.getElementById('tk').value);udVal('pt',document.getElementById('pt').value);alert('Updated');}</script></html>"
 
 #define BLYNK_SERVER_HARDWARE_PORT    8080
 
@@ -728,11 +731,6 @@ public:
           else
             strncpy(Blynk_WM_config.blynk_server, value.c_str(), sizeof(Blynk_WM_config.blynk_server) - 1);
         }
-        else if (key == "pt")
-        {
-          number_items_Updated++;
-          Blynk_WM_config.blynk_port = value.toInt();
-        }
         else if (key == "tk")
         {
           number_items_Updated++;
@@ -741,6 +739,11 @@ public:
           else
             strncpy(Blynk_WM_config.blynk_token, value.c_str(), sizeof(Blynk_WM_config.blynk_token) - 1);
         }
+        else if (key == "pt")
+        {
+          number_items_Updated++;
+          Blynk_WM_config.blynk_port = value.toInt();
+        }        
 
         server->send(200, "text/html", "OK");
 

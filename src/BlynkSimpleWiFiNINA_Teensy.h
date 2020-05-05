@@ -2,13 +2,14 @@
    BlynkSimpleWiFiNINA_Teensy.h
    For AVR boards using WiFiNINA Shields
 
-   Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE and SAMD boards (https://github.com/khoih-prog/Blynk_WiFiNINA_WM)
-   to enable easy configuration/reconfiguration and autoconnect/autoreconnect of WiFiNINA/Blynk
+   Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32 and SAMD boards 
+   (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
+   autoconnect/autoreconnect of WiFiNINA/Blynk
 
    Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
    Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
    Licensed under MIT license
-   Version: 1.0.2
+   Version: 1.0.3
 
    Original Blynk Library author:
    @file       BlynkSimpleWiFiNINA.h
@@ -23,14 +24,18 @@
     1.0.0   K Hoang      07/04/2020  Initial coding
     1.0.1   K Hoang      09/04/2020  Add support to SAM DUE, Teensy, STM32
     1.0.2   K Hoang      15/04/2020  Fix bug. Add SAMD51 support.
- *****************************************************************************************************************************/
+    1.0.3   K Hoang      05/05/2020  Add nRF52 support, MultiWiFi/Blynk, Configurable Config Portal Title, 
+                                     Default Config Data and DRD. Update examples. *****************************************************************************************************************************/
 
 
 #ifndef BlynkSimpleWiFiNINA_Teensy_h
 #define BlynkSimpleWiFiNINA_Teensy_h
 
-#if ( defined(ESP8266) || defined(ESP32) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA) || !defined(CORE_TEENSY) )
-#error This code is intended to run on Teensy platform! Please check your Tools->Board setting.
+#if ( defined(ESP8266) || defined(ESP32) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA) || defined(__SAMD21G18A__)\
+   || defined(__SAMD51__) || defined(__SAMD51J20A__) || defined(__SAMD51J19A__) || defined(__SAMD51G19A__) || defined(NRF52_SERIES)\
+   || defined(ARDUINO_NRF52_ADAFRUIT) || defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)\
+   ||defined(STM32F4) || defined(STM32F7) || defined(ARDUINO_SAM_DUE) || !defined(CORE_TEENSY) )
+#error This code is intended to run on the Teensy platform! Please check your Tools->Board setting.
 #endif
 
 #if defined(__AVR_AT90USB1286__)

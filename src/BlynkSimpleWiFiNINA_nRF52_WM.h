@@ -1,6 +1,6 @@
 /****************************************************************************************************************************
-   BlynkSimpleWiFiNINA_Teensy_WM.h
-   For Teensy boards using WiFiNINA Shields
+   BlynkSimpleWiFiNINA_nRF52_WM.h
+   For nRF52 boards using WiFiNINA Shields
 
    Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32 and SAMD boards 
    (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
@@ -29,20 +29,23 @@
  *****************************************************************************************************************************/
 
 
-#ifndef BlynkSimpleWiFiNINA_Teensy_WM_h
-#define BlynkSimpleWiFiNINA_Teensy_WM_h
+#ifndef BlynkSimpleWiFiNINA_nRF52_WM_h
+#define BlynkSimpleWiFiNINA_nRF52_WM_h
 
-#if ( defined(ESP8266) || defined(ESP32) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA) || defined(__SAMD21G18A__)\
-   || defined(__SAMD51__) || defined(__SAMD51J20A__) || defined(__SAMD51J19A__) || defined(__SAMD51G19A__) || defined(NRF52_SERIES)\
-   || defined(ARDUINO_NRF52_ADAFRUIT) || defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)\
-   ||defined(STM32F4) || defined(STM32F7) || defined(ARDUINO_SAM_DUE) || !defined(CORE_TEENSY) )
-#error This code is intended to run on the Teensy platform! Please check your Tools->Board setting.
+#if ( defined(NRF52840_FEATHER) || defined(NRF52832_FEATHER) || defined(NRF52_SERIES) || defined(ARDUINO_NRF52_ADAFRUIT) || \
+        defined(NRF52840_FEATHER_SENSE) || defined(NRF52840_ITSYBITSY) || defined(NRF52840_CIRCUITPLAY) || defined(NRF52840_CLUE) || \
+        defined(NRF52840_METRO) || defined(NRF52840_PCA10056) || defined(PARTICLE_XENON) || defined(NINA_B302_ublox) )
+  #if defined(BLYNK_WIFININA_USE_NRF528XX)
+    #undef BLYNK_WIFININA_USE_NRF528XX
+  #endif
+  #define BLYNK_WIFININA_USE_NRF528XX      true
 #endif
 
-#if defined(__AVR_AT90USB1286__)
-#error Teensy 2.0++ not supported yet
-#elif defined(__AVR_ATmega32U4__)
-#error Teensy 2.0 not supported yet
+#if ( defined(ESP8266) || defined(ESP32) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA) || defined(__SAMD21G18A__)\
+   || defined(__SAMD51__) || defined(__SAMD51J20A__) || defined(__SAMD51J19A__) || defined(__SAMD51G19A__) || defined(CORE_TEENSY)\
+   || defined(ARDUINO_SAM_DUE) || defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)\
+   ||defined(STM32F4) || defined(STM32F7) || !(BLYNK_WIFININA_USE_NRF528XX) )
+#error This code is intended to run on the nRF52 platform! Please check your Tools->Board setting.
 #endif
 
 #ifndef BLYNK_WM_DEBUG
@@ -71,7 +74,12 @@
 #include "WiFiNINA_Pinout_Generic.h"
 #include <WiFiWebServer.h>
 
-#include <EEPROM.h>
+//Use LittleFS for nRF52
+#include <Adafruit_LittleFS.h>
+#include <InternalFileSystem.h>
+
+using namespace Adafruit_LittleFS_Namespace;
+File file(InternalFS);
 
 ///////// NEW for DRD /////////////
 // These defines must be put before #include <DoubleResetDetector_Generic.h>
@@ -155,7 +163,7 @@ extern bool LOAD_DEFAULT_CONFIG_DATA;
 extern Blynk_WM_Configuration defaultConfig;
 
 // -- HTML page fragments
-const char WIFININA_HTML_HEAD[]     /*PROGMEM*/ = "<!DOCTYPE html><html><head><title>BlynkWiFiNINA_Teensy_WM</title><style>div,input{padding:2px;font-size:1em;}input{width:95%;}\
+const char WIFININA_HTML_HEAD[]     /*PROGMEM*/ = "<!DOCTYPE html><html><head><title>BlynkWiFiNINA_NRF52_WM</title><style>div,input{padding:2px;font-size:1em;}input{width:95%;}\
 body{text-align: center;}button{background-color:#16A1E7;color:#fff;line-height:2.4rem;font-size:1.2rem;width:100%;}fieldset{border-radius:0.5rem;margin:0px;}\
 </style></head><div style=\"text-align:left;display:inline-block;min-width:260px;\">\
 <fieldset><div><label>WiFi SSID</label><input value=\"[[id]]\"id=\"id\"><div></div></div>\
@@ -217,7 +225,7 @@ public:
             return false;
         }
 
-        BLYNK_LOG2(BLYNK_F("FW:"), WiFi.firmwareVersion());
+        BLYNK_LOG2(BLYNK_F("WiFiNINA Firmware Version: "), WiFi.firmwareVersion());
 
         // attempt to connect to Wifi network:
         while (status != WL_CONNECTED) 
@@ -311,7 +319,7 @@ public:
 
       if (iHostname[0] == 0)
       {
-        String _hostname = "Teensy-WiFiNINA";
+        String _hostname = "NRF52-WiFiNINA";
 
         _hostname.toUpperCase();
 
@@ -631,26 +639,15 @@ public:
     void clearConfigData()
     {
       memset(&Blynk_WM_config, 0, sizeof(Blynk_WM_config));
-      
-      for (int i = 0; i < NUM_MENU_ITEMS; i++)
-      {
-        // Actual size of pdata is [maxlen + 1]
-        memset(myMenuItems[i].pdata, 0, myMenuItems[i].maxlen + 1);
-      }
-      
-      //EEPROM_put();
+      //EEPROM.put(BLYNK_EEPROM_START, Blynk_WM_config);
       saveConfigData();
     }
-
+    
     void resetFunc()
     {
-      #if defined(__IMXRT1062__)
-        // Teensy 4.0
-        SCB_AIRCR = 0x05FA0004; //write value for restart for Teensy
-      #else 
-        void(*resetFunc)(void) = 0;
-        resetFunc();
-      #endif
+      delay(1000);
+      // Restart for nRF52
+      NVIC_SystemReset();
     }
 
   private:
@@ -664,7 +661,7 @@ public:
 
     Blynk_WM_Configuration Blynk_WM_config;
     
-    uint16_t totalDataSize = 0;
+    uint16_t totalDataSize = 0;   
     uint8_t currentBlynkServerIndex = 255;
 
     String macAddress = "";
@@ -733,69 +730,8 @@ public:
     }
 
 
-#define BLYNK_BOARD_TYPE   "SHD_WiFiNINA"
-#define WM_NO_CONFIG          "blank"
-
-    //#define EEPROM_SIZE       E2END
-    //#define EEPROM_SIZE       512
-
-    //KH
-    // Teensy 4.0 :  EEPROM_SIZE = 3824 = (255 * 15) - 1, why 1080 ???
-    // Teensy++2.0, 3.5 and 3.6 : EEPROM_SIZE = 4096
-    // Teensy++1.0, 3.0, 3.1 and 3.2 : EEPROM_SIZE = 2048
-    // Teensy2.0 : EEPROM_SIZE = 1024
-    // Teensy1.0 : EEPROM_SIZE = 512
-    // Teensy LC : EEPROM_SIZE = 128
-
-    /*
-      Teensy 4.0 => EEPROM_SIZE = 3824 = (255 * 15) - 1
-      #define FLASH_SECTORS  15
-      #if E2END > (255*FLASH_SECTORS-1)
-      #error "E2END is set larger than the maximum possible EEPROM size"
-      #endif
-      ======================================================
-      Teensy3.x
-      #if defined(__MK20DX128__)      //Teensy 3.0
-      #define EEPROM_MAX  2048
-      #elif defined(__MK20DX256__)    //Teensy 3.1 and 3.2
-      #define EEPROM_MAX  2048
-      #elif defined(__MK64FX512__)    //Teensy 3.5
-      #define EEPROM_MAX  4096
-      #elif defined(__MK66FX1M0__)    //Teensy 3.6
-      #define EEPROM_MAX  4096
-      #elif defined(__MKL26Z64__)     //Teensy LC
-      #define EEPROM_MAX  255
-      #endif
-      ======================================================
-      Teensy 2.x
-      Teensy 2.0
-      #if defined(__AVR_ATmega32U4__)     //Teensy 2.0
-      #elif defined(__AVR_AT90USB162__)   //Teensy 1.0
-      #elif defined(__AVR_AT90USB646__)   //Teensy++ 1.0
-      #elif defined(__AVR_AT90USB1286__)  //Teensy++ 2.0
-    */
-
-#define EEPROM_SIZE     (E2END + 1)
-
-// DRD_FLAG_DATA_SIZE is 4, to store DRD flag, defined in DRD
-#if (EEPROM_SIZE < DRD_FLAG_DATA_SIZE + CONFIG_DATA_SIZE)
-#warning EEPROM_SIZE must be > CONFIG_DATA_SIZE + DRD_FLAG_DATA_SIZE. Reset to 1024
-#undef EEPROM_SIZE
-#define EEPROM_SIZE     1024
-#endif
-
-
-#ifndef EEPROM_START
-#define EEPROM_START     0      //define 256 in DRD
-#warning EEPROM_START not defined. Set to 0
-#else
-#if (EEPROM_START + DRD_FLAG_DATA_SIZE + CONFIG_DATA_SIZE > EEPROM_SIZE)
-#error EPROM_START + DRD_FLAG_DATA_SIZE + CONFIG_DATA_SIZE > EEPROM_SIZE. Please adjust.
-#endif
-#endif
-
-// Stating positon to store Blynk8266_WM_config
-#define BLYNK_EEPROM_START    (EEPROM_START + DRD_FLAG_DATA_SIZE)
+#define BLYNK_BOARD_TYPE    "SHD_WiFiNINA"
+#define WM_NO_CONFIG        "blank"
 
     int calcChecksum()
     {
@@ -807,42 +743,82 @@ public:
 
       return checkSum;
     }
+    
+    // Use LittleFS/InternalFS for nRF52
+#define  CONFIG_FILENAME              BLYNK_F("/wm_config.dat")
+#define  CONFIG_FILENAME_BACKUP       BLYNK_F("/wm_config.bak")
 
+#define  CREDENTIALS_FILENAME         BLYNK_F("/wm_cred.dat")
+#define  CREDENTIALS_FILENAME_BACKUP  BLYNK_F("/wm_cred.bak")
+    
     bool checkDynamicData(void)
     {
       int checkSum = 0;
       int readCheckSum;
+      char* readBuffer;
+           
+      file.open(CREDENTIALS_FILENAME, FILE_O_READ);
+      BLYNK_LOG1(BLYNK_F("LoadCredFile "));
+
+      if (!file)
+      {
+        BLYNK_LOG1(BLYNK_F("failed"));
+
+        // Trying open redundant config file
+       //file(CREDENTIALS_FILENAME_BACKUP, FILE_O_READ);
+        file.open(CREDENTIALS_FILENAME_BACKUP, FILE_O_READ);
+        BLYNK_LOG1(BLYNK_F("LoadBkUpCredFile "));
+
+        if (!file)
+        {
+          BLYNK_LOG1(BLYNK_F("failed"));
+          return false;
+        }
+      }
       
-      #define BUFFER_LEN      128
-      char readBuffer[BUFFER_LEN + 1];
-      
-      uint16_t offset = BLYNK_EEPROM_START + sizeof(Blynk_WM_config);
-                
       // Find the longest pdata, then dynamically allocate buffer. Remember to free when done
       // This is used to store tempo data to calculate checksum to see of data is valid
       // We dont like to destroy myMenuItems[i].pdata with invalid data
       
+      uint16_t maxBufferLength = 0;
       for (int i = 0; i < NUM_MENU_ITEMS; i++)
       {       
-        if (myMenuItems[i].maxlen > BUFFER_LEN)
+        if (myMenuItems[i].maxlen > maxBufferLength)
+          maxBufferLength = myMenuItems[i].maxlen;
+      }
+      
+      if (maxBufferLength > 0)
+      {
+        readBuffer = new char[ maxBufferLength + 1 ];
+        
+        // check to see NULL => stop and return false
+        if (readBuffer == NULL)
         {
-          // Size too large, abort and flag false
-          BLYNK_LOG1(BLYNK_F("ChkCrR: Error Small Buffer."));
+          BLYNK_LOG1(BLYNK_F("ChkCrR: Error can't allocate buffer."));
           return false;
         }
+#if ( BLYNK_WM_DEBUG > 2)          
+        else
+        {
+          BLYNK_LOG2(BLYNK_F("ChkCrR: Buffer allocated, sz="), maxBufferLength + 1);
+        }
+#endif             
       }
-         
+     
+      uint16_t offset = 0;
+      
       for (int i = 0; i < NUM_MENU_ITEMS; i++)
       {       
         char* _pointer = readBuffer;
+
+        // Actual size of pdata is [maxlen + 1]
+        memset(readBuffer, 0, myMenuItems[i].maxlen + 1);
         
-        // Prepare buffer, more than enough
-        memset(readBuffer, 0, sizeof(readBuffer));
+        // Redundant, but to be sure correct position
+        file.seek(offset);
+        file.read(_pointer, myMenuItems[i].maxlen);
         
-        // Read more than necessary, but OK and easier to code
-        EEPROM.get(offset, readBuffer);
-        // NULL terminated
-        readBuffer[myMenuItems[i].maxlen] = 0;
+        offset += myMenuItems[i].maxlen;
 
 #if ( BLYNK_WM_DEBUG > 2)        
         BLYNK_LOG4(F("ChkCrR:pdata="), readBuffer, F(",len="), myMenuItems[i].maxlen);
@@ -851,15 +827,23 @@ public:
         for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++,_pointer++)
         {         
           checkSum += *_pointer;  
-        }   
-        
-        offset += myMenuItems[i].maxlen;    
+        }       
       }
 
-      EEPROM.get(offset, readCheckSum);
-           
-      BLYNK_LOG4(F("ChkCrR:CrCCsum="), String(checkSum, HEX), F(",CrRCsum="), String(readCheckSum, HEX));
-           
+      file.read((char *) &readCheckSum, sizeof(readCheckSum));
+      
+      BLYNK_LOG1(BLYNK_F("OK"));
+      file.close();
+      
+      BLYNK_LOG4(F("CrCCsum="), String(checkSum, HEX), F(",CrRCsum="), String(readCheckSum, HEX));
+      
+      // Free buffer
+      if (readBuffer != NULL)
+      {
+        free(readBuffer);
+        BLYNK_LOG1(BLYNK_F("Buffer freed"));
+      }
+      
       if ( checkSum != readCheckSum)
       {
         return false;
@@ -867,115 +851,291 @@ public:
       
       return true;    
     }
-    
-    bool EEPROM_getDynamicData(void)
+
+    bool loadDynamicData(void)
     {
-      int readCheckSum;
       int checkSum = 0;
-      uint16_t offset = BLYNK_EEPROM_START + sizeof(Blynk_WM_config);
-           
+      int readCheckSum;
       totalDataSize = sizeof(Blynk_WM_config) + sizeof(readCheckSum);
+      
+      file.open(CREDENTIALS_FILENAME, FILE_O_READ);
+      BLYNK_LOG1(BLYNK_F("LoadCredFile "));
+
+      if (!file)
+      {
+        BLYNK_LOG1(BLYNK_F("failed"));
+
+        // Trying open redundant config file
+        file.open(CREDENTIALS_FILENAME_BACKUP, FILE_O_READ);
+        BLYNK_LOG1(BLYNK_F("LoadBkUpCredFile "));
+
+        if (!file)
+        {
+          BLYNK_LOG1(BLYNK_F("failed"));
+          return false;
+        }
+      }
+     
+      uint16_t offset = 0;
       
       for (int i = 0; i < NUM_MENU_ITEMS; i++)
       {       
         char* _pointer = myMenuItems[i].pdata;
         totalDataSize += myMenuItems[i].maxlen;
-        
+
         // Actual size of pdata is [maxlen + 1]
         memset(myMenuItems[i].pdata, 0, myMenuItems[i].maxlen + 1);
+        
+        // Redundant, but to be sure correct position
+        file.seek(offset);
+        file.read(_pointer, myMenuItems[i].maxlen);
+        
+        offset += myMenuItems[i].maxlen;        
+
+#if ( BLYNK_WM_DEBUG > 2)        
+        BLYNK_LOG4(F("CrR:pdata="), myMenuItems[i].pdata, F(",len="), myMenuItems[i].maxlen);
+#endif          
                
-        for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++,_pointer++,offset++)
-        {
-          *_pointer = EEPROM.read(offset);
-          
+        for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++,_pointer++)
+        {         
           checkSum += *_pointer;  
-         }       
+        }       
       }
+
+      file.read((char *) &readCheckSum, sizeof(readCheckSum));
       
-      EEPROM.get(offset, readCheckSum);
+      BLYNK_LOG1(BLYNK_F("OK"));
+      file.close();
       
-      BLYNK_LOG4(F("CrCCsum="), checkSum, F(",CrRCsum="), readCheckSum);
+      BLYNK_LOG4(F("CrCCsum="), String(checkSum, HEX), F(",CrRCsum="), String(readCheckSum, HEX));
       
       if ( checkSum != readCheckSum)
       {
         return false;
       }
       
-      return true;
+      return true;    
     }
 
-    void EEPROM_putDynamicData(void)
+    void saveDynamicData(void)
     {
       int checkSum = 0;
-      uint16_t offset = BLYNK_EEPROM_START + sizeof(Blynk_WM_config);
-                
+    
+      file.open(CREDENTIALS_FILENAME, FILE_O_WRITE);
+      BLYNK_LOG1(BLYNK_F("SaveCredFile "));
+
+      uint16_t offset = 0;
+      
       for (int i = 0; i < NUM_MENU_ITEMS; i++)
       {       
         char* _pointer = myMenuItems[i].pdata;
+
+#if ( BLYNK_WM_DEBUG > 2)          
+        BLYNK_LOG4(F("CW1:pdata="), myMenuItems[i].pdata, F(",len="), myMenuItems[i].maxlen);
+#endif
         
-        //BLYNK_LOG4(F("pdata="), myMenuItems[i].pdata, F(",len="), myMenuItems[i].maxlen);
-                            
-        for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++,_pointer++,offset++)
+        if (file)
         {
-          EEPROM.write(offset, *_pointer);
+          // Redundant, but to be sure correct position
+          file.seek(offset);                   
+          file.write((uint8_t*) _pointer, myMenuItems[i].maxlen); 
           
+          offset += myMenuItems[i].maxlen;      
+        }
+        else
+        {
+          BLYNK_LOG1(BLYNK_F("failed"));
+        }        
+                     
+        for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++,_pointer++)
+        {         
           checkSum += *_pointer;     
          }
       }
       
-      EEPROM.put(offset, checkSum);
-      //EEPROM.commit();
+      if (file)
+      {
+        file.write((uint8_t*) &checkSum, sizeof(checkSum));     
+        file.close();
+        BLYNK_LOG1(BLYNK_F("OK"));    
+      }
+      else
+      {
+        BLYNK_LOG1(BLYNK_F("failed"));
+      }   
+           
+      BLYNK_LOG2(F("CrWCSum="), String(checkSum, HEX));
       
-      BLYNK_LOG2(F("CrCCSum="), checkSum);
+      // Trying open redundant Auth file
+      file.open(CREDENTIALS_FILENAME_BACKUP, FILE_O_WRITE);
+      BLYNK_LOG1(BLYNK_F("SaveBkUpCredFile "));
+
+      offset = 0;
+      
+      for (int i = 0; i < NUM_MENU_ITEMS; i++)
+      {       
+        char* _pointer = myMenuItems[i].pdata;
+
+#if ( BLYNK_WM_DEBUG > 2)         
+        BLYNK_LOG4(F("CW2:pdata="), myMenuItems[i].pdata, F(",len="), myMenuItems[i].maxlen);
+#endif
+        
+        if (file)
+        {
+          file.seek(offset);                   
+          file.write((uint8_t*) _pointer, myMenuItems[i].maxlen); 
+          
+          // Redundant, but to be sure correct position
+          offset += myMenuItems[i].maxlen; 
+        }
+        else
+        {
+          BLYNK_LOG1(BLYNK_F("failed"));
+        }        
+                     
+        for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++,_pointer++)
+        {         
+          checkSum += *_pointer;     
+         }
+      }
+      
+      if (file)
+      {
+        file.write((uint8_t*) &checkSum, sizeof(checkSum));     
+        file.close();
+        BLYNK_LOG1(BLYNK_F("OK"));    
+      }
+      else
+      {
+        BLYNK_LOG1(BLYNK_F("failed"));
+      }   
+    }
+
+    void loadConfigData(void)
+    {
+      BLYNK_LOG1(BLYNK_F("LoadCfgFile "));
+      
+      // file existed
+      file.open(CONFIG_FILENAME, FILE_O_READ);      
+      if (!file)
+      {
+        BLYNK_LOG1(BLYNK_F("failed"));
+
+        // Trying open redundant config file
+        file.open(CONFIG_FILENAME_BACKUP, FILE_O_READ);
+        BLYNK_LOG1(BLYNK_F("LoadBkUpCfgFile "));
+
+        if (!file)
+        {
+          BLYNK_LOG1(BLYNK_F("failed"));
+          return;
+        }
+      }
+     
+      file.seek(0);
+      file.read((char *) &Blynk_WM_config, sizeof(Blynk_WM_config));
+
+      BLYNK_LOG1(BLYNK_F("OK"));
+      file.close();
     }
     
+    void saveConfigData(void)
+    {
+      BLYNK_LOG1(BLYNK_F("SaveCfgFile "));
+
+      int calChecksum = calcChecksum();
+      Blynk_WM_config.checkSum = calChecksum;
+      BLYNK_LOG2(BLYNK_F("WCSum=0x"), String(calChecksum, HEX));
+      
+      file.open(CONFIG_FILENAME, FILE_O_WRITE);
+
+      if (file)
+      {
+        file.seek(0);
+        file.write((uint8_t*) &Blynk_WM_config, sizeof(Blynk_WM_config));
+        
+        file.close();
+        BLYNK_LOG1(BLYNK_F("OK"));
+      }
+      else
+      {
+        BLYNK_LOG1(BLYNK_F("failed"));
+      }
+      
+      BLYNK_LOG1(BLYNK_F("SaveBkUpCfgFile "));
+      
+      // Trying open redundant Auth file
+      file.open(CONFIG_FILENAME_BACKUP, FILE_O_WRITE);
+
+      if (file)
+      {
+        file.seek(0);
+        file.write((uint8_t *) &Blynk_WM_config, sizeof(Blynk_WM_config));
+        
+        file.close();
+        BLYNK_LOG1(BLYNK_F("OK"));
+      }
+      else
+      {
+        BLYNK_LOG1(BLYNK_F("failed"));
+      }
+      
+      saveDynamicData();
+    }
+
+    // Return false if init new EEPROM or SPIFFS. No more need trying to connect. Go directly to config mode
     bool getConfigData()
     {
       bool dynamicDataValid;   
       
-      hadConfigData = false; 
+      hadConfigData = false;
       
-      EEPROM.begin();
-      BLYNK_LOG2(BLYNK_F("EEPROMsz:"), EEPROM_SIZE);
-      EEPROM.get(BLYNK_EEPROM_START, Blynk_WM_config);
-
+      // Initialize Internal File System
+      if (!InternalFS.begin())
+      {
+        BLYNK_LOG1(BLYNK_F("InternalFS failed"));
+        return false;
+      }
+      
+      // if config file exists, load
+      loadConfigData();
 #if ( BLYNK_WM_DEBUG > 2)      
       BLYNK_LOG1(BLYNK_F("======= Start Stored Config Data ======="));
       displayConfigData(Blynk_WM_config);
-#endif     
+#endif      
 
       int calChecksum = calcChecksum();
 
       BLYNK_LOG4(BLYNK_F("CCSum=0x"), String(calChecksum, HEX),
                  BLYNK_F(",RCSum=0x"), String(Blynk_WM_config.checkSum, HEX));
-                 
+
       if (LOAD_DEFAULT_CONFIG_DATA)
       {
         // Load default dynamicData, if checkSum OK => valid data => load
         // otherwise, use default in sketch and just assume it's OK
         if (checkDynamicData())
-          EEPROM_getDynamicData();
+          loadDynamicData();
           
         dynamicDataValid = true;
       }
       else
       {           
-        dynamicDataValid = EEPROM_getDynamicData();    
-      }  
-      
+        dynamicDataValid = loadDynamicData();  
+      }        
+
       if ( (strncmp(Blynk_WM_config.header, BLYNK_BOARD_TYPE, strlen(BLYNK_BOARD_TYPE)) != 0) ||
            (calChecksum != Blynk_WM_config.checkSum) || !dynamicDataValid )
-      {
+      {       
         // Including Credentials CSum
-        BLYNK_LOG4(F("InitEEPROM,sz="), EEPROM_SIZE, F(",Datasz="), totalDataSize);
-        
-       // doesn't have any configuration        
+        BLYNK_LOG2(BLYNK_F("InitCfgFile,sz="), sizeof(Blynk_WM_config));
+
+        // doesn't have any configuration        
         if (LOAD_DEFAULT_CONFIG_DATA)
         {
           memcpy(&Blynk_WM_config, &defaultConfig, sizeof(Blynk_WM_config));
         }
         else
-        {  
+        {
           memset(&Blynk_WM_config, 0, sizeof(Blynk_WM_config));
 
           for (int i = 0; i < NUM_MENU_ITEMS; i++)
@@ -983,10 +1143,7 @@ public:
             // Actual size of pdata is [maxlen + 1]
             memset(myMenuItems[i].pdata, 0, myMenuItems[i].maxlen + 1);
           }
-          
-          // Including Credentials CSum
-          BLYNK_LOG4(F("InitEEPROM,sz="), EEPROM_SIZE, F(",Datasz="), totalDataSize);
-
+              
           // doesn't have any configuration
           strcpy(Blynk_WM_config.WiFi_Creds[0].wifi_ssid,       WM_NO_CONFIG);
           strcpy(Blynk_WM_config.WiFi_Creds[0].wifi_pw,         WM_NO_CONFIG);
@@ -998,28 +1155,27 @@ public:
           strcpy(Blynk_WM_config.Blynk_Creds[1].blynk_token,    WM_NO_CONFIG);
           Blynk_WM_config.blynk_port = BLYNK_SERVER_HARDWARE_PORT;
           strcpy(Blynk_WM_config.board_name,  WM_NO_CONFIG);
-
+          
           for (int i = 0; i < NUM_MENU_ITEMS; i++)
           {
             strncpy(myMenuItems[i].pdata, WM_NO_CONFIG, myMenuItems[i].maxlen);
           }
         }
-        
+    
         strcpy(Blynk_WM_config.header, BLYNK_BOARD_TYPE);
-
-        #if ( BLYNK_WM_DEBUG > 2)     
+        
+        #if ( BLYNK_WM_DEBUG > 2)
         for (int i = 0; i < NUM_MENU_ITEMS; i++)
         {
           BLYNK_LOG4(BLYNK_F("g:myMenuItems["), i, BLYNK_F("]="), myMenuItems[i].pdata );
         }
         #endif
-                
+        
         // Don't need
         Blynk_WM_config.checkSum = 0;
 
-        EEPROM.put(BLYNK_EEPROM_START, Blynk_WM_config);
-        EEPROM_putDynamicData();
-
+        saveConfigData();
+        
         return false;
       }
       else if ( !strncmp(Blynk_WM_config.WiFi_Creds[0].wifi_ssid,       WM_NO_CONFIG, strlen(WM_NO_CONFIG) )  ||
@@ -1032,6 +1188,9 @@ public:
                 !strncmp(Blynk_WM_config.Blynk_Creds[1].blynk_token,    WM_NO_CONFIG, strlen(WM_NO_CONFIG) ) )
       {
         // If SSID, PW, Server,Token ="nothing", stay in config mode forever until having config Data.
+#if ( BLYNK_WM_DEBUG > 2)        
+        displayConfigData(Blynk_WM_config);
+#endif        
         return false;
       }
       else
@@ -1040,16 +1199,6 @@ public:
       }
 
       return true;
-    }
-
-    void saveConfigData()
-    {
-      int calChecksum = calcChecksum();
-      Blynk_WM_config.checkSum = calChecksum;
-       BLYNK_LOG2(BLYNK_F("Save,WCSum=0x"), String(calChecksum, HEX));
-
-      EEPROM.put(BLYNK_EEPROM_START, Blynk_WM_config);
-      EEPROM_putDynamicData();
     }
 
     bool connectMultiWiFi(int timeout)
@@ -1178,20 +1327,20 @@ public:
           String result;
           createHTML(result);
 
-          BLYNK_LOG1(BLYNK_F("h:repl"));
+          //BLYNK_LOG1(BLYNK_F("h:repl"));
 
           // Reset configTimeout to stay here until finished.
           configTimeout = 0;
-
+          
           if ( RFC952_hostname[0] != 0 )
           {
             // Replace only if Hostname is valid
-            result.replace("BlynkWiFiNINA_Teensy_WM", RFC952_hostname);
+            result.replace("BlynkWiFiNINA_NRF52_WM", RFC952_hostname);
           }
           else if ( Blynk_WM_config.board_name[0] != 0 )
           {
             // Or replace only if board_name is valid.  Otherwise, keep intact
-            result.replace("BlynkWiFiNINA_Teensy_WM", Blynk_WM_config.board_name);
+            result.replace("BlynkWiFiNINA_NRF52_WM", Blynk_WM_config.board_name);
           }
 
           result.replace("[[id]]",     Blynk_WM_config.WiFi_Creds[0].wifi_ssid);
@@ -1309,7 +1458,7 @@ public:
         {
           if (key == myMenuItems[i].id)
           {
-            BLYNK_LOG4(F("h:"), myMenuItems[i].id, F("="), value.c_str() );
+            //BLYNK_LOG4(F("h:"), myMenuItems[i].id, F("="), value.c_str() );
             number_items_Updated++;
 
             // Actual size of pdata is [maxlen + 1]
@@ -1319,6 +1468,10 @@ public:
               strcpy(myMenuItems[i].pdata, value.c_str());
             else
               strncpy(myMenuItems[i].pdata, value.c_str(), myMenuItems[i].maxlen);
+              
+#if ( BLYNK_WM_DEBUG > 2)                   
+            BLYNK_LOG4(BLYNK_F("h2:myMenuItems["), i, BLYNK_F("]="), myMenuItems[i].pdata );
+#endif                
           }
         }
 
@@ -1327,7 +1480,7 @@ public:
         // NEW
         if (number_items_Updated == NUM_CONFIGURABLE_ITEMS + NUM_MENU_ITEMS)
         {
-          BLYNK_LOG1(BLYNK_F("h:UpdEEPROM"));
+          BLYNK_LOG1(BLYNK_F("h:UpdLittleFS"));
 
           saveConfigData();
 
@@ -1350,12 +1503,12 @@ public:
         String randomNum = String(random(0xFFFFFF), HEX);
         randomNum.toUpperCase();
 
-        portal_ssid = "Teensy_NINA_" + randomNum;
-        portal_pass = "MyTeensy_NINA_" + randomNum;
+        portal_ssid = "NRF52_NINA_" + randomNum;
+        portal_pass = "MyNRF52_NINA_" + randomNum;
       }
-      
-      WiFi.config(portal_apIP);
 
+      WiFi.config(portal_apIP);
+      
       BLYNK_LOG6(BLYNK_F("stConf:SSID="), portal_ssid, BLYNK_F(",PW="), portal_pass, BLYNK_F(",IP="), portal_apIP);
 
       // start access point, AP only, channel 10 or configured
@@ -1397,4 +1550,4 @@ BlynkWifiCommon Blynk(_blynkTransport);
 
 #include <BlynkWidgets.h>
 
-#endif    //BlynkSimpleWiFiNINA_Teensy_WM_h
+#endif    //BlynkSimpleWiFiNINA_nRF52_WM_h
