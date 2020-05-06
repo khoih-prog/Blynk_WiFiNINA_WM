@@ -64,7 +64,7 @@ With version `v1.0.0` or later, you now can configure:
 11. [`WiFiWebServer library v1.0.1 or later`](https://github.com/khoih-prog/WiFiWebServer). To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiWebServer.svg?)](https://www.ardu-badge.com/WiFiWebServer)
 12. [`FlashStorage_SAMD library v1.0.0`](https://github.com/khoih-prog/FlashStorage_SAMD) for SAMD21 and SAMD51 boards (ZERO, MKR, ***NANO_33_IOT***, M0, M0 Pro, ***AdaFruit Itsy-Bitsy M4***, etc.)
 13. [`DueFlashStorage library`](https://github.com/sebnil/DueFlashStorage) for SAM DUE
-14. [`Adafruit's LittleFS/InternalFS`](www.adafruit.com)) for nRF52
+14. [`Adafruit's LittleFS/InternalFS`](www.adafruit.com) for nRF52
 15. [`DoubleResetDetector_Generic v1.0.2 or later`](https://github.com/khoih-prog/DoubleResetDetector_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/DoubleResetDetector_Generic.svg?)](https://www.ardu-badge.com/DoubleResetDetector_Generic)
 
 ## Installation
