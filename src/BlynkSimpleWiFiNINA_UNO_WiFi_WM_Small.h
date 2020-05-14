@@ -37,8 +37,8 @@
 #error This code is not intended to run on the ESP8266, ESP32 nor Teensy platform! Please check your Tools->Board setting.
 #endif
 
-#if !( defined(ARDUINO_AVR_UNO_WIFI_DEV_ED) )
-#error This code is intended to run on the Arduino UNO WiFi platform! Please check your Tools->Board setting.
+#if !( defined(ARDUINO_AVR_UNO_WIFI_REV2) )
+#error This code is intended to run on the Arduino UNO WiFi R2 platform! Please check your Tools->Board setting.
 #endif
 
 #ifndef BLYNK_INFO_CONNECTION
@@ -64,29 +64,6 @@
 #include <WiFiWebServer.h>
 #include <EEPROM.h>
 
-#ifndef EEPROM_SIZE
-#define EEPROM_SIZE     4096
-#else
-#if (EEPROM_SIZE > 4096)
-#warning EEPROM_SIZE must be <= 4096. Reset to 4096
-#undef EEPROM_SIZE
-#define EEPROM_SIZE     4096
-#endif
-#if (EEPROM_SIZE < CONFIG_DATA_SIZE)
-#warning EEPROM_SIZE must be > CONFIG_DATA_SIZE. Reset to 512
-#undef EEPROM_SIZE
-#define EEPROM_SIZE     512
-#endif
-#endif
-
-#ifndef EEPROM_START
-#define EEPROM_START     0
-#else
-#if (EEPROM_START + CONFIG_DATA_SIZE > EEPROM_SIZE)
-#error EPROM_START + CONFIG_DATA_SIZE > EEPROM_SIZE. Please adjust.
-#endif
-#endif
-
 // Configurable items besides fixed Header
 #define NUM_CONFIGURABLE_ITEMS    5
 typedef struct Configuration
@@ -102,6 +79,32 @@ typedef struct Configuration
 
 // Currently CONFIG_DATA_SIZE  =   188
 uint16_t CONFIG_DATA_SIZE = sizeof(Blynk_WM_Configuration);
+
+#ifndef EEPROM_SIZE
+#define EEPROM_SIZE     256
+#else
+#if (EEPROM_SIZE > 256)
+#warning EEPROM_SIZE must be <= 256. Reset to 256
+#undef EEPROM_SIZE
+#define EEPROM_SIZE     256
+#endif
+#if (EEPROM_SIZE < CONFIG_DATA_SIZE)
+#warning EEPROM_SIZE must be > CONFIG_DATA_SIZE. Reset to 256
+#undef EEPROM_SIZE
+#define EEPROM_SIZE     256
+#endif
+#endif
+
+// For EEPROM_START at 32 as EEPROM_SIZE is only 256
+#ifdef EEPROM_START
+#undef EEPROM_START
+#define EEPROM_START     32
+#else
+//#if (EEPROM_START + CONFIG_DATA_SIZE > EEPROM_SIZE)
+#if (CONFIG_DATA_SIZE > EEPROM_SIZE)
+#error EPROM_START + CONFIG_DATA_SIZE > EEPROM_SIZE. Please adjust.
+#endif
+#endif
 
 #define root_html_template "\
 <!DOCTYPE html><html><head><title>MEGA_WM_NINA</title><style>.em{padding-bottom:0px;}div,input{padding:5px;font-size:1em;}input{width:95%;}\

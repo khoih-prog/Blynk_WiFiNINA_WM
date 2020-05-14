@@ -35,7 +35,7 @@
 
 #if ( defined(ESP8266) || defined(ESP32) || defined(__SAMD21G18A__) || defined(__SAMD51__) || defined(__SAMD51J20A__)\
    || defined(__SAMD51J19A__) || defined(__SAMD51G19A__) || defined(NRF52_SERIES) || defined(ARDUINO_NRF52_ADAFRUIT)\
-   || defined(CORE_TEENSY) || defined(ARDUINO_SAM_DUE) || !(defined(ARDUINO_AVR_UNO_WIFI_DEV_ED) ) )
+   || defined(CORE_TEENSY) || defined(ARDUINO_SAM_DUE) || !(defined(ARDUINO_AVR_UNO_WIFI_REV2) ) )
 #error This code is intended to run on the Arduino UNO WiFi platform! Please check your Tools->Board setting.
 #endif
 
