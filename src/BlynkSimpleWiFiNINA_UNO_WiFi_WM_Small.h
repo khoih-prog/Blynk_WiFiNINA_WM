@@ -1,5 +1,5 @@
 /****************************************************************************************************************************
-   BlynkSimpleWiFiNINA_AVR_WM.h
+   BlynkSimpleWiFiNINA_UNO_WiFi_WM.h
    For AVR boards using WiFiNINA Shields
 
    Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32 and SAMD boards 
@@ -26,19 +26,19 @@
     1.0.2   K Hoang      15/04/2020  Fix bug. Add SAMD51 support.
     1.0.3   K Hoang      05/05/2020  Add nRF52 support, MultiWiFi/Blynk, Configurable Config Portal Title, 
                                      Default Config Data and DRD. Update examples.
-    1.0.4   K Hoang      13/05/2020  Add support to Arduino UNO WiFi R2 
+    1.0.4   K Hoang      13/05/2020  Add support to Arduino UNO WiFi R2                                    
  *****************************************************************************************************************************/
 
 
-#ifndef BlynkSimpleWiFiNINA_AVR_WM_h
-#define BlynkSimpleWiFiNINA_AVR_WM_h
+#ifndef BlynkSimpleWiFiNINA_UNO_WiFi_WM_h
+#define BlynkSimpleWiFiNINA_UNO_WiFi_WM_h
 
 #if ( defined(ESP8266) || defined(ESP32) || defined(CORE_TEENSY) )
 #error This code is not intended to run on the ESP8266, ESP32 nor Teensy platform! Please check your Tools->Board setting.
 #endif
 
-#if !( defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA) )
-#error This code is intended to run on the Mega2560 platform! Please check your Tools->Board setting.
+#if !( defined(ARDUINO_AVR_UNO_WIFI_DEV_ED) )
+#error This code is intended to run on the Arduino UNO WiFi platform! Please check your Tools->Board setting.
 #endif
 
 #ifndef BLYNK_INFO_CONNECTION
@@ -63,6 +63,29 @@
 #include "WiFiNINA_Pinout_Generic.h"
 #include <WiFiWebServer.h>
 #include <EEPROM.h>
+
+#ifndef EEPROM_SIZE
+#define EEPROM_SIZE     4096
+#else
+#if (EEPROM_SIZE > 4096)
+#warning EEPROM_SIZE must be <= 4096. Reset to 4096
+#undef EEPROM_SIZE
+#define EEPROM_SIZE     4096
+#endif
+#if (EEPROM_SIZE < CONFIG_DATA_SIZE)
+#warning EEPROM_SIZE must be > CONFIG_DATA_SIZE. Reset to 512
+#undef EEPROM_SIZE
+#define EEPROM_SIZE     512
+#endif
+#endif
+
+#ifndef EEPROM_START
+#define EEPROM_START     0
+#else
+#if (EEPROM_START + CONFIG_DATA_SIZE > EEPROM_SIZE)
+#error EPROM_START + CONFIG_DATA_SIZE > EEPROM_SIZE. Please adjust.
+#endif
+#endif
 
 // Configurable items besides fixed Header
 #define NUM_CONFIGURABLE_ITEMS    5
@@ -537,28 +560,7 @@ public:
 #define BLYNK_BOARD_TYPE   "SHD_NINA"
 #define NO_CONFIG           "blank"
 
-#ifndef EEPROM_SIZE
-#define EEPROM_SIZE     4096
-#else
-#if (EEPROM_SIZE > 4096)
-#warning EEPROM_SIZE must be <= 4096. Reset to 4096
-#undef EEPROM_SIZE
-#define EEPROM_SIZE     4096
-#endif
-#if (EEPROM_SIZE < CONFIG_DATA_SIZE)
-#warning EEPROM_SIZE must be > CONFIG_DATA_SIZE. Reset to 512
-#undef EEPROM_SIZE
-#define EEPROM_SIZE     512
-#endif
-#endif
 
-#ifndef EEPROM_START
-#define EEPROM_START     0
-#else
-#if (EEPROM_START + CONFIG_DATA_SIZE > EEPROM_SIZE)
-#error EPROM_START + CONFIG_DATA_SIZE > EEPROM_SIZE. Please adjust.
-#endif
-#endif
 
     int calcChecksum()
     {
@@ -820,4 +822,4 @@ BlynkWifiCommon Blynk(_blynkTransport);
 
 #include <BlynkWidgets.h>
 
-#endif    //BlynkSimpleWiFiNINA_AVR_WM_h
+#endif    //BlynkSimpleWiFiNINA_UNO_WiFi_WM_h

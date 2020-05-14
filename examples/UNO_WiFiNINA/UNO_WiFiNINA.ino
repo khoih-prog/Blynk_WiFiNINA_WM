@@ -1,6 +1,6 @@
 /****************************************************************************************************************************
-   SAM_DUE_WiFiNINA.ino
-   For SAM DUE boards using WiFiNINA Shields
+   UNO_WiFiNINA.ino
+   For AVR UNO WiFi boards using WiFiNINA Shields
 
    Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32 and SAMD boards 
    (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
@@ -28,9 +28,31 @@
                                      Default Config Data and DRD. Update examples.
     1.0.4   K Hoang      13/05/2020 Add support to Arduino UNO WiFi R2 
  *****************************************************************************************************************************/
-#include "defines.h"
-#include "Credentials.h"
-#include "dynamicParams.h"
+// To install WiFiNINA_Generic library (https://github.com/khoih-prog/WiFiNINA_Generic)
+// and Blynk_WiFiNINA_WM  (https://github.com/khoih-prog/Blynk_WiFiNINA_WM)
+
+#include <BlynkSimpleWiFiNINA_UNO_WiFi.h>
+
+#define USE_LOCAL_SERVER      true
+
+#if USE_LOCAL_SERVER
+
+char auth[] = "****";
+String BlynkServer = "account.duckdns.org";
+//String BlynkServer = "192.168.2.112";
+
+#else
+
+char auth[] = "****";
+String BlynkServer = "blynk-cloud.com";
+
+#endif
+
+#define BLYNK_SERVER_HARDWARE_PORT    8080
+
+// Your WiFi credentials.
+char ssid[] = "****";
+char pass[] = "****";
 
 void heartBeatPrint(void)
 {
@@ -79,55 +101,20 @@ void setup()
   while (!Serial);
   //delay(1000);
 
-  Serial.println("\nStart Blynk_WiFiNINA_WM using WiFiNINA_Shield on " + String(BOARD_TYPE));
+  Serial.println("\nStart UNO_WiFiNINA using WiFiNINA_Shield on UNO WiFi");
 
-#if USE_BLYNK_WM
-  Serial.println(F("Start Blynk_WM"));
-  Blynk.setConfigPortalIP(IPAddress(192, 168, 120, 1));
-  //Blynk.setConfigPortal("SAMDUE", "MySAMDUE");
-  //Blynk.begin("SAM-DUE-WiFiNINA");
-  Blynk.begin(HOST_NAME);
-#else
-  Serial.println(F("Start Blynk"));
+#if USE_LOCAL_SERVER
   Blynk.begin(auth, ssid, pass, BlynkServer.c_str(), BLYNK_SERVER_HARDWARE_PORT);
+#else
+  // You can also specify server:
+  //Blynk.begin(auth, ssid, pass, "blynk-cloud.com", 80);
+  //Blynk.begin(auth, ssid, pass, IPAddress(192,168,1,100), 8080);
+  Blynk.begin(auth, ssid, pass);
 #endif
 }
-
-#if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
-void displayCredentials(void)
-{
-  Serial.println("\nYour stored Credentials :");
-
-  for (int i = 0; i < NUM_MENU_ITEMS; i++)
-  {
-    Serial.println(String(myMenuItems[i].displayName) + " = " + myMenuItems[i].pdata);
-  }
-}
-#endif
 
 void loop()
 {
   Blynk.run();
   check_status();
-
-#if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
-  static bool displayedCredentials = false;
-
-  if (!displayedCredentials)
-  {
-    for (int i = 0; i < NUM_MENU_ITEMS; i++)
-    {
-      if (!strlen(myMenuItems[i].pdata))
-      {
-        break;
-      }
-
-      if ( i == (NUM_MENU_ITEMS - 1) )
-      {
-        displayedCredentials = true;
-        displayCredentials();
-      }
-    }
-  }
-#endif
 }

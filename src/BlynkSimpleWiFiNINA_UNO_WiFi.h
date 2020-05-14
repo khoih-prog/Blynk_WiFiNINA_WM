@@ -1,6 +1,6 @@
 /****************************************************************************************************************************
-   BlynkSimpleWiFiNINA_SAMD.h
-   For SAMD boards using WiFiNINA Shields
+   BlynkSimpleWiFiNINA_UNO_WiFi.h
+   For AVR UNO WiFi boards using WiFiNINA Shields
 
    Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32 and SAMD boards 
    (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
@@ -30,24 +30,13 @@
  *****************************************************************************************************************************/
 
 
-#ifndef BlynkSimpleWiFiNINA_SAMD_h
-#define BlynkSimpleWiFiNINA_SAMD_h
+#ifndef BlynkSimpleWiFiNINA_UNO_WiFi_h
+#define BlynkSimpleWiFiNINA_UNO_WiFi_h
 
-#if ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
-   || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) \
-   || defined(ARDUINO_SAMD_MKRWAN1310) || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) \
-   || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) || defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) \
-   || defined(__SAMD51__) || defined(__SAMD51J20A__) || defined(__SAMD51J19A__) || defined(__SAMD51G19A__) )
-#if defined(BLYNK_WIFININA_USE_SAMD)
-#undef BLYNK_WIFININA_USE_SAMD
-#endif
-#define BLYNK_WIFININA_USE_SAMD      true
-#endif
-
-#if ( defined(ESP8266) || defined(ESP32) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA) || defined(CORE_TEENSY)\
-   || defined(NRF52_SERIES) || defined(ARDUINO_NRF52_ADAFRUIT) || defined(STM32F0) || defined(STM32F1) || defined(STM32F2)\
-   || defined(STM32F3) ||defined(STM32F4) || defined(STM32F7) || defined(ARDUINO_SAM_DUE) || !(BLYNK_WIFININA_USE_SAMD) )
-#error This code is intended to run on the SAMD platform! Please check your Tools->Board setting.
+#if ( defined(ESP8266) || defined(ESP32) || defined(__SAMD21G18A__) || defined(__SAMD51__) || defined(__SAMD51J20A__)\
+   || defined(__SAMD51J19A__) || defined(__SAMD51G19A__) || defined(NRF52_SERIES) || defined(ARDUINO_NRF52_ADAFRUIT)\
+   || defined(CORE_TEENSY) || defined(ARDUINO_SAM_DUE) || !(defined(ARDUINO_AVR_UNO_WIFI_DEV_ED) ) )
+#error This code is intended to run on the Arduino UNO WiFi platform! Please check your Tools->Board setting.
 #endif
 
 #ifndef BLYNK_INFO_CONNECTION
@@ -82,12 +71,13 @@ public:
     {
         int status = WiFi.status();
         // check for the presence of the shield:
-        if (status == WL_NO_MODULE) {
+        if (status == WL_NO_MODULE) 
+        {
             BLYNK_LOG1(BLYNK_F("NoNINA"));
             return;
         }
 
-        BLYNK_LOG2(BLYNK_F("WiFiNINA Firmware Version: "), WiFi.firmwareVersion());
+        BLYNK_LOG2(BLYNK_F("FW:"), WiFi.firmwareVersion());
 
         // attempt to connect to Wifi network:
         while (status != WL_CONNECTED) 
@@ -112,7 +102,8 @@ public:
             }
 
             millis_time_t started = BlynkMillis();
-            while ((status != WL_CONNECTED) && (BlynkMillis() - started < 10000))
+            while ((status != WL_CONNECTED) &&
+                  (BlynkMillis() - started < 10000))
             {
                 BlynkDelay(200);
                 status = WiFi.status();
@@ -171,4 +162,4 @@ BlynkWifiCommon Blynk(_blynkTransport);
 
 #include <BlynkWidgets.h>
 
-#endif    //BlynkSimpleWiFiNINA_SAMD_h
+#endif    //BlynkSimpleWiFiNINA_UNO_WiFi_h

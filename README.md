@@ -6,6 +6,10 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
 [![GitHub issues](https://img.shields.io/github/issues/khoih-prog/Blynk_WiFiNINA_WM.svg)](http://github.com/khoih-prog/Blynk_WiFiNINA_WM/issues)
 
+### New Releases v1.0.4
+
+1. Add support to ***Arduino UNO WiFi***. Just for Blynk connection without Blynk/WiFiManager features because of UNO's lack of memory.
+
 ### Major Release v1.0.3
 
 1. Add support to ***nRF52*** boards, such as ***AdaFruit Feather nRF52832, nRF52840 Express, BlueFruit Sense, Itsy-Bitsy nRF52840 Express, Metro nRF52840 Express, NINA_B30_ublox, etc.***
@@ -95,12 +99,13 @@ In your code, to use WiFiManager Blynk features, replace
 7. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_AVR_WM_Small.h` for Mega boards not using dynamic parameters if not enough memory.
 
 to use Blynk only, with hardcoded Credentials, replace
-1. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_SAMD.h`    for SAMD boards.
-2. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_Teensy.h`  for Teensy boards.
-3. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_nRF52.h`   for nRF52 boards.
-4. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_DUE.h`     for SAM DUE boards.
-5. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_STM32.h`   for STM32 boards.
-6. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_AVR.h`     for Mega boards.
+1. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_SAMD.h`     for SAMD boards.
+2. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_Teensy.h`   for Teensy boards.
+3. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_nRF52.h`    for nRF52 boards.
+4. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_DUE.h`      for SAM DUE boards.
+5. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_STM32.h`    for STM32 boards.
+6. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_AVR.h`      for Mega boards.
+7. `BlynkSimpleWiFiNINA.h` with `BlynkSimpleWiFiNINA_UNO_WiFi.h` for UNO WiFi boards.
 
 to use EEPROM to save your configuration data.
 
@@ -307,6 +312,7 @@ See examples
 4. [SAM_DUE_WiFiNINA_WM](examples/SAM_DUE_WiFiNINA_WM)
 5. [STM32_WiFiNINA_WM](examples/STM32_WiFiNINA_WM)
 6. [Mega_WiFiNINA_WM](examples/Mega_WiFiNINA_WM)
+6. [UNO_WiFiNINA](examples/UNO_WiFiNINA)
 
 ```
 // Force some params in Blynk, only valid for library version 1.0.0 and later
@@ -1078,6 +1084,10 @@ uint16_t NUM_MENU_ITEMS = 0;
 19. Configurable Config Portal Title
 20. Re-structure all examples to separate Credentials / Defines / Dynamic Params / Code so that you can change Credentials / Dynamic Params quickly for each device.
 
+### New Releases v1.0.4
+
+1. Add support to ***Arduino UNO WiFi***. Just for Blynk connection without Blynk/WiFiManager features because of lack of memory.
+
 #### Major Release v1.0.3
 
 1. 2. Add support to ***nRF52*** boards, such as ***AdaFruit Feather nRF52832, nRF52840 Express, BlueFruit Sense, Itsy-Bitsy nRF52840 Express, Metro nRF52840 Express, NINA_B30_ublox, etc.***
@@ -1133,3 +1143,4 @@ If you want to contribute to this project:
 ## Copyright
 
 Copyright 2020- Khoi Hoang
+

@@ -8,7 +8,7 @@
    Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
    Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
    Licensed under MIT license
-   Version: 1.0.3
+   Version: 1.0.4
 
    Original Blynk Library author:
    @file       BlynkSimpleWiFiNINA.h
@@ -23,8 +23,9 @@
     1.0.0   K Hoang      07/04/2020  Initial coding
     1.0.1   K Hoang      09/04/2020  Add support to SAM DUE, Teensy, STM32
     1.0.2   K Hoang      15/04/2020  Fix bug. Add SAMD51 support.
-    1.0.3   K Hoang      05/05/2020  Add nRF52 support, MultiWiFi/Blynk, Configurable Config Portal Title,
+    1.0.3   K Hoang      05/05/2020  Add nRF52 support, MultiWiFi/Blynk, Configurable Config Portal Title, 
                                      Default Config Data and DRD. Update examples.
+    1.0.4   K Hoang      13/05/2020 Add support to Arduino UNO WiFi R2 
  *****************************************************************************************************************************/
 #include "defines.h"
 #include "Credentials.h"
