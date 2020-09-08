@@ -6,6 +6,8 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
 [![GitHub issues](https://img.shields.io/github/issues/khoih-prog/Blynk_WiFiNINA_WM.svg)](http://github.com/khoih-prog/Blynk_WiFiNINA_WM/issues)
 
+---
+
 ### New Releases v1.0.4
 
 1. Add support to ***Arduino UNO WiFi R2***.
@@ -47,12 +49,14 @@ Thanks to [thorathome in GitHub](https://github.com/thorathome) to test, suggest
 6. Currently support AVR Mega and SAMD (ZERO, MKR, ***NANO_33_IOT***, M0, M0 Pro, AdaFruit CIRCUITPLAYGROUND_EXPRESS, etc.) boards
 7. Enhance GUI.
 
-To help you to eliminate `hardcoding` your Wifi and Blynk credentials for Mega/Teensy boards running WiFiNINA modules/shields, and updating/reflashing every time when you need to change them. Configuration data are saved in configurable location in EEPROM/Flash.
+This library is designed to help you eliminate `hardcoding` your Wifi and Blynk credentials for Mega/Teensy boards running WiFiNINA modules/shields, and updating/reflashing every time when you need to change them. Configuration data are saved in configurable location in EEPROM/Flash.
 
 With version `v1.0.0` or later, you now can configure:
 
 1. `Config Portal Static IP address, Name and Password.`
 2. `Static IP address, Gateway, Subnet Mask and 2 DNS Servers IP addresses.`
+
+---
 
 ## Prerequisite
  1. [`Arduino IDE 1.8.12 or later` for Arduino](https://www.arduino.cc/en/Main/Software)
@@ -71,6 +75,8 @@ With version `v1.0.0` or later, you now can configure:
 14. [`Adafruit's LittleFS/InternalFS`](https://www.adafruit.com) for nRF52. Already included if you already installed Adafruit ***nRF52 board package*** from Boards Manager.
 15. [`DoubleResetDetector_Generic v1.0.2 or later`](https://github.com/khoih-prog/DoubleResetDetector_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/DoubleResetDetector_Generic.svg?)](https://www.ardu-badge.com/DoubleResetDetector_Generic)
 
+---
+
 ## Installation
 
 ### Use Arduino Library Manager
@@ -85,6 +91,120 @@ Another way to install is to:
 2. Download the latest release `Blynk_WiFiNINA_WM-master.zip`.
 3. Extract the zip file to `Blynk_WiFiNINA_WM-master` directory 
 4. Copy whole `Blynk_WiFiNINA_WM-master/src` folder to Arduino libraries' directory such as `~/Arduino/libraries/`.
+
+### VS Code & PlatformIO:
+1. Install [VS Code](https://code.visualstudio.com/)
+2. Install [PlatformIO](https://platformio.org/platformio-ide)
+3. Install **Blynk_WiFiNINA_WM** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/). Search for Blynk_WiFiNINA_WM in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
+4. Use included [platformio.ini](platformio/platformio.ini) file from examples to ensure that all dependent libraries will installed automatically. Please visit documentation for the other options and examples at [Project Configuration File](https://docs.platformio.org/page/projectconf.html)
+
+
+---
+
+### Packages' Patches
+
+ 1. ***To be able to compile, run and automatically detect and display BOARD_NAME on nRF52840/nRF52832 boards***, you have to copy the whole [nRF52 0.20.5](Packages_Patches/adafruit/hardware/nrf52/0.20.5) directory into Adafruit nRF52 directory (~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5). 
+
+Supposing the Adafruit nRF52 version is 0.20.5. These files must be copied into the directory:
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/platform.txt`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/boards.txt`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/variants/NINA_B302_ublox/variant.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/variants/NINA_B302_ublox/variant.cpp`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/variants/NINA_B112_ublox/variant.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/variants/NINA_B112_ublox/variant.cpp`
+- ***`~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/cores/nRF5/Udp.h`***
+
+Whenever a new version is installed, remember to copy these files into the new version directory. For example, new version is x.yy.z
+These files must be copied into the directory:
+
+- `~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/platform.txt`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/boards.txt`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/variants/NINA_B302_ublox/variant.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/variants/NINA_B302_ublox/variant.cpp`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/variants/NINA_B112_ublox/variant.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/variants/NINA_B112_ublox/variant.cpp`
+- ***`~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/cores/nRF5/Udp.h`***
+
+ 2. ***To be able to compile and run on Teensy boards***, you have to copy the file [Teensy boards.txt](Packages_Patches/hardware/teensy/avr/boards.txt) into Teensy hardware directory (./arduino-1.8.12/hardware/teensy/avr/boards.txt). 
+
+Supposing the Arduino version is 1.8.12. This file must be copied into the directory:
+
+- `./arduino-1.8.12/hardware/teensy/avr/boards.txt`
+
+Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
+This file must be copied into the directory:
+
+- `./arduino-x.yy.zz/hardware/teensy/avr/boards.txt`
+
+ 3. ***To be able to compile and run on SAM DUE boards***, you have to copy the whole [SAM DUE](Packages_Patches/arduino/hardware/sam/1.6.12) directory into Arduino sam directory (~/.arduino15/packages/arduino/hardware/sam/1.6.12). 
+
+Supposing the Arduino SAM core version is 1.6.12. This file must be copied into the directory:
+
+- `~/.arduino15/packages/arduino/hardware/sam/1.6.12/platform.txt`
+
+Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
+This file must be copied into the directory:
+
+- `~/.arduino15/packages/arduino/hardware/sam/x.yy.zz/platform.txt`
+
+ 4. ***To be able to compile without error and automatically detect and display BOARD_NAME on Arduino SAMD (Nano-33-IoT, etc) boards***, you have to copy the whole [Arduino SAMD cores 1.8.7](Packages_Patches/arduino/hardware/samd/1.8.7) directory into Arduino SAMD directory (~/.arduino15/packages/arduino/hardware/samd/1.8.7).
+ 
+Supposing the Arduino SAMD version is 1.8.7. These files must be copied into the directory:
+- `~/.arduino15/packages/arduino/hardware/samd/1.8.7/platform.txt`
+- ***`~/.arduino15/packages/arduino/hardware/samd/1.8.7/cores/arduino/Arduino.h`***
+
+Whenever a new version is installed, remember to copy these files into the new version directory. For example, new version is x.yy.z
+
+These files must be copied into the directory:
+
+- `~/.arduino15/packages/arduino/hardware/samd/x.yy.z/platform.txt`
+- ***`~/.arduino15/packages/arduino/hardware/samd/x.yy.z/cores/arduino/Arduino.h`***
+ 
+ This is mandatory to fix the ***notorious Arduino SAMD compiler error***. See [Improve Arduino compatibility with the STL (min and max macro)](https://github.com/arduino/ArduinoCore-samd/pull/399)
+ 
+```
+ ...\arm-none-eabi\include\c++\7.2.1\bits\stl_algobase.h:243:56: error: macro "min" passed 3 arguments, but takes just 2
+     min(const _Tp& __a, const _Tp& __b, _Compare __comp)
+```
+
+Whenever the above-mentioned compiler error issue is fixed with the new Arduino SAMD release, you don't need to copy the `Arduino.h` file anymore.
+
+ 5. ***To be able to automatically detect and display BOARD_NAME on Adafruit SAMD (Itsy-Bitsy M4, etc) boards***, you have to copy the file [Adafruit SAMD platform.txt](Packages_Patches/adafruit/hardware/samd/1.6.0) into Adafruit samd directory (~/.arduino15/packages/adafruit/hardware/samd/1.6.0). 
+
+Supposing the Adafruit SAMD core version is 1.6.0. This file must be copied into the directory:
+
+- `~/.arduino15/packages/adafruit/hardware/samd/1.6.0/platform.txt`
+
+Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
+This file must be copied into the directory:
+
+- `~/.arduino15/packages/adafruit/hardware/samd/x.yy.zz/platform.txt`
+
+ 6. ***To be able to automatically detect and display BOARD_NAME on Seeeduino SAMD (XIAO M0, Wio Terminal, etc) boards***, you have to copy the file [Seeeduino SAMD platform.txt](Packages_Patches/Seeeduino/hardware/samd/1.7.8) into Adafruit samd directory (~/.arduino15/packages/Seeeduino/hardware/samd/1.7.8). 
+
+Supposing the Seeeduino SAMD core version is 1.7.8. This file must be copied into the directory:
+
+- `~/.arduino15/packages/Seeeduino/hardware/samd/1.7.8/platform.txt`
+
+Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
+This file must be copied into the directory:
+
+- `~/.arduino15/packages/Seeeduino/hardware/samd/x.yy.zz/platform.txt`
+
+7. ***To use Serial1 on some STM32 boards without Serial1 definition (Nucleo-144 NUCLEO_F767ZI, Nucleo-64 NUCLEO_L053R8, etc.) boards***, you have to copy the files [STM32 variant.h](Packages_Patches/STM32/hardware/stm32/1.9.0) into STM32 stm32 directory (~/.arduino15/packages/STM32/hardware/stm32/1.9.0). You have to modify the files corresponding to your boards, this is just an illustration how to do.
+
+Supposing the STM32 stm32 core version is 1.9.0. These files must be copied into the directory:
+
+- `~/.arduino15/packages/STM32/hardware/stm32/1.9.0/variants/NUCLEO_F767ZI/variant.h` for Nucleo-144 NUCLEO_F767ZI.
+- `~/.arduino15/packages/STM32/hardware/stm32/1.9.0/variants/NUCLEO_L053R8/variant.h` for Nucleo-64 NUCLEO_L053R8.
+
+Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz,
+theses files must be copied into the corresponding directory:
+
+- `~/.arduino15/packages/STM32/hardware/stm32/x.yy.zz/variants/NUCLEO_F767ZI/variant.h`
+- `~/.arduino15/packages/STM32/hardware/stm32/x.yy.zz/variants/NUCLEO_L053R8/variant.h`
+
+---
 
 ### How to use
 
@@ -280,11 +400,48 @@ uint16_t NUM_MENU_ITEMS = 0;
 
 ```
 
-If you don't need to add dynamic parameters, use the following in sketch
+### If you don't need to add dynamic parameters, use the following in sketch
 
 ```
 #define USE_DYNAMIC_PARAMETERS      false
 ```
+
+```
+// Force some params in Blynk, only valid for library version 1.0.0 and later
+#define TIMEOUT_RECONNECT_WIFI                    10000L
+#define RESET_IF_CONFIG_TIMEOUT                   true
+#define CONFIG_TIMEOUT_RETRYTIMES_BEFORE_RESET    5
+
+```
+### To use personalized Config Portal AP SSID and Password, as well as IP Address, e.g. call :
+
+```
+// Set config portal SSID and Password
+  Blynk.setConfigPortal("SAMD-WiFiNINA", "SAMD-WiFiNINAPass");
+  // Set config portal IP address
+  Blynk.setConfigPortalIP(IPAddress(192, 168, 200, 1));
+```
+
+### You can specify STA-mode Static IP address,  Gateway, Subnet Mask, as well as DNS server 1 and 2:
+
+```
+  // From v1.0.0, select either one of these to set static IP + DNS
+  Blynk.setSTAStaticIPConfig(IPAddress(192, 168, 2, 220), IPAddress(192, 168, 2, 1), IPAddress(255, 255, 255, 0));
+```
+
+Then replace `Blynk.begin(...)` with :
+
+1. `Blynk.begin()` to use default DHCP hostname `SAMD-WiFiNINA` or `Mega-WiFiNINA`
+
+or to have a personalized hostname `(RFC952-conformed,- 24 chars max,- only a..z A..Z 0..9 '-' and no '-' as last char)`
+
+2. `Blynk.begin("Personalized-HostName")`
+
+in your code. Keep `Blynk.run()` intact.
+
+That's it.
+
+---
 
 ### Important Notes for using Dynamic Parameters' ids
 
@@ -305,7 +462,9 @@ Please be noted that the following ***reserved names are already used in library
 "nm"    for Board Name
 ```
 
-See examples 
+---
+
+### Examples 
 
 1. [SAMD_WiFiNINA_WM](examples/SAMD_WiFiNINA_WM)
 2. [Teensy_WiFiNINA_WM](examples/Teensy_WiFiNINA_WM)
@@ -315,40 +474,7 @@ See examples
 6. [Mega_WiFiNINA_WM](examples/Mega_WiFiNINA_WM)
 6. [UNO_WiFiNINA](examples/UNO_WiFiNINA)
 
-```
-// Force some params in Blynk, only valid for library version 1.0.0 and later
-#define TIMEOUT_RECONNECT_WIFI                    10000L
-#define RESET_IF_CONFIG_TIMEOUT                   true
-#define CONFIG_TIMEOUT_RETRYTIMES_BEFORE_RESET    5
-
-```
-To use personalized Config Portal AP SSID and Password, as well as IP Address, e.g. call :
-
-```
-// Set config portal SSID and Password
-  Blynk.setConfigPortal("SAMD-WiFiNINA", "SAMD-WiFiNINAPass");
-  // Set config portal IP address
-  Blynk.setConfigPortalIP(IPAddress(192, 168, 200, 1));
-```
-You can specify STA-mode Static IP address,  Gateway, Subnet Mask, as well as DNS server 1 and 2:
-
-```
-  // From v1.0.0, select either one of these to set static IP + DNS
-  Blynk.setSTAStaticIPConfig(IPAddress(192, 168, 2, 220), IPAddress(192, 168, 2, 1), IPAddress(255, 255, 255, 0));
-```
-
-Then replace `Blynk.begin(...)` with :
-
-1. `Blynk.begin()` to use default DHCP hostname `SAMD-WiFiNINA` or `Mega-WiFiNINA`
-
-or to have a personalized hostname `(RFC952-conformed,- 24 chars max,- only a..z A..Z 0..9 '-' and no '-' as last char)`
-
-2. `Blynk.begin("Personalized-HostName")`
-
-in your code. Keep `Blynk.run()` intact.
-
-That's it.
-
+---
 
 ## So, how it works?
 
@@ -378,9 +504,13 @@ Then click `Save`.
 
 After the board autorestarted, you will see your built-in LED turned OFF. That means, it connected to your Blynk server successfully.
 
+---
+
+### Sample debug terminal output
+
 The following is the sample terminal output when running example [SAMD_WiFiNINA_WM](examples/SAMD_WiFiNINA_WM)
 
-1. No Config Data with ***LOAD_DEFAULT_CONFIG_DATA = true*** => Config Portal loads default Credentials and dynamic Params
+1. No Config Data with **LOAD_DEFAULT_CONFIG_DATA = true** => Config Portal loads default Credentials and dynamic Params
 
 ```
 Start Blynk_WiFiNINA_WM using WiFiNINA_Shield on SAMD NANO_33_IOT
@@ -461,7 +591,7 @@ Pubs Topics = new-mqtt-PubTopic
 FFFFFFFFFF FFFFFFFFFF
 ```
 
-2. Input valid credentials with ***LOAD_DEFAULT_CONFIG_DATA = true*** => reboot
+2. Input valid credentials with **LOAD_DEFAULT_CONFIG_DATA = true** => reboot
 
 
 ```
@@ -671,11 +801,14 @@ void loop()
 }
 ```
 
+---
+---
+
 ## Example [SAMD_WiFiNINA_WM](examples/SAMD_WiFiNINA_WM)
 
 Please take a look at other examples, as well.
 
-1. File [SAMD_WiFiNINA_WM.ino](examples/SAMD_WiFiNINA_WM/SAMD_WiFiNINA_WM.ino)
+#### 1. File [SAMD_WiFiNINA_WM.ino](examples/SAMD_WiFiNINA_WM/SAMD_WiFiNINA_WM.ino)
 
 ```cpp
 #include "defines.h"
@@ -783,8 +916,9 @@ void loop()
 #endif
 }
 ```
+---
 
-2. File [defines.h](examples/SAMD_WiFiNINA_WM/defines.h)
+#### 2. File [defines.h](examples/SAMD_WiFiNINA_WM/defines.h)
 
 ```cpp
 #ifndef defines_h
@@ -897,8 +1031,9 @@ char pass[] = "****";
 
 #endif      //defines_h
 ```
+---
 
-3. File [Credentials.h](examples/SAMD_WiFiNINA_WM/Credentials.h)
+#### 3. File [Credentials.h](examples/SAMD_WiFiNINA_WM/Credentials.h)
 
 ```cpp
 #ifndef Credentials_h
@@ -982,8 +1117,9 @@ Blynk_WM_Configuration defaultConfig =
 #endif    //Credentials_h
 ```
 
+---
 
-4. File [dynamicParams.h](examples/SAMD_WiFiNINA_WM/dynamicParams.h)
+#### 4. File [dynamicParams.h](examples/SAMD_WiFiNINA_WM/dynamicParams.h)
 
 ```cpp
 #ifndef dynamicParams_h
@@ -1055,6 +1191,8 @@ uint16_t NUM_MENU_ITEMS = 0;
 
 #endif      //dynamicParams_h
 ```
+---
+---
 
 ## TO DO
 
@@ -1084,6 +1222,9 @@ uint16_t NUM_MENU_ITEMS = 0;
 18. DoubleDetectDetector to force Config Portal when double reset is detected within predetermined time, default 10s.
 19. Configurable Config Portal Title
 20. Re-structure all examples to separate Credentials / Defines / Dynamic Params / Code so that you can change Credentials / Dynamic Params quickly for each device.
+
+---
+---
 
 ### New Releases v1.0.4
 
@@ -1126,12 +1267,24 @@ Thanks to [thorathome in GitHub](https://github.com/thorathome) to test, suggest
 6. Currently support AVR Mega and SAMD (ZERO, MKR, NANO_33_IOT, M0, M0 Pro, AdaFruit CIRCUITPLAYGROUND_EXPRESS, etc.) boards
 7. Enhance GUI.
 
+---
+
 ### Contributions and thanks
 
 1. Thanks to [brondolin](https://github.com/brondolin) to provide the amazing fix to permit input special chars such as ***%*** and ***#*** into data fields.
 2. Thanks to [Miguel Alexandre Wisintainer](https://github.com/tcpipchip) for initiating, inspriring, working with, developing, debugging and testing. Without that, support to nRF52, especially ***U-Box B302 running as nRF52840***, has never been started and finished. See [u-blox nina b](https://github.com/khoih-prog/WiFiNINA_Generic/issues/1)
 and [ESP32-based U-BLOX NINA W102 running ENC28J60](https://u-blox-ethernet-ninaw.blogspot.com/).
 3. Thanks to [thorathome in GitHub](https://github.com/thorathome) to test, suggest and encourage to add those new features in [Blynk_WM](https://github.com/khoih-prog/Blynk_WM), such as Default Credentials/Dynamic Params, Configurable Config Portal Title, DRD. Now those features are speading fast into libraries having similar functionalities.
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/thorathome"><img src="https://github.com/thorathome.png" width="100px;" alt="igrr"/><br /><sub><b>⭐️ thorathome</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/brondolin"><img src="https://github.com/brondolin.png" width="100px;" alt="brondolin"/><br /><sub><b>brondolin</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/tcpipchip"><img src="https://github.com/tcpipchip.png" width="100px;" alt="tcpipchip"/><br /><sub><b>tcpipchip</b></sub></a><br /></td>
+  </tr> 
+</table>
+
+---
 
 ## Contributing
 
@@ -1140,6 +1293,8 @@ If you want to contribute to this project:
 - Ask for enhancements
 - Create issues and pull requests
 - Tell other people about this library
+
+---
 
 ## Copyright
 
