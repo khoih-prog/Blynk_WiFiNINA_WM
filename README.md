@@ -7,6 +7,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/khoih-prog/Blynk_WiFiNINA_WM.svg)](http://github.com/khoih-prog/Blynk_WiFiNINA_WM/issues)
 
 ---
+---
 
 ### New Releases v1.0.4
 
@@ -25,7 +26,7 @@
 
 Thanks to [Miguel Alexandre Wisintainer](https://github.com/tcpipchip) for initiating, inspriring, working with, developing, debugging and testing. Without that, support to nRF52, especially ***U-Box B302 running as nRF52840***, has never been started and finished.
 
-Thanks to [thorathome in GitHub](https://github.com/thorathome) to test, suggest and encourage to add those new features in [Blynk_WM](https://github.com/khoih-prog/Blynk_WM), such as Default Credentials/Dynamic Params, Configurable Config Portal Title, DRD. Now those features are speading fast into libraries having similar functionalities.
+Thanks to [Thor Johnson](https://github.com/thorathome) to test, suggest and encourage to add those new features in [Blynk_WM](https://github.com/khoih-prog/Blynk_WM), such as Default Credentials/Dynamic Params, Configurable Config Portal Title, DRD. Now those features are speading fast into libraries having similar functionalities.
 
 ### New Releases v1.0.2
 
@@ -57,23 +58,26 @@ With version `v1.0.0` or later, you now can configure:
 2. `Static IP address, Gateway, Subnet Mask and 2 DNS Servers IP addresses.`
 
 ---
+---
 
 ## Prerequisite
- 1. [`Arduino IDE 1.8.12 or later` for Arduino](https://www.arduino.cc/en/Main/Software)
- 2. [`Blynk library 0.6.1 or later`](https://www.arduino.cc/en/guide/libraries#toc3)
- 3. [`Teensy core 1.51 or later`](https://www.pjrc.com/teensy/td_download.html) for Teensy (4.0, 3.6, 3.5, 3,2, 3.1, 3.0, LC) boards
- 4. [`Arduino SAM DUE core 1.6.12 or later`](https://www.arduino.cc/en/Guide/ArduinoDue) for SAM DUE ARM Cortex-M3 boards. To install go to Arduino IDE, select Boards Manager, search for ***`DUE`***
- 5. [`Arduino SAMD core 1.8.6 or later`](https://www.arduino.cc/en/Guide/ArduinoM0) for SAMD ARM Cortex-M0+ boards. To install go to Arduino IDE, select Boards Manager, search for ***`Arduino SAMD`*** 
- 6. [`Adafruit SAMD core 1.5.13 or later`](https://www.adafruit.com/) for SAMD ARM Cortex-M0+ and M4 boards (Nano 33 IoT, etc.). To install go to Arduino IDE, select Boards Manager, search for ***`Arduino M4`***
- 7. [`Arduino Core for STM32 v1.8.0 or later`](https://github.com/khoih-prog/Arduino_Core_STM32) for STM32 boards.To install go to Arduino IDE, select Boards Manager, search for ***`STM32`***
- 8. [`Adafruit nRF52 v0.20.1 or later`](https://www.adafruit.com) for nRF52 boards such as Adafruit NRF52840_FEATHER, NRF52832_FEATHER, NRF52840_FEATHER_SENSE, NRF52840_ITSYBITSY, NRF52840_CIRCUITPLAY, NRF52840_CLUE, NRF52840_METRO, NRF52840_PCA10056, PARTICLE_XENON, ***NINA_B302_ublox***, etc. To install go to Arduino IDE, select Boards Manager, search for ***`Adafruit nRF52`***
- 9. [`Functional-VLPP library`](https://github.com/khoih-prog/functional-vlpp) to use server's lambda function. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/Functional-Vlpp.svg?)](https://www.ardu-badge.com/Functional-Vlpp)
-10. [`WiFiNINA_Generic library v1.5.1-final or later`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic)
-11. [`WiFiWebServer library v1.0.1 or later`](https://github.com/khoih-prog/WiFiWebServer). To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiWebServer.svg?)](https://www.ardu-badge.com/WiFiWebServer)
-12. [`FlashStorage_SAMD library v1.0.0`](https://github.com/khoih-prog/FlashStorage_SAMD) for SAMD21 and SAMD51 boards (ZERO, MKR, ***NANO_33_IOT***, M0, M0 Pro, ***AdaFruit Itsy-Bitsy M4***, etc.)
-13. [`DueFlashStorage library`](https://github.com/sebnil/DueFlashStorage) for SAM DUE
-14. [`Adafruit's LittleFS/InternalFS`](https://www.adafruit.com) for nRF52. Already included if you already installed Adafruit ***nRF52 board package*** from Boards Manager.
-15. [`DoubleResetDetector_Generic v1.0.2 or later`](https://github.com/khoih-prog/DoubleResetDetector_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/DoubleResetDetector_Generic.svg?)](https://www.ardu-badge.com/DoubleResetDetector_Generic)
+
+ 1. [`Arduino IDE 1.8.13+`](https://www.arduino.cc/en/Main/Software)
+ 2. [`Blynk library 0.6.1+`](https://www.arduino.cc/en/guide/libraries#toc3)
+ 3. [`Teensy core 1.53+`](https://www.pjrc.com/teensy/td_download.html) for Teensy (4.0, 3.6, 3.5, 3,2, 3.1, 3.0, LC) boards
+ 4. [`Arduino SAM DUE core 1.6.12+`](https://www.arduino.cc/en/Guide/ArduinoDue) for SAM DUE ARM Cortex-M3 boards. To install go to Arduino IDE, select Boards Manager, search for ***`DUE`***
+ 5. [`Arduino SAMD core 1.8.8+`](https://www.arduino.cc/en/Guide/ArduinoM0) for SAMD ARM Cortex-M0+ boards. To install go to Arduino IDE, select Boards Manager, search for ***`Arduino SAMD`*** 
+ 6. [`Adafruit SAMD core 1.6.3+`](https://www.adafruit.com/) for SAMD ARM Cortex-M0+ and M4 boards (Nano 33 IoT, etc.). To install go to Arduino IDE, select Boards Manager, search for ***`Arduino M4`***
+ 7. [`Seeeduino SAMD core 1.7.9+`](https://www.seeedstudio.com/) for SAMD21/SAMD51 boards (XIAO M0, Wio Terminal, etc.) 
+ 8. [`Arduino Core for STM32 v1.9.0+`](https://github.com/khoih-prog/Arduino_Core_STM32) for STM32 boards.To install go to Arduino IDE, select Boards Manager, search for ***`STM32`***
+ 9. [`Adafruit nRF52 v0.21.0+`](https://www.adafruit.com) for nRF52 boards such as Adafruit NRF52840_FEATHER, NRF52832_FEATHER, NRF52840_FEATHER_SENSE, NRF52840_ITSYBITSY, NRF52840_CIRCUITPLAY, NRF52840_CLUE, NRF52840_METRO, NRF52840_PCA10056, PARTICLE_XENON, ***NINA_B302_ublox***, etc. To install go to Arduino IDE, select Boards Manager, search for ***`Adafruit nRF52`***
+10. [`Functional-VLPP library v1.0.1+`](https://github.com/khoih-prog/functional-vlpp) to use server's lambda function. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/Functional-Vlpp.svg?)](https://www.ardu-badge.com/Functional-Vlpp)
+11. [`WiFiNINA_Generic library v1.7.1+`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic)
+12. [`WiFiWebServer library v1.0.7+`](https://github.com/khoih-prog/WiFiWebServer). To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiWebServer.svg?)](https://www.ardu-badge.com/WiFiWebServer)
+13. [`FlashStorage_SAMD library v1.0.0+`](https://github.com/khoih-prog/FlashStorage_SAMD) for SAMD21 and SAMD51 boards (ZERO, MKR, ***NANO_33_IOT***, M0, M0 Pro, ***AdaFruit Itsy-Bitsy M4***, etc.)
+14. [`DueFlashStorage library`](https://github.com/sebnil/DueFlashStorage) for SAM DUE
+15. [`Adafruit's LittleFS/InternalFS`](https://www.adafruit.com) for nRF52. Already included if you already installed Adafruit ***nRF52 board package*** from Boards Manager.
+16. [`DoubleResetDetector_Generic v1.0.2+`](https://github.com/khoih-prog/DoubleResetDetector_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/DoubleResetDetector_Generic.svg?)](https://www.ardu-badge.com/DoubleResetDetector_Generic)
 
 ---
 
@@ -103,16 +107,16 @@ Another way to install is to:
 
 ### Packages' Patches
 
- 1. ***To be able to compile, run and automatically detect and display BOARD_NAME on nRF52840/nRF52832 boards***, you have to copy the whole [nRF52 0.20.5](Packages_Patches/adafruit/hardware/nrf52/0.20.5) directory into Adafruit nRF52 directory (~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5). 
+ 1. ***To be able to compile, run and automatically detect and display BOARD_NAME on nRF52840/nRF52832 boards***, you have to copy the whole [nRF52 0.21.0](Packages_Patches/adafruit/hardware/nrf52/0.21.0) directory into Adafruit nRF52 directory (~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0). 
 
-Supposing the Adafruit nRF52 version is 0.20.5. These files must be copied into the directory:
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/platform.txt`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/boards.txt`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/variants/NINA_B302_ublox/variant.h`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/variants/NINA_B302_ublox/variant.cpp`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/variants/NINA_B112_ublox/variant.h`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/variants/NINA_B112_ublox/variant.cpp`
-- ***`~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/cores/nRF5/Udp.h`***
+Supposing the Adafruit nRF52 version is 0.21.0. These files must be copied into the directory:
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/platform.txt`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/boards.txt`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/variants/NINA_B302_ublox/variant.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/variants/NINA_B302_ublox/variant.cpp`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/variants/NINA_B112_ublox/variant.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/variants/NINA_B112_ublox/variant.cpp`
+- ***`~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/cores/nRF5/Udp.h`***
 
 Whenever a new version is installed, remember to copy these files into the new version directory. For example, new version is x.yy.z
 These files must be copied into the directory:
@@ -147,11 +151,11 @@ This file must be copied into the directory:
 
 - `~/.arduino15/packages/arduino/hardware/sam/x.yy.zz/platform.txt`
 
- 4. ***To be able to compile without error and automatically detect and display BOARD_NAME on Arduino SAMD (Nano-33-IoT, etc) boards***, you have to copy the whole [Arduino SAMD cores 1.8.7](Packages_Patches/arduino/hardware/samd/1.8.7) directory into Arduino SAMD directory (~/.arduino15/packages/arduino/hardware/samd/1.8.7).
+ 4. ***To be able to compile without error and automatically detect and display BOARD_NAME on Arduino SAMD (Nano-33-IoT, etc) boards***, you have to copy the whole [Arduino SAMD cores 1.8.8](Packages_Patches/arduino/hardware/samd/1.8.8) directory into Arduino SAMD directory (~/.arduino15/packages/arduino/hardware/samd/1.8.8).
  
-Supposing the Arduino SAMD version is 1.8.7. These files must be copied into the directory:
-- `~/.arduino15/packages/arduino/hardware/samd/1.8.7/platform.txt`
-- ***`~/.arduino15/packages/arduino/hardware/samd/1.8.7/cores/arduino/Arduino.h`***
+Supposing the Arduino SAMD version is 1.8.8. These files must be copied into the directory:
+- `~/.arduino15/packages/arduino/hardware/samd/1.8.8/platform.txt`
+- ***`~/.arduino15/packages/arduino/hardware/samd/1.8.8/cores/arduino/Arduino.h`***
 
 Whenever a new version is installed, remember to copy these files into the new version directory. For example, new version is x.yy.z
 
@@ -169,22 +173,22 @@ These files must be copied into the directory:
 
 Whenever the above-mentioned compiler error issue is fixed with the new Arduino SAMD release, you don't need to copy the `Arduino.h` file anymore.
 
- 5. ***To be able to automatically detect and display BOARD_NAME on Adafruit SAMD (Itsy-Bitsy M4, etc) boards***, you have to copy the file [Adafruit SAMD platform.txt](Packages_Patches/adafruit/hardware/samd/1.6.0) into Adafruit samd directory (~/.arduino15/packages/adafruit/hardware/samd/1.6.0). 
+ 5. ***To be able to automatically detect and display BOARD_NAME on Adafruit SAMD (Itsy-Bitsy M4, etc) boards***, you have to copy the file [Adafruit SAMD platform.txt](Packages_Patches/adafruit/hardware/samd/1.6.3) into Adafruit samd directory (~/.arduino15/packages/adafruit/hardware/samd/1.6.3). 
 
-Supposing the Adafruit SAMD core version is 1.6.0. This file must be copied into the directory:
+Supposing the Adafruit SAMD core version is 1.6.3. This file must be copied into the directory:
 
-- `~/.arduino15/packages/adafruit/hardware/samd/1.6.0/platform.txt`
+- `~/.arduino15/packages/adafruit/hardware/samd/1.6.3/platform.txt`
 
 Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
 This file must be copied into the directory:
 
 - `~/.arduino15/packages/adafruit/hardware/samd/x.yy.zz/platform.txt`
 
- 6. ***To be able to automatically detect and display BOARD_NAME on Seeeduino SAMD (XIAO M0, Wio Terminal, etc) boards***, you have to copy the file [Seeeduino SAMD platform.txt](Packages_Patches/Seeeduino/hardware/samd/1.7.8) into Adafruit samd directory (~/.arduino15/packages/Seeeduino/hardware/samd/1.7.8). 
+ 6. ***To be able to automatically detect and display BOARD_NAME on Seeeduino SAMD (XIAO M0, Wio Terminal, etc) boards***, you have to copy the file [Seeeduino SAMD platform.txt](Packages_Patches/Seeeduino/hardware/samd/1.7.9) into Adafruit samd directory (~/.arduino15/packages/Seeeduino/hardware/samd/1.7.9). 
 
-Supposing the Seeeduino SAMD core version is 1.7.8. This file must be copied into the directory:
+Supposing the Seeeduino SAMD core version is 1.7.9. This file must be copied into the directory:
 
-- `~/.arduino15/packages/Seeeduino/hardware/samd/1.7.8/platform.txt`
+- `~/.arduino15/packages/Seeeduino/hardware/samd/1.7.9/platform.txt`
 
 Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
 This file must be copied into the directory:
@@ -204,6 +208,8 @@ theses files must be copied into the corresponding directory:
 - `~/.arduino15/packages/STM32/hardware/stm32/x.yy.zz/variants/NUCLEO_F767ZI/variant.h`
 - `~/.arduino15/packages/STM32/hardware/stm32/x.yy.zz/variants/NUCLEO_L053R8/variant.h`
 
+
+---
 ---
 
 ### How to use
@@ -239,16 +245,20 @@ to use EEPROM to save your configuration data.
 5. For STM32 boards, EEPROM_SIZE presence depends on the selected boards.
 5. For nRF52 boards, data is stored in LittleFS/InternalFS.
 
+---
+
 ### How to use default Credentials and have them pre-loaded onto Config Portal
 
 See this example and modify as necessary
 
 1. To load [Default Credentials](examples/SAMD_WiFiNINA_WM/Credentials.h)
+
 ```
 bool LOAD_DEFAULT_CONFIG_DATA = true;
 ```
 
 2. To use system default to load "blank" when there is no valid Credentials
+
 ```
 bool LOAD_DEFAULT_CONFIG_DATA = false;
 ```
@@ -328,6 +338,7 @@ Blynk_WM_Configuration defaultConfig =
 /////////// End Default Config Data /////////////
 ```
 
+---
 
 ### How to add dynamic parameters from sketch
 
@@ -462,6 +473,7 @@ Please be noted that the following ***reserved names are already used in library
 "nm"    for Board Name
 ```
 
+---
 ---
 
 ### Examples 
@@ -1243,7 +1255,7 @@ uint16_t NUM_MENU_ITEMS = 0;
 
 Thanks to [Miguel Alexandre Wisintainer](https://github.com/tcpipchip) for initiating, inspriring, working with, developing, debugging and testing. Without that, support to nRF52, especially ***U-Box B302 running as nRF52840***, has never been started and finished.
 
-Thanks to [thorathome in GitHub](https://github.com/thorathome) to test, suggest and encourage to add those new features in [Blynk_WM](https://github.com/khoih-prog/Blynk_WM), such as Default Credentials/Dynamic Params, Configurable Config Portal Title, DRD. Now those features are speading fast into libraries having similar functionalities.
+Thanks to [Thor Johnson](https://github.com/thorathome) to test, suggest and encourage to add those new features in [Blynk_WM](https://github.com/khoih-prog/Blynk_WM), such as Default Credentials/Dynamic Params, Configurable Config Portal Title, DRD. Now those features are speading fast into libraries having similar functionalities.
 
 ### New Releases v1.0.2
 
@@ -1274,13 +1286,13 @@ Thanks to [thorathome in GitHub](https://github.com/thorathome) to test, suggest
 1. Thanks to [brondolin](https://github.com/brondolin) to provide the amazing fix to permit input special chars such as ***%*** and ***#*** into data fields.
 2. Thanks to [Miguel Alexandre Wisintainer](https://github.com/tcpipchip) for initiating, inspriring, working with, developing, debugging and testing. Without that, support to nRF52, especially ***U-Box B302 running as nRF52840***, has never been started and finished. See [u-blox nina b](https://github.com/khoih-prog/WiFiNINA_Generic/issues/1)
 and [ESP32-based U-BLOX NINA W102 running ENC28J60](https://u-blox-ethernet-ninaw.blogspot.com/).
-3. Thanks to [thorathome in GitHub](https://github.com/thorathome) to test, suggest and encourage to add those new features in [Blynk_WM](https://github.com/khoih-prog/Blynk_WM), such as Default Credentials/Dynamic Params, Configurable Config Portal Title, DRD. Now those features are speading fast into libraries having similar functionalities.
+3. Thanks to [Thor Johnson](https://github.com/thorathome) to test, suggest and encourage to add those new features in [Blynk_WM](https://github.com/khoih-prog/Blynk_WM), such as Default Credentials/Dynamic Params, Configurable Config Portal Title, DRD. Now those features are speading fast into libraries having similar functionalities.
 
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/thorathome"><img src="https://github.com/thorathome.png" width="100px;" alt="igrr"/><br /><sub><b>⭐️ thorathome</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/thorathome"><img src="https://github.com/thorathome.png" width="100px;" alt="igrr"/><br /><sub><b>⭐️ Thor Johnson</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/brondolin"><img src="https://github.com/brondolin.png" width="100px;" alt="brondolin"/><br /><sub><b>brondolin</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/tcpipchip"><img src="https://github.com/tcpipchip.png" width="100px;" alt="tcpipchip"/><br /><sub><b>tcpipchip</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/tcpipchip"><img src="https://github.com/tcpipchip.png" width="100px;" alt="tcpipchip"/><br /><sub><b>Miguel Wisintainer</b></sub></a><br /></td>
   </tr> 
 </table>
 
@@ -1293,6 +1305,12 @@ If you want to contribute to this project:
 - Ask for enhancements
 - Create issues and pull requests
 - Tell other people about this library
+
+---
+
+### License
+
+- The library is licensed under [MIT](https://github.com/khoih-prog/Blynk_WiFiNINA_WM/blob/master/LICENSE)
 
 ---
 
