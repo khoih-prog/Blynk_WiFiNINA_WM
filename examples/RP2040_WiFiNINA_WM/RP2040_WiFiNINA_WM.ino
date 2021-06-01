@@ -1,6 +1,6 @@
 /****************************************************************************************************************************
-  STM32_WiFiNINA.ino
-  For STM32 using WiFiNINA Shield/Module
+  RP2040_WiFiNINA.ino
+  For RP2040 using WiFiNINA Shield/Module
 
   Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32, SAMD and RP2040 boards 
   (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
@@ -36,13 +36,14 @@
 #include "Credentials.h"
 #include "dynamicParams.h"
 
-void heartBeatPrint()
+void heartBeatPrint(void)
 {
   static int num = 1;
 
   if (Blynk.connected())
   {
     Serial.print("B");
+    Blynk.virtualWrite(V0, "OK");
   }
   else
   {
@@ -64,9 +65,9 @@ void check_status()
 {
   static unsigned long checkstatus_timeout = 0;
 
-#define STATUS_CHECK_INTERVAL     15000L
+#define STATUS_CHECK_INTERVAL     10000L
 
-  // Send status report every STATUS_REPORT_INTERVAL (60) seconds: we don't need to send updates frequently if there is no status change.
+  // Send status report every STATUS_REPORT_INTERVAL (10) seconds: we don't need to send updates frequently if there is no status change.
   if ((millis() > checkstatus_timeout) || (checkstatus_timeout == 0))
   {
     // report status to Blynk
@@ -83,20 +84,20 @@ void setup()
   while (!Serial);
   //delay(1000);
 
-  Serial.print("\nStart STM32_WiFiNINA_WM using WiFiNINA_Shield on ");
+  Serial.print("\nStart RP2040_WiFiNINA_WM using WiFiNINA_Shield on ");
   Serial.println(BOARD_NAME);
 
 #if USE_BLYNK_WM
   Serial.println(BLYNK_WIFININA_WM_VERSION);
   Serial.println(DOUBLERESETDETECTOR_GENERIC_VERSION);
   
-  Serial.println("Start Blynk_WM");
+  Serial.println(F("Start Blynk_WM"));
   Blynk.setConfigPortalIP(IPAddress(192, 168, 120, 1));
-  //Blynk.setConfigPortal("STM32", "MySTM32");
-  //Blynk.begin("STM32-WiFiNINA");
+  //Blynk.setConfigPortal("RP2040", "MyRP2040");
+  //Blynk.begin("RP2040-WiFiNINA");
   Blynk.begin(HOST_NAME);
 #else
-  Serial.println("Start Blynk");
+  Serial.println(F("Start Blynk"));
   Blynk.begin(auth, ssid, pass, BlynkServer.c_str(), BLYNK_SERVER_HARDWARE_PORT);
 #endif
 }
@@ -120,7 +121,7 @@ void displayCredentialsInLoop()
 
   if (!displayedCredentials)
   {
-    for (uint16_t i = 0; i < NUM_MENU_ITEMS; i++)
+    for (int i = 0; i < NUM_MENU_ITEMS; i++)
     {
       if (!strlen(myMenuItems[i].pdata))
       {

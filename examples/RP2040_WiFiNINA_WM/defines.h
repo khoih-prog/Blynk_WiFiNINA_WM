@@ -1,6 +1,6 @@
 /****************************************************************************************************************************
-  defines.h for Teensy_WiFiNINA.ino
-  For Teensy (4.x, 3.x, LC) using WiFiNINA Shield/Module
+  defines.h for SAMD_WiFiNINA_WM.ino
+  For RP2040 using WiFiNINA Shield/Module
 
   Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32, SAMD and RP2040 boards 
   (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
@@ -25,43 +25,44 @@
 #define BLYNK_WM_DEBUG            3
 #define _WIFININA_LOGLEVEL_       3
 
-#if ( defined(ESP8266) || defined(ESP32) || defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) || !defined(CORE_TEENSY) )
-#error This code is intended to run on Teensy platform! Please check your Tools->Board setting.
+#if ( defined(ARDUINO_NANO_RP2040_CONNECT) || defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_RASPBERRY_PI_PICO) || \
+      defined(ARDUINO_GENERIC_RP2040) || defined(ARDUINO_ADAFRUIT_FEATHER_RP2040) )
+  #if defined(WIFININA_USE_RP2040)
+    #undef WIFININA_USE_RP2040
+    #undef WIFI_USE_RP2040
+  #endif
+  #define WIFININA_USE_RP2040      true
+  #define WIFI_USE_RP2040          true
+#else
+  #error This code is intended to run only on the RP2040-based boards ! Please check your Tools->Board setting.
 #endif
 
-#ifdef CORE_TEENSY  
-  #if defined(WIFININA_USE_TEENSY)
-    #undef WIFININA_USE_TEENSY
-    #undef WIFI_USE_TEENSY
-  #endif
-  #define WIFININA_USE_TEENSY      true
-  #define WIFI_USE_TEENSY          true
-  #warning Use Teensy architecture
+#if defined(WIFININA_USE_RP2040) && defined(ARDUINO_ARCH_MBED)
+
+  #warning Using ARDUINO_ARCH_MBED
   
-  #if defined(__IMXRT1062__)
-    #define BOARD_TYPE      "TEENSY 4.0"
-  #elif defined(__MK66FX1M0__)
-    #define BOARD_TYPE "Teensy 3.6"
-  #elif defined(__MK64FX512__)
-    #define BOARD_TYPE "Teensy 3.5"
-  #elif defined(__MKL26Z64__)       
-    #define BOARD_TYPE "Teensy LC"
-  #elif defined(__MK20DX256__)       
-    #define BOARD_TYPE "Teensy 3.2-3.1"
-  #elif defined(__MK20DX128__)       
-    #define BOARD_TYPE "Teensy 3.0"  
-  #elif ( defined(__AVR_AT90USB1286__) || defined(__AVR_ATmega32U4__) )   
-    #error "Teensy 2.0 and 2.0++ not supported"
+  #if ( defined(ARDUINO_NANO_RP2040_CONNECT)    || defined(ARDUINO_RASPBERRY_PI_PICO) || \
+        defined(ARDUINO_GENERIC_RP2040) || defined(ARDUINO_ADAFRUIT_FEATHER_RP2040) )
+    // Only undef known BOARD_NAME to use better one
+    #undef BOARD_NAME
   #endif
-#endif
+  
+  #if defined(ARDUINO_RASPBERRY_PI_PICO)
+    #define BOARD_NAME      "MBED RASPBERRY_PI_PICO"
+  #elif defined(ARDUINO_ADAFRUIT_FEATHER_RP2040)
+    #define BOARD_NAME      "MBED ADAFRUIT_FEATHER_RP2040"
+  #elif defined(ARDUINO_GENERIC_RP2040)
+    #define BOARD_NAME      "MBED GENERIC_RP2040"
+  #elif defined(ARDUINO_NANO_RP2040_CONNECT) 
+    #define BOARD_NAME      "MBED NANO_RP2040_CONNECT"
+  #else
+    // Use default BOARD_NAME if exists
+    #if !defined(BOARD_NAME)
+      #define BOARD_NAME      "MBED Unknown RP2040"
+    #endif
+  #endif
 
-#if !defined(BOARD_NAME)
-  #define BOARD_NAME    BOARD_TYPE
 #endif
-
-// Start location in EEPROM to store config data. Default 0
-// Config data Size currently is 128 bytes)
-#define EEPROM_START     0
 
 #define USE_BLYNK_WM      true
 //#define USE_BLYNK_WM      false
@@ -112,12 +113,11 @@
   #define MAX_SSID_IN_LIST                    8
   
   /////////////////////////////////////////////
-  
-  #include <BlynkSimpleWiFiNINA_Teensy_WM.h>
+
+  #include <BlynkSimpleWiFiNINA_RP2040_WM.h>
 
 #else
-
-  #include <BlynkSimpleWiFiNINA_Teensy.h>
+  #include <BlynkSimpleWiFiNINA_RP2040.h>
   
   #define USE_LOCAL_SERVER      true
   
@@ -134,11 +134,14 @@
   #define BLYNK_SERVER_HARDWARE_PORT    8080
   
   // Your WiFi credentials.
-  char ssid[] = "****";
+  //char ssid[] = "****";
+  //char pass[] = "****";
+  
+  char ssid[] = "HueNet1";
   char pass[] = "****";
 
 #endif
 
-#define HOST_NAME   "Teensy-WiFiNINA"
+#define HOST_NAME   "RP2040-WiFiNINA"
 
 #endif      //defines_h

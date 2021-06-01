@@ -1,6 +1,6 @@
 /****************************************************************************************************************************
-  Credentials.h
-  For nRF52 using WiFiNINA Shield/Module
+  Credentials.h for RP2040_WiFiNINA_WM.ino
+  For RP2040 using WiFiNINA Shield/Module
 
   Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32, SAMD and RP2040 boards 
   (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
@@ -19,7 +19,7 @@
 /// Start Default Config Data //////////////////
 
 /*
-  // Defined in <BlynkSimpleWiFiNINA_nRF52_WM.h>
+  // Defined in <BlynkSimpleWiFiNINA_RP2040_WM.h>
 
   #define SSID_MAX_LEN      32
   #define PASS_MAX_LEN      64

@@ -1,6 +1,8 @@
 /****************************************************************************************************************************
-  dynamicParams.h
-  For SAM DUE boards using WiFiNINA Shields
+  dynamicParams.h for SAMD_WiFiNINA_WM.ino
+  For SAMD using WiFiNINA Shield/Module
+
+  For RP2040 using WiFiNINA Shield/Module
 
   Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32, SAMD and RP2040 boards 
   (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
@@ -16,11 +18,11 @@
 
 #if USE_BLYNK_WM
 
-//#define USE_DYNAMIC_PARAMETERS      true
+#define USE_DYNAMIC_PARAMETERS      true
 
 /////////////// Start dynamic Credentials ///////////////
 
-//Defined in <BlynkSimpleWiFiNINA_DUE_WM.h>
+//Defined in <BlynkSimpleWiFiNINA_RP2040_WM.h>
 /**************************************
   #define MAX_ID_LEN                5
   #define MAX_DISPLAY_NAME_LEN      16

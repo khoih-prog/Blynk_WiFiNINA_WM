@@ -1,32 +1,14 @@
 /****************************************************************************************************************************
-   defines.h for Mega_WiFiNINA.ino
-   For AVR Mega boards using WiFiNINA Shields
+  defines.h
+  For AVR Mega boards using WiFiNINA Shields
 
-   Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32 and SAMD boards 
-   (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
-   autoconnect/autoreconnect of WiFiNINA/Blynk
+  Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32, SAMD and RP2040 boards 
+  (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
+  autoconnect/autoreconnect of WiFiNINA/Blynk
 
-   Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
-   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
-   Licensed under MIT license
-   Version: 1.0.4
-
-   Original Blynk Library author:
-   @file       BlynkSimpleWiFiNINA.h
-   @author     Volodymyr Shymanskyy
-   @license    This project is released under the MIT License (MIT)
-   @copyright  Copyright (c) 2018 Volodymyr Shymanskyy
-   @date       Sep 2018
-   @brief
-
-   Version Modified By   Date        Comments
-   ------- -----------  ----------   -----------
-    1.0.0   K Hoang      07/04/2020  Initial coding
-    1.0.1   K Hoang      09/04/2020  Add support to SAM DUE, Teensy, STM32
-    1.0.2   K Hoang      15/04/2020  Fix bug. Add SAMD51 support.
-    1.0.3   K Hoang      05/05/2020  Add nRF52 support, MultiWiFi/Blynk, Configurable Config Portal Title, 
-                                     Default Config Data and DRD. Update examples.
-    1.0.4   K Hoang      13/05/2020 Add support to Arduino UNO WiFi R2 
+  Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
+  Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
+  Licensed under MIT license
  *****************************************************************************************************************************/
 
 #ifndef defines_h
@@ -42,14 +24,20 @@
 #define WIFININA_DEBUG            true
 #define BLYNK_WM_DEBUG            3
 
-#if !( defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) )
-#error This code is intended to run only on the Arduino Mega 1280/2560 boards ! Please check your Tools->Board setting.
+#if !( defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_ADK) )
+  #error This code is intended to run only on the Arduino Mega 1280/2560/ADK boards ! Please check your Tools->Board setting.
 #endif
 
 #if defined(ARDUINO_AVR_MEGA2560)
-#define BOARD_TYPE      "AVR Mega2560"
+  #define BOARD_TYPE      "AVR Mega2560"
+#elif defined(ARDUINO_AVR_ADK)
+  #define BOARD_TYPE      "AVR Mega ADK"
 #else
-#define BOARD_TYPE      "AVR Mega"
+  #define BOARD_TYPE      "AVR Mega"
+#endif
+
+#if !defined(BOARD_NAME)
+  #define BOARD_NAME    BOARD_TYPE
 #endif
 
 // Start location in EEPROM to store config data. Default 0

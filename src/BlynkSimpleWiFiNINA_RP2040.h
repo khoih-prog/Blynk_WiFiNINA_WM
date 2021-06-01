@@ -1,6 +1,6 @@
 /****************************************************************************************************************************
-  BlynkSimpleWiFiNINA_SAMD.h
-  For SAMD boards using WiFiNINA Shields
+  BlynkSimpleWiFiNINA_RP2040.h
+  For RP2040 boards using WiFiNINA Shields
 
   Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32, SAMD and RP2040 boards 
   (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
@@ -34,26 +34,47 @@
  *****************************************************************************************************************************/
 
 
-#ifndef BlynkSimpleWiFiNINA_SAMD_h
-#define BlynkSimpleWiFiNINA_SAMD_h
+#ifndef BlynkSimpleWiFiNINA_RP2040_h
+#define BlynkSimpleWiFiNINA_RP2040_h
 
-#if ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
-   || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) \
-   || defined(ARDUINO_SAMD_MKRWAN1310) || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) \
-   || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) || defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) \
-   || defined(__SAMD51__) || defined(__SAMD51J20A__) || defined(__SAMD51J19A__) || defined(__SAMD51G19A__) )
-  #if defined(BLYNK_WIFININA_USE_SAMD)
-    #undef BLYNK_WIFININA_USE_SAMD
+#if ( defined(ARDUINO_NANO_RP2040_CONNECT) || defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_RASPBERRY_PI_PICO) || \
+      defined(ARDUINO_GENERIC_RP2040) || defined(ARDUINO_ADAFRUIT_FEATHER_RP2040) )
+  #if defined(WIFININA_USE_RP2040)
+    #undef WIFININA_USE_RP2040
   #endif
-  #define BLYNK_WIFININA_USE_SAMD      true
+  #define WIFININA_USE_RP2040      true
 #else
-  #error This code is intended to run on the SAMD platform! Please check your Tools->Board setting.  
+  #error This code is intended to run only on the RP2040-based boards ! Please check your Tools->Board setting.
 #endif
 
 #define BLYNK_WIFININA_WM_VERSION        "Blynk_WiFiNINA_WM v1.1.0"
 
+//////////////////////////////////////////////
+// From v1.1.0 to display correct BLYNK_INFO_DEVICE
+
+#define BLYNK_USE_128_VPINS
+
+#if defined(BLYNK_INFO_DEVICE)
+  #undef BLYNK_INFO_DEVICE
+#endif
+#define BLYNK_BUFFERS_SIZE    4096
+
+#if defined(BLYNK_INFO_DEVICE)
+  #undef BLYNK_INFO_DEVICE
+#endif
+
+#if defined(BOARD_NAME)
+  #define BLYNK_INFO_DEVICE   BOARD_NAME
+#elif defined(BOARD_TYPE)
+  #define BLYNK_INFO_DEVICE   BOARD_TYPE
+#else
+  #define BLYNK_INFO_DEVICE   "RP2040"
+#endif
+
+//////////////////////////////////////////////
+
 #ifndef BLYNK_INFO_CONNECTION
-#define BLYNK_INFO_CONNECTION  "WiFiNINA"
+  #define BLYNK_INFO_CONNECTION  "WiFiNINA"
 #endif
 
 #define BLYNK_SEND_ATOMIC
@@ -173,4 +194,4 @@ BlynkWifiCommon Blynk(_blynkTransport);
 
 #include <BlynkWidgets.h>
 
-#endif    //BlynkSimpleWiFiNINA_SAMD_h
+#endif    //BlynkSimpleWiFiNINA_RP2040_h

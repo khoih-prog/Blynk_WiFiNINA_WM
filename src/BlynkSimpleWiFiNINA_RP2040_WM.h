@@ -1,8 +1,8 @@
 /****************************************************************************************************************************
-  BlynkSimpleWiFiNINA_nRF52_WM.h
-  For nRF52 boards using WiFiNINA Shields
+  BlynkSimpleWiFiNINA_RP2040_WM.h
+  For RP2040 boards using WiFiNINA Shields
 
-  Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32 and SAMD boards 
+  Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32, SAMD and RP2040 boards 
   (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
   autoconnect/autoreconnect of WiFiNINA/Blynk
 
@@ -34,18 +34,17 @@
  *****************************************************************************************************************************/
 
 
-#ifndef BlynkSimpleWiFiNINA_nRF52_WM_h
-#define BlynkSimpleWiFiNINA_nRF52_WM_h
+#ifndef BlynkSimpleWiFiNINA_RP2040_WM_h
+#define BlynkSimpleWiFiNINA_RP2040_WM_h
 
-#if ( defined(NRF52840_FEATHER) || defined(NRF52832_FEATHER) || defined(NRF52_SERIES) || defined(ARDUINO_NRF52_ADAFRUIT) || \
-        defined(NRF52840_FEATHER_SENSE) || defined(NRF52840_ITSYBITSY) || defined(NRF52840_CIRCUITPLAY) || defined(NRF52840_CLUE) || \
-        defined(NRF52840_METRO) || defined(NRF52840_PCA10056) || defined(PARTICLE_XENON) || defined(NINA_B302_ublox) )
-  #if defined(BLYNK_WIFININA_USE_NRF528XX)
-    #undef BLYNK_WIFININA_USE_NRF528XX
+#if ( defined(ARDUINO_NANO_RP2040_CONNECT) || defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_RASPBERRY_PI_PICO) || \
+      defined(ARDUINO_GENERIC_RP2040) || defined(ARDUINO_ADAFRUIT_FEATHER_RP2040) )
+  #if defined(WIFININA_USE_RP2040)
+    #undef WIFININA_USE_RP2040
   #endif
-  #define BLYNK_WIFININA_USE_NRF528XX      true
+  #define WIFININA_USE_RP2040      true
 #else
-  #error This code is intended to run on the nRF52 platform! Please check your Tools->Board setting.  
+  #error This code is intended to run only on the RP2040-based boards ! Please check your Tools->Board setting.
 #endif
 
 #define BLYNK_WIFININA_WM_VERSION        "Blynk_WiFiNINA_WM v1.1.0"
@@ -69,7 +68,7 @@
 #elif defined(BOARD_TYPE)
   #define BLYNK_INFO_DEVICE   BOARD_TYPE
 #else
-  #define BLYNK_INFO_DEVICE   "nRF52"
+  #define BLYNK_INFO_DEVICE   "RP2040"
 #endif
 
 //////////////////////////////////////////////
@@ -100,14 +99,11 @@
 #include "WiFiNINA_Pinout_Generic.h"
 #include <WiFiWebServer.h>
 
-//Use LittleFS for nRF52
-#include <Adafruit_LittleFS.h>
-#include <InternalFileSystem.h>
+//////////////////////////////////////////
 
-using namespace Adafruit_LittleFS_Namespace;
-File file(InternalFS);
+#warning Using LittleFS in BlynkSimpleWiFiNINA_RP2040_WM.h
 
-//////////////////////////////////////////////
+//////////////////////////////////////////
 
 #include <BlynkWiFiNINA_WM_Debug.h>
 
@@ -230,7 +226,7 @@ extern Blynk_WM_Configuration defaultConfig;
 
 // -- HTML page fragments
 
-const char WIFININA_HTML_HEAD_START[] /*PROGMEM*/ = "<!DOCTYPE html><html><head><title>BlynkWiFiNINA_NRF52_WM</title>";
+const char WIFININA_HTML_HEAD_START[] /*PROGMEM*/ = "<!DOCTYPE html><html><head><title>BlynkWiFiNINA_RP2040_WM</title>";
 
 const char WIFININA_HTML_HEAD_STYLE[] /*PROGMEM*/ = "<style>div,input,select{padding:5px;font-size:1em;}input,select{width:95%;}body{text-align:center;}button{background-color:#16A1E7;color:#fff;line-height:2.4rem;font-size:1.2rem;width:100%;}fieldset{border-radius:0.3rem;margin:0px;}</style>";
 
@@ -443,7 +439,7 @@ public:
         getRFC952_hostname(iHostname);
       }
       
-      WN_LOGERROR1(("Hostname="), RFC952_hostname);
+      WN_LOGERROR1(F("Hostname="), RFC952_hostname);
       //////
 
       //// New DRD ////
@@ -461,7 +457,7 @@ public:
       
       if (LOAD_DEFAULT_CONFIG_DATA)
       {
-        WN_LOGERROR(("======= Start Default Config Data ======="));
+        WN_LOGERROR(F("======= Start Default Config Data ======="));
         displayConfigData(defaultConfig);
       }
       
@@ -503,16 +499,16 @@ public:
       }
       else
       {      
-        WN_LOGERROR(isForcedConfigPortal? ("bg: isForcedConfigPortal = true") : ("bg: isForcedConfigPortal = false"));
+        WN_LOGERROR(isForcedConfigPortal? F("bg: isForcedConfigPortal = true") : F("bg: isForcedConfigPortal = false"));
                      
         // If not persistent => clear the flag so that after reset. no more CP, even CP not entered and saved
         if (persForcedConfigPortal)
         {
-          WN_LOGERROR1(("bg:Stay forever in CP:"), isForcedConfigPortal ? ("Forced-Persistent") : (noConfigPortal ? ("No ConfigDat") : ("DRD/MRD")));
+          WN_LOGERROR1(F("bg:Stay forever in CP:"), isForcedConfigPortal ? F("Forced-Persistent") : (noConfigPortal ? F("No ConfigDat") : F("DRD/MRD")));
         }
         else
         {
-          WN_LOGERROR1(("bg:Stay forever in CP:"), isForcedConfigPortal ? ("Forced-non-Persistent") : (noConfigPortal ? ("No ConfigDat") : ("DRD/MRD")));
+          WN_LOGERROR1(F("bg:Stay forever in CP:"), isForcedConfigPortal ? F("Forced-non-Persistent") : (noConfigPortal ? F("No ConfigDat") : F("DRD/MRD")));
           clearForcedCP();
         }
           
@@ -593,7 +589,7 @@ public:
           {
             wifiDisconnectedOnce = false;
             wifi_connected = false;
-            WN_LOGERROR(("r:Check&WLost"));
+            WN_LOGERROR(F("r:Check&WLost"));
           }
           else
           {
@@ -878,13 +874,58 @@ public:
     }
     
     //////////////////////////////////////////////
+
+#if !defined(ARDUINO_ARCH_MBED)   
+     
+    typedef struct
+    {
+      uint32_t CPUID;                  /*!< Offset: 0x000 (R/ )  CPUID Base Register */
+      uint32_t ICSR;                   /*!< Offset: 0x004 (R/W)  Interrupt Control and State Register */
+      uint32_t RESERVED0;
+      uint32_t AIRCR;                  /*!< Offset: 0x00C (R/W)  Application Interrupt and Reset Control Register */
+      uint32_t SCR;                    /*!< Offset: 0x010 (R/W)  System Control Register */
+      uint32_t CCR;                    /*!< Offset: 0x014 (R/W)  Configuration Control Register */
+      uint32_t RESERVED1;
+      uint32_t SHP[2U];                /*!< Offset: 0x01C (R/W)  System Handlers Priority Registers. [0] is RESERVED */
+      uint32_t SHCSR;                  /*!< Offset: 0x024 (R/W)  System Handler Control and State Register */
+    } SCB_Type;
+    
+    //////////////////////////////////////////////
+
+    void NVIC_SystemReset()
+    {                  
+    /* SCB Application Interrupt and Reset Control Register Definitions */
+    #define SCB_AIRCR_VECTKEY_Pos              16U                                      /*!< SCB AIRCR: VECTKEY Position */
+    #define SCB_AIRCR_VECTKEY_Msk              (0xFFFFUL << SCB_AIRCR_VECTKEY_Pos)      /*!< SCB AIRCR: VECTKEY Mask */
+        
+    #define SCB_AIRCR_SYSRESETREQ_Pos           2U                                      /*!< SCB AIRCR: SYSRESETREQ Position */
+    #define SCB_AIRCR_SYSRESETREQ_Msk          (1UL << SCB_AIRCR_SYSRESETREQ_Pos)       /*!< SCB AIRCR: SYSRESETREQ Mask */    
+
+    #define SCS_BASE            (0xE000E000UL)                            /*!< System Control Space Base Address */
+    #define SysTick_BASE        (SCS_BASE +  0x0010UL)                    /*!< SysTick Base Address */
+    #define NVIC_BASE           (SCS_BASE +  0x0100UL)                    /*!< NVIC Base Address */
+    #define SCB_BASE            (SCS_BASE +  0x0D00UL)                    /*!< System Control Block Base Address */
+
+    #define SCB                 ((SCB_Type       *)     SCB_BASE      )   /*!< SCB configuration struct */
+    #define SysTick             ((SysTick_Type   *)     SysTick_BASE  )   /*!< SysTick configuration struct */
+    #define NVIC                ((NVIC_Type      *)     NVIC_BASE     )   /*!< NVIC configuration struct */
+
+                                  
+      SCB->AIRCR  = ((0x5FAUL << SCB_AIRCR_VECTKEY_Pos) | SCB_AIRCR_SYSRESETREQ_Msk);
+
+      while(true);
+    }
+#endif
+
+    //////////////////////////////////////////////
     
     void resetFunc()
     {
       delay(1000);
-      // Restart for nRF52
+      // Restart for RPi_Pico
       NVIC_SystemReset();
     }
+
 
   private:
     String ipAddress = "0.0.0.0";
@@ -1020,55 +1061,53 @@ public:
     }
     
     // Use LittleFS/InternalFS for nRF52
-#define  CONFIG_FILENAME              ("/wm_config.dat")
-#define  CONFIG_FILENAME_BACKUP       ("/wm_config.bak")
+#define  CONFIG_FILENAME                  ("/fs/wm_config.dat")
+#define  CONFIG_FILENAME_BACKUP           ("/fs/wm_config.bak")
 
-#define  CREDENTIALS_FILENAME         ("/wm_cred.dat")
-#define  CREDENTIALS_FILENAME_BACKUP  ("/wm_cred.bak")
+#define  CREDENTIALS_FILENAME             ("/fs/wm_cred.dat")
+#define  CREDENTIALS_FILENAME_BACKUP      ("/fs/wm_cred.bak")
 
-#define  CONFIG_PORTAL_FILENAME           ("/wm_cp.dat")
-#define  CONFIG_PORTAL_FILENAME_BACKUP    ("/wm_cp.bak")
+#define  CONFIG_PORTAL_FILENAME           ("/fs/wm_cp.dat")
+#define  CONFIG_PORTAL_FILENAME_BACKUP    ("/fs/wm_cp.bak")
     
     //////////////////////////////////////////////
     
     void saveForcedCP(uint32_t value)
     {
-      file.open(CONFIG_PORTAL_FILENAME, FILE_O_WRITE);
-      //File file = FileFS.open(CONFIG_PORTAL_FILENAME, "w");
+      // Mbed RP2040 code
+      FILE *file = fopen(CONFIG_PORTAL_FILENAME, "w");
       
-      WN_LOGERROR(("SaveCPFile "));
+      WN_LOGERROR(F("SaveCPFile "));
 
       if (file)
       {
-        file.seek(0);
-        file.write((uint8_t*) &value, sizeof(value));       
-        //file.write((uint8_t*) &value, sizeof(value));
+        fseek(file, 0, SEEK_SET);
+        fwrite((uint8_t *) &value, 1, sizeof(value), file);        
+        fclose(file);
         
-        file.close();
-        WN_LOGERROR(("OK"));
+        WN_LOGERROR(F("OK"));
       }
       else
       {
-        WN_LOGERROR(("failed"));
+        WN_LOGERROR(F("failed"));
       }
 
       // Trying open redundant CP file
-      file.open(CONFIG_PORTAL_FILENAME_BACKUP, FILE_O_WRITE);
-      //file = FileFS.open(CONFIG_PORTAL_FILENAME_BACKUP, "w");
+      file = fopen(CONFIG_PORTAL_FILENAME_BACKUP, "w");
       
-      WN_LOGERROR(("SaveBkUpCPFile "));
+      WN_LOGERROR(F("SaveBkUpCPFile "));
 
       if (file)
       {
-        file.seek(0);
-        file.write((uint8_t*) &value, sizeof(value));       
-        //file.write((uint8_t*) &value, sizeof(value));
-        file.close();
-        WN_LOGERROR(("OK"));
+        fseek(file, 0, SEEK_SET);
+        fwrite((uint8_t *) &value, 1, sizeof(value), file);        
+        fclose(file);
+        
+        WN_LOGERROR(F("OK"));
       }
       else
       {
-        WN_LOGERROR(("failed"));
+        WN_LOGERROR(F("failed"));
       }
     }
     
@@ -1078,7 +1117,7 @@ public:
     {
       uint32_t readForcedConfigPortalFlag = isPersistent? FORCED_PERS_CONFIG_PORTAL_FLAG_DATA : FORCED_CONFIG_PORTAL_FLAG_DATA;
   
-      WN_LOGERROR(isPersistent ? ("setForcedCP Persistent") : ("setForcedCP non-Persistent"));
+      WN_LOGERROR(isPersistent ? F("setForcedCP Persistent") : F("setForcedCP non-Persistent"));
       
       saveForcedCP(readForcedConfigPortalFlag);
     }
@@ -1089,7 +1128,7 @@ public:
     {
       uint32_t readForcedConfigPortalFlag = 0;
    
-      WN_LOGERROR(("clearForcedCP"));
+      WN_LOGERROR(F("clearForcedCP"));
       
       saveForcedCP(readForcedConfigPortalFlag);
     }
@@ -1100,34 +1139,32 @@ public:
     {
       uint32_t readForcedConfigPortalFlag;
     
-      WN_LOGDEBUG(("Check if isForcedCP"));
+      WN_LOGDEBUG(F("Check if isForcedCP"));
       
-      file.open(CONFIG_PORTAL_FILENAME, FILE_O_READ);
-      //File file = FileFS.open(CONFIG_PORTAL_FILENAME, "r");
-      WN_LOGDEBUG(("LoadCPFile "));
+      FILE *file = fopen(CONFIG_PORTAL_FILENAME, "r");
+      
+      WN_LOGDEBUG(F("LoadCPFile "));
 
       if (!file)
       {
-        WN_LOGDEBUG(("failed"));
+        WN_LOGDEBUG(F("failed"));
 
         // Trying open redundant config file
-        file.open(CONFIG_PORTAL_FILENAME_BACKUP, FILE_O_READ);
-        //file = FileFS.open(CONFIG_PORTAL_FILENAME_BACKUP, "r");
-        WN_LOGDEBUG(("LoadBkUpCPFile "));
+        file = fopen(CONFIG_PORTAL_FILENAME_BACKUP, "r");
+        
+        WN_LOGDEBUG(F("LoadBkUpCPFile "));
 
         if (!file)
         {
-          WN_LOGDEBUG(("failed"));
+          WN_LOGDEBUG(F("failed"));
           return false;
         }
       }
-      
-      file.seek(0);
-      file.read((char *) &readForcedConfigPortalFlag, sizeof(readForcedConfigPortalFlag));     
-      //file.readBytes((char *) &readForcedConfigPortalFlag, sizeof(readForcedConfigPortalFlag));
-
-      file.close();
-      WN_LOGDEBUG(("OK"));
+           
+      fseek(file, 0, SEEK_SET);
+      fread((uint8_t *) &readForcedConfigPortalFlag, 1, sizeof(readForcedConfigPortalFlag), file);        
+      fclose(file);
+      WN_LOGDEBUG(F("OK"));
       
       
       // Return true if forced CP (0xDEADBEEF read at offset EPROM_START + DRD_FLAG_DATA_SIZE + CONFIG_DATA_SIZE)
@@ -1158,21 +1195,22 @@ public:
       int readCheckSum;
       char* readBuffer = nullptr;
            
-      file.open(CREDENTIALS_FILENAME, FILE_O_READ);
-      WN_LOGDEBUG(("LoadCredFile "));
+      FILE *file = fopen(CREDENTIALS_FILENAME, "r");
+      
+      WN_LOGDEBUG(F("LoadCredFile "));
 
       if (!file)
       {
-        WN_LOGDEBUG(("failed"));
+        WN_LOGDEBUG(F("failed"));
 
         // Trying open redundant config file
-        file.open(CREDENTIALS_FILENAME_BACKUP, FILE_O_READ);
+        file = fopen(CREDENTIALS_FILENAME_BACKUP, "r");
         
-        WN_LOGDEBUG(("LoadBkUpCredFile "));
+        WN_LOGDEBUG(F("LoadBkUpCredFile "));
 
         if (!file)
         {
-          WN_LOGDEBUG(("failed"));
+          WN_LOGDEBUG(F("failed"));
           return false;
         }
       }
@@ -1196,30 +1234,30 @@ public:
         // check to see NULL => stop and return false
         if (readBuffer == NULL)
         {
-          WN_LOGDEBUG(("ChkCrR: Error can't allocate buffer."));
+          WN_LOGERROR(F("ChkCrR: Error can't allocate buffer."));
           return false;
         }     
         else
         {
-          WN_LOGDEBUG1(("ChkCrR: Buffer allocated, Sz="), maxBufferLength + 1);
-        }    
-     
+          WN_LOGDEBUG1(F("ChkCrR: Buffer allocated, Sz="), maxBufferLength + 1);
+        }  
+          
         uint16_t offset = 0;
         
         for (uint16_t i = 0; i < NUM_MENU_ITEMS; i++)
         {       
-          char* _pointer = readBuffer;
+          uint8_t * _pointer = (uint8_t *) readBuffer;
 
           // Actual size of pdata is [maxlen + 1]
           memset(readBuffer, 0, myMenuItems[i].maxlen + 1);
           
-          // Redundant, but to be sure correct position
-          file.seek(offset);
-          file.read(_pointer, myMenuItems[i].maxlen);
-          
+          // Redundant, but to be sure correct position         
+          fseek(file, offset, SEEK_SET);
+          fread(_pointer, 1, myMenuItems[i].maxlen, file);  
+           
           offset += myMenuItems[i].maxlen;
        
-          WN_LOGDEBUG3(("ChkCrR:pdata="), readBuffer, (",len="), myMenuItems[i].maxlen);         
+          WN_LOGDEBUG3(F("ChkCrR:pdata="), readBuffer, F(",len="), myMenuItems[i].maxlen);         
                  
           for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++,_pointer++)
           {         
@@ -1227,29 +1265,28 @@ public:
           }       
         }
 
-        file.read((char *) &readCheckSum, sizeof(readCheckSum));
+        fread((uint8_t *) &readCheckSum, 1, sizeof(readCheckSum), file);
         
-        WN_LOGDEBUG(("OK"));
-        file.close();
+        WN_LOGDEBUG(F("OK"));
         
-        WN_LOGDEBUG3(("CrCCsum=0x"), String(checkSum, HEX), (",CrRCsum=0x"), String(readCheckSum, HEX));
+        fclose(file);
         
-        // Free buffer
+        WN_LOGERROR3(F("CrCCsum=0x"), String(checkSum, HEX), F(",CrRCsum=0x"), String(readCheckSum, HEX));
+        
         if (readBuffer != nullptr)
         {
           // Free buffer
           delete [] readBuffer;
-            
-          WN_LOGDEBUG(("Buffer freed"));
+          WN_LOGDEBUG(F("Buffer freed"));
         }
         
         if ( checkSum == readCheckSum)
         {
           return true;
         }
-      }  
+      }
       
-      return false;    
+      return false;
     }
     
     //////////////////////////////////////////////
@@ -1260,20 +1297,22 @@ public:
       int readCheckSum;
       totalDataSize = sizeof(Blynk_WM_config) + sizeof(readCheckSum);
       
-      file.open(CREDENTIALS_FILENAME, FILE_O_READ);
-      WN_LOGDEBUG(("LoadCredFile "));
+      FILE *file = fopen(CREDENTIALS_FILENAME, "r");
+      
+      WN_LOGDEBUG(F("LoadCredFile "));
 
       if (!file)
       {
-        WN_LOGDEBUG(("failed"));
+        WN_LOGDEBUG(F("failed"));
 
         // Trying open redundant config file
-        file.open(CREDENTIALS_FILENAME_BACKUP, FILE_O_READ);
-        WN_LOGDEBUG(("LoadBkUpCredFile "));
+        file = fopen(CREDENTIALS_FILENAME_BACKUP, "r");
+        
+        WN_LOGDEBUG(F("LoadBkUpCredFile "));
 
         if (!file)
         {
-          WN_LOGDEBUG(("failed"));
+          WN_LOGDEBUG(F("failed"));
           return false;
         }
       }
@@ -1282,19 +1321,19 @@ public:
       
       for (uint16_t i = 0; i < NUM_MENU_ITEMS; i++)
       {       
-        char* _pointer = myMenuItems[i].pdata;
+        uint8_t * _pointer = (uint8_t *) myMenuItems[i].pdata;
         totalDataSize += myMenuItems[i].maxlen;
 
         // Actual size of pdata is [maxlen + 1]
         memset(myMenuItems[i].pdata, 0, myMenuItems[i].maxlen + 1);
         
         // Redundant, but to be sure correct position
-        file.seek(offset);
-        file.read(_pointer, myMenuItems[i].maxlen);
+        fseek(file, offset, SEEK_SET);
+        fread(_pointer, 1, myMenuItems[i].maxlen, file);
         
         offset += myMenuItems[i].maxlen;        
     
-        WN_LOGDEBUG3(("CrR:pdata="), myMenuItems[i].pdata, (",len="), myMenuItems[i].maxlen);         
+        WN_LOGDEBUG3(F("CrR:pdata="), myMenuItems[i].pdata, F(",len="), myMenuItems[i].maxlen);         
                
         for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++,_pointer++)
         {         
@@ -1302,13 +1341,13 @@ public:
         }       
       }
 
-      file.read((char *) &readCheckSum, sizeof(readCheckSum));
+      fread((uint8_t *) &readCheckSum, 1, sizeof(readCheckSum), file);
       
-      WN_LOGDEBUG(("OK"));
+      WN_LOGDEBUG(F("OK"));
       
-      file.close();
+      fclose(file);
       
-      WN_LOGDEBUG3(("CrCCsum=0x"), String(checkSum, HEX), (",CrRCsum=0x"), String(readCheckSum, HEX));
+      WN_LOGDEBUG3(F("CrCCsum=0x"), String(checkSum, HEX), F(",CrRCsum=0x"), String(readCheckSum, HEX));
       
       if ( checkSum != readCheckSum)
       {
@@ -1324,28 +1363,29 @@ public:
     {
       int checkSum = 0;
     
-      file.open(CREDENTIALS_FILENAME, FILE_O_WRITE);
-      WN_LOGDEBUG(("SaveCredFile "));
+      FILE *file = fopen(CREDENTIALS_FILENAME, "w");
+      
+      WN_LOGDEBUG(F("SaveCredFile "));
 
       uint16_t offset = 0;
       
       for (uint16_t i = 0; i < NUM_MENU_ITEMS; i++)
       {       
-        char* _pointer = myMenuItems[i].pdata;
+        uint8_t* _pointer = (uint8_t *) myMenuItems[i].pdata;
        
-        WN_LOGDEBUG3(("CW1:pdata="), myMenuItems[i].pdata, (",len="), myMenuItems[i].maxlen);
+        WN_LOGDEBUG3(F("CW1:pdata="), myMenuItems[i].pdata, F(",len="), myMenuItems[i].maxlen);
         
         if (file)
         {
           // Redundant, but to be sure correct position
-          file.seek(offset);                   
-          file.write((uint8_t*) _pointer, myMenuItems[i].maxlen); 
+          fseek(file, offset, SEEK_SET);
+          fwrite(_pointer, 1, myMenuItems[i].maxlen, file); 
           
           offset += myMenuItems[i].maxlen;      
         }
         else
         {
-          WN_LOGDEBUG(("failed"));
+          WN_LOGDEBUG(F("failed"));
         }        
                      
         for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++,_pointer++)
@@ -1356,40 +1396,42 @@ public:
       
       if (file)
       {
-        file.write((uint8_t*) &checkSum, sizeof(checkSum));     
-        file.close();
-        WN_LOGDEBUG(("OK"));    
+        fwrite((uint8_t *) &checkSum, 1, sizeof(checkSum), file);        
+        fclose(file);
+        
+        WN_LOGDEBUG(F("OK"));    
       }
       else
       {
-        WN_LOGDEBUG(("failed"));
+        WN_LOGDEBUG(F("failed"));
       }   
            
-      WN_LOGDEBUG1(("CrWCSum=0x"), String(checkSum, HEX));
+      WN_LOGDEBUG1(F("CrWCSum=0x"), String(checkSum, HEX));
       
       // Trying open redundant Auth file
-      file.open(CREDENTIALS_FILENAME_BACKUP, FILE_O_WRITE);
-      WN_LOGDEBUG(("SaveBkUpCredFile "));
+      file = fopen(CREDENTIALS_FILENAME_BACKUP, "w");
+      
+      WN_LOGDEBUG(F("SaveBkUpCredFile "));
 
       offset = 0;
       
       for (uint16_t i = 0; i < NUM_MENU_ITEMS; i++)
       {       
-        char* _pointer = myMenuItems[i].pdata;
+        uint8_t* _pointer = (uint8_t *) myMenuItems[i].pdata;
      
-        WN_LOGDEBUG3(("CW2:pdata="), myMenuItems[i].pdata, (",len="), myMenuItems[i].maxlen);
+        WN_LOGDEBUG3(F("CW2:pdata="), myMenuItems[i].pdata, F(",len="), myMenuItems[i].maxlen);
         
         if (file)
         {
-          file.seek(offset);                   
-          file.write((uint8_t*) _pointer, myMenuItems[i].maxlen); 
+          fseek(file, offset, SEEK_SET);
+          fwrite(_pointer, 1, myMenuItems[i].maxlen, file); 
           
           // Redundant, but to be sure correct position
           offset += myMenuItems[i].maxlen; 
         }
         else
         {
-          WN_LOGDEBUG(("failed"));
+          WN_LOGDEBUG(F("failed"));
         }        
                      
         for (uint16_t j = 0; j < myMenuItems[i].maxlen; j++,_pointer++)
@@ -1400,14 +1442,14 @@ public:
       
       if (file)
       {
-        file.write((uint8_t*) &checkSum, sizeof(checkSum));     
-        file.close();
+        fwrite((uint8_t *) &checkSum, 1, sizeof(checkSum), file);        
+        fclose(file);
         
-        WN_LOGDEBUG(("OK"));    
+        WN_LOGDEBUG(F("OK"));    
       }
       else
       {
-        WN_LOGDEBUG(("failed"));
+        WN_LOGDEBUG(F("failed"));
       }   
     }
 #endif
@@ -1456,7 +1498,7 @@ public:
       #endif     
       {
         // If SSID, PW ="blank" or NULL, set the flag
-        WN_LOGERROR(("Invalid Stored WiFi Config Data"));
+        WN_LOGERROR(F("Invalid Stored WiFi Config Data"));
            
         // Nullify the invalid data to avoid displaying garbage
         memset(&Blynk_WM_config, 0, sizeof(Blynk_WM_config));
@@ -1473,31 +1515,32 @@ public:
 
     bool loadConfigData()
     {
-      WN_LOGDEBUG(("LoadCfgFile "));
+      WN_LOGDEBUG(F("LoadCfgFile "));
       
       // file existed
-      file.open(CONFIG_FILENAME, FILE_O_READ);
+      FILE *file = fopen(CONFIG_FILENAME, "r");
       
       if (!file)
       {
-        WN_LOGDEBUG(("failed"));
+        WN_LOGDEBUG(F("failed"));
 
         // Trying open redundant config file
-        file.open(CONFIG_FILENAME_BACKUP, FILE_O_READ);
-        WN_LOGDEBUG(("LoadBkUpCfgFile "));
+        file = fopen(CONFIG_FILENAME_BACKUP, "r");
+        
+        WN_LOGDEBUG(F("LoadBkUpCfgFile "));
 
         if (!file)
         {
-          WN_LOGDEBUG(("failed"));
+          WN_LOGDEBUG(F("failed"));
           return false;
         }
       }
      
-      file.seek(0);
-      file.read((char *) &Blynk_WM_config, sizeof(Blynk_WM_config));
-      file.close();
-      
-      WN_LOGDEBUG(("OK"));
+      fseek(file, 0, SEEK_SET);
+      fread((uint8_t *) &Blynk_WM_config, 1, sizeof(Blynk_WM_config), file);
+      fclose(file);
+
+      WN_LOGDEBUG(F("OK"));
       
       return isWiFiConfigValid();
     }
@@ -1506,43 +1549,43 @@ public:
 
     void saveConfigData()
     {
-      WN_LOGDEBUG(("SaveCfgFile "));
+      WN_LOGDEBUG(F("SaveCfgFile "));
 
       int calChecksum = calcChecksum();
       Blynk_WM_config.checkSum = calChecksum;
-      WN_LOGDEBUG1(("WCSum=0x"), String(calChecksum, HEX));
+      WN_LOGDEBUG1(F("WCSum=0x"), String(calChecksum, HEX));
       
-      file.open(CONFIG_FILENAME, FILE_O_WRITE);
+      FILE *file = fopen(CONFIG_FILENAME, "w");
 
       if (file)
       {
-        file.seek(0);
-        file.write((uint8_t*) &Blynk_WM_config, sizeof(Blynk_WM_config));
+        fseek(file, 0, SEEK_SET);
+        fwrite((uint8_t *) &Blynk_WM_config, 1, sizeof(Blynk_WM_config), file);
+        fclose(file);
         
-        file.close();
-        WN_LOGDEBUG(("OK"));
+        WN_LOGDEBUG(F("OK"));
       }
       else
       {
-        WN_LOGDEBUG(("failed"));
+        WN_LOGDEBUG(F("failed"));
       }
       
-      WN_LOGDEBUG(("SaveBkUpCfgFile "));
+      WN_LOGDEBUG(F("SaveBkUpCfgFile "));
       
       // Trying open redundant Auth file
-      file.open(CONFIG_FILENAME_BACKUP, FILE_O_WRITE);
+      file = fopen(CONFIG_FILENAME_BACKUP, "w");
 
       if (file)
       {
-        file.seek(0);
-        file.write((uint8_t *) &Blynk_WM_config, sizeof(Blynk_WM_config));        
-        file.close();
+        fseek(file, 0, SEEK_SET);
+        fwrite((uint8_t *) &Blynk_WM_config, 1, sizeof(Blynk_WM_config), file);
+        fclose(file);
         
-        WN_LOGDEBUG(("OK"));
+        WN_LOGDEBUG(F("OK"));
       }
       else
       {
-        WN_LOGDEBUG(("failed"));
+        WN_LOGDEBUG(F("failed"));
       }
       
 #if USE_DYNAMIC_PARAMETERS      
@@ -1562,7 +1605,7 @@ public:
       // Including config and dynamic data, and assume valid
       saveConfigData();
           
-      WN_LOGERROR(("======= Start Loaded Config Data ======="));
+      WN_LOGERROR(F("======= Start Loaded Config Data ======="));
       displayConfigData(Blynk_WM_config);    
     }
     
@@ -1576,13 +1619,6 @@ public:
       
       hadConfigData = false;
       
-      // Initialize Internal File System
-      if (!InternalFS.begin())
-      {
-        WN_LOGERROR(("InternalFS failed"));
-        return false;
-      }
-
       // Use new LOAD_DEFAULT_CONFIG_DATA logic
       if (LOAD_DEFAULT_CONFIG_DATA)
       {     
@@ -1604,8 +1640,8 @@ public:
         // Verify ChkSum        
         calChecksum = calcChecksum();
 
-        WN_LOGERROR3(("CCSum=0x"), String(calChecksum, HEX),
-                   (",RCSum=0x"), String(Blynk_WM_config.checkSum, HEX));
+        WN_LOGERROR3(F("CCSum=0x"), String(calChecksum, HEX),
+                   F(",RCSum=0x"), String(Blynk_WM_config.checkSum, HEX));
         
 #if USE_DYNAMIC_PARAMETERS        
         // Load stored dynamic data from LittleFS
@@ -1621,10 +1657,10 @@ public:
   #if USE_DYNAMIC_PARAMETERS        
             loadDynamicData();
              
-            WN_LOGERROR(("Valid Stored Dynamic Data"));
+            WN_LOGERROR(F("Valid Stored Dynamic Data"));
   #endif 
          
-            WN_LOGERROR(("======= Start Stored Config Data ======="));
+            WN_LOGERROR(F("======= Start Stored Config Data ======="));
             displayConfigData(Blynk_WM_config);
             
             // Don't need Config Portal anymore
@@ -1633,7 +1669,7 @@ public:
           else
           {
             // Invalid Stored config data => Config Portal
-            WN_LOGERROR(("Invalid Stored Dynamic Data. Load default from Sketch"));
+            WN_LOGERROR(F("Invalid Stored Dynamic Data. Load default from Sketch"));
             
             // Load Default Config Data from Sketch, better than just "blank"
             loadAndSaveDefaultConfigData();
@@ -1650,7 +1686,7 @@ public:
            ( (calChecksum == 0) && (Blynk_WM_config.checkSum == 0) ) )   
       {
         // Including Credentials CSum
-        WN_LOGERROR1(("InitCfgFile,sz="), sizeof(Blynk_WM_config));
+        WN_LOGERROR1(F("InitCfgFile,sz="), sizeof(Blynk_WM_config));
 
         // doesn't have any configuration        
         if (LOAD_DEFAULT_CONFIG_DATA)
@@ -1698,7 +1734,7 @@ public:
 #if USE_DYNAMIC_PARAMETERS
         for (uint16_t i = 0; i < NUM_MENU_ITEMS; i++)
         {
-          WN_LOGDEBUG3(("g:myMenuItems["), i, ("]="), myMenuItems[i].pdata );
+          WN_LOGDEBUG3(F("g:myMenuItems["), i, F("]="), myMenuItems[i].pdata );
         }
 #endif
         
@@ -1734,11 +1770,11 @@ public:
                        
       static int lastConnectedIndex = 255;
 
-      WN_LOGDEBUG(("ConMultiWifi"));
+      WN_LOGDEBUG(F("ConMultiWifi"));
       
       if (static_IP != IPAddress(0, 0, 0, 0))
       {
-        WN_LOGDEBUG(("UseStatIP"));
+        WN_LOGDEBUG(F("UseStatIP"));
         WiFi.config(static_IP);
       }
       
@@ -1751,11 +1787,11 @@ public:
         if ( strlen(Blynk_WM_config.WiFi_Creds[new_index].wifi_pw) >= PASSWORD_MIN_LEN )
         {    
           index = new_index;
-          WN_LOGDEBUG3(("Using index="), index, (", lastConnectedIndex="), lastConnectedIndex);
+          WN_LOGDEBUG3(F("Using index="), index, F(", lastConnectedIndex="), lastConnectedIndex);
         }
         else
         {
-          WN_LOGERROR3(("Ignore invalid WiFi PW : index="), new_index, (", PW="), Blynk_WM_config.WiFi_Creds[new_index].wifi_pw);
+          WN_LOGERROR3(F("Ignore invalid WiFi PW : index="), new_index, F(", PW="), Blynk_WM_config.WiFi_Creds[new_index].wifi_pw);
           
           // Using the previous valid index
           index = lastConnectedIndex;
@@ -1766,20 +1802,20 @@ public:
         //  First connection ever, index = 0
         if ( strlen(Blynk_WM_config.WiFi_Creds[0].wifi_pw) >= PASSWORD_MIN_LEN )
         {    
-          WN_LOGDEBUG(("First connection, Using index=0"));
+          WN_LOGDEBUG(F("First connection, Using index=0"));
         }
         else
         {
-          WN_LOGERROR3(("Ignore invalid WiFi PW : index=0, SSID="), Blynk_WM_config.WiFi_Creds[0].wifi_ssid,
-                       (", PWD="), Blynk_WM_config.WiFi_Creds[0].wifi_pw);
+          WN_LOGERROR3(F("Ignore invalid WiFi PW : index=0, SSID="), Blynk_WM_config.WiFi_Creds[0].wifi_ssid,
+                       F(", PWD="), Blynk_WM_config.WiFi_Creds[0].wifi_pw);
           
           // Using the next valid index
           index = 1;
         }
       } 
          
-      WN_LOGERROR3(("con2WF:SSID="), Blynk_WM_config.WiFi_Creds[index].wifi_ssid,
-                   (",PW="), Blynk_WM_config.WiFi_Creds[index].wifi_pw);
+      WN_LOGERROR3(F("con2WF:SSID="), Blynk_WM_config.WiFi_Creds[index].wifi_ssid,
+                   F(",PW="), Blynk_WM_config.WiFi_Creds[index].wifi_pw);
       
       uint8_t numIndexTried = 0;
       
@@ -1787,7 +1823,7 @@ public:
       {         
         while ( 0 < retry_time )
         {      
-          WN_LOGDEBUG1(("Remaining retry_time="), retry_time);
+          WN_LOGDEBUG1(F("Remaining retry_time="), retry_time);
           
           status = WiFi.begin(Blynk_WM_config.WiFi_Creds[index].wifi_ssid, Blynk_WM_config.WiFi_Creds[index].wifi_pw); 
               
@@ -1796,7 +1832,7 @@ public:
           {
             wifi_connected = true;          
             lastConnectedIndex = index;                                     
-            WN_LOGDEBUG1(("WOK, lastConnectedIndex="), lastConnectedIndex);
+            WN_LOGDEBUG1(F("WOK, lastConnectedIndex="), lastConnectedIndex);
             
             break;
           }
@@ -1815,7 +1851,7 @@ public:
         {        
           if (retry_time <= 0)
           {      
-            WN_LOGERROR3(("Failed using index="), index, (", retry_time="), retry_time);
+            WN_LOGERROR3(F("Failed using index="), index, F(", retry_time="), retry_time);
             retry_time = RETRY_TIMES_CONNECT_WIFI;  
           }
           
@@ -1833,15 +1869,15 @@ public:
 
       if (wifi_connected)
       {
-        WN_LOGERROR(("con2WF:OK"));
+        WN_LOGERROR(F("con2WF:OK"));
         
-        WN_LOGERROR1(("IP="), WiFi.localIP() );
+        WN_LOGERROR1(F("IP="), WiFi.localIP() );
         
         displayWiFiData();
       }
       else
       {
-        WN_LOGERROR(("con2WF:failed"));  
+        WN_LOGERROR(F("con2WF:failed"));  
         // Can't connect, so try another index next time. Faking this index is OK and lost
         lastConnectedIndex = index;  
       }
@@ -1901,7 +1937,7 @@ public:
   
 
 #if SCAN_WIFI_NETWORKS
-      WN_LOGDEBUG1(WiFiNetworksFound, (" SSIDs found, generating HTML now"));
+      WN_LOGDEBUG1(WiFiNetworksFound, F(" SSIDs found, generating HTML now"));
       // Replace HTML <input...> with <select...>, based on WiFi network scan in startConfigurationMode()
 
       ListOfSSIDs = "";
@@ -1924,10 +1960,10 @@ public:
 
 #if MANUAL_SSID_INPUT_ALLOWED
       pitem.replace("[[input_id]]",  "<input id='id' list='SSIDs'>"  + String(WIFININA_DATALIST_START) + "'SSIDs'>" + ListOfSSIDs + WIFININA_DATALIST_END);
-      WN_LOGDEBUG1(("pitem:"), pitem);
+      WN_LOGDEBUG1(F("pitem:"), pitem);
       pitem.replace("[[input_id1]]", "<input id='id1' list='SSIDs'>" + String(WIFININA_DATALIST_START) + "'SSIDs'>" + ListOfSSIDs + WIFININA_DATALIST_END);
       
-      WN_LOGDEBUG1(("pitem:"), pitem);
+      WN_LOGDEBUG1(F("pitem:"), pitem);
 
 #else
       pitem.replace("[[input_id]]",  "<select id='id'>"  + ListOfSSIDs + WIFININA_SELECT_END);
@@ -1981,19 +2017,19 @@ public:
 
     void serverSendHeaders()
     {
-      WN_LOGDEBUG3(("serverSendHeaders:WM_HTTP_CACHE_CONTROL:"), WM_HTTP_CACHE_CONTROL, "=", WM_HTTP_NO_STORE);
+      WN_LOGDEBUG3(F("serverSendHeaders:WM_HTTP_CACHE_CONTROL:"), WM_HTTP_CACHE_CONTROL, "=", WM_HTTP_NO_STORE);
       server->sendHeader(WM_HTTP_CACHE_CONTROL, WM_HTTP_NO_STORE);
       
 #if USING_CORS_FEATURE
       // New from v1.1.0, for configure CORS Header, default to WM_HTTP_CORS_ALLOW_ALL = "*"
-      WN_LOGDEBUG3(("serverSendHeaders:WM_HTTP_CORS:"), WM_HTTP_CORS, " : ", _CORS_Header);
+      WN_LOGDEBUG3(F("serverSendHeaders:WM_HTTP_CORS:"), WM_HTTP_CORS, " : ", _CORS_Header);
       server->sendHeader(WM_HTTP_CORS, _CORS_Header);
 #endif
      
-      WN_LOGDEBUG3(("serverSendHeaders:WM_HTTP_PRAGMA:"), WM_HTTP_PRAGMA, " : ", WM_HTTP_NO_CACHE);
+      WN_LOGDEBUG3(F("serverSendHeaders:WM_HTTP_PRAGMA:"), WM_HTTP_PRAGMA, " : ", WM_HTTP_NO_CACHE);
       server->sendHeader(WM_HTTP_PRAGMA, WM_HTTP_NO_CACHE);
       
-      WN_LOGDEBUG3(("serverSendHeaders:WM_HTTP_EXPIRES:"), WM_HTTP_EXPIRES, " : ", "-1");
+      WN_LOGDEBUG3(F("serverSendHeaders:WM_HTTP_EXPIRES:"), WM_HTTP_EXPIRES, " : ", "-1");
       server->sendHeader(WM_HTTP_EXPIRES, "-1");
     }
        
@@ -2093,11 +2129,11 @@ public:
               menuItemUpdated[i] = false;       
             }
             
-            WN_LOGDEBUG1(("h: Init menuItemUpdated :" ), NUM_MENU_ITEMS);                    
+            WN_LOGDEBUG1(F("h: Init menuItemUpdated :" ), NUM_MENU_ITEMS);                    
           }
           else
           {
-            WN_LOGERROR(("h: Error can't alloc memory for menuItemUpdated" ));
+            WN_LOGERROR(F("h: Error can't alloc memory for menuItemUpdated" ));
           }
         }  
 #endif
@@ -2115,7 +2151,7 @@ public:
 
         if (!id_Updated && (key == String("id")))
         {   
-          WN_LOGDEBUG(("h:repl id"));
+          WN_LOGDEBUG(F("h:repl id"));
           id_Updated = true;
           
           number_items_Updated++;
@@ -2127,7 +2163,7 @@ public:
         }
         else if (!pw_Updated && (key == String("pw")))
         {    
-          WN_LOGDEBUG(("h:repl pw"));
+          WN_LOGDEBUG(F("h:repl pw"));
           pw_Updated = true;
           
           number_items_Updated++;
@@ -2139,7 +2175,7 @@ public:
         }
         else if (!id1_Updated && (key == String("id1")))
         {   
-          WN_LOGDEBUG(("h:repl id1"));
+          WN_LOGDEBUG(F("h:repl id1"));
           id1_Updated = true;
           
           number_items_Updated++;
@@ -2151,7 +2187,7 @@ public:
         }
         else if (!pw1_Updated && (key == String("pw1")))
         {    
-          WN_LOGDEBUG(("h:repl pw1"));
+          WN_LOGDEBUG(F("h:repl pw1"));
           pw1_Updated = true;
           
           number_items_Updated++;
@@ -2163,7 +2199,7 @@ public:
         }
         else if (!sv_Updated && (key == String("sv")))
         {    
-          WN_LOGDEBUG(("h:repl sv"));
+          WN_LOGDEBUG(F("h:repl sv"));
           sv_Updated = true;
           
           number_items_Updated++;
@@ -2175,7 +2211,7 @@ public:
         }
         else if (!tk_Updated && (key == String("tk")))
         {    
-          WN_LOGDEBUG(("h:repl tk"));
+          WN_LOGDEBUG(F("h:repl tk"));
           tk_Updated = true;
           
           number_items_Updated++;
@@ -2187,7 +2223,7 @@ public:
         }
          else if (!sv1_Updated && (key == String("sv1")))
         {    
-          WN_LOGDEBUG(("h:repl sv1"));
+          WN_LOGDEBUG(F("h:repl sv1"));
           sv1_Updated = true;
           
           number_items_Updated++;
@@ -2199,7 +2235,7 @@ public:
         }
         else if (!tk1_Updated && (key == String("tk1")))
         {    
-          WN_LOGDEBUG(("h:repl tk1"));
+          WN_LOGDEBUG(F("h:repl tk1"));
           tk1_Updated = true;
           
           number_items_Updated++;
@@ -2211,7 +2247,7 @@ public:
         }
         else if (!pt_Updated && (key == String("pt")))
         {    
-          WN_LOGDEBUG(("h:repl pt"));
+          WN_LOGDEBUG(F("h:repl pt"));
           pt_Updated = true;
           
           number_items_Updated++;
@@ -2220,7 +2256,7 @@ public:
         }
         else if (!nm_Updated && (key == String("nm")))
         {    
-          WN_LOGDEBUG(("h:repl nm"));
+          WN_LOGDEBUG(F("h:repl nm"));
           nm_Updated = true;
           
           number_items_Updated++;
@@ -2238,7 +2274,7 @@ public:
           {           
             if ( !menuItemUpdated[i] && (key == myMenuItems[i].id) )
             {
-              WN_LOGDEBUG3(("h:"), myMenuItems[i].id, ("="), value.c_str() );
+              WN_LOGDEBUG3(F("h:"), myMenuItems[i].id, F("="), value.c_str() );
               
               menuItemUpdated[i] = true;
               
@@ -2258,8 +2294,8 @@ public:
         }  
 #endif
         
-        WN_LOGDEBUG1(("h:items updated ="), number_items_Updated);
-        WN_LOGDEBUG3(("h:key ="), key, ", value =", value);
+        WN_LOGDEBUG1(F("h:items updated ="), number_items_Updated);
+        WN_LOGDEBUG3(F("h:key ="), key, ", value =", value);
 
         server->send(200, "text/html", "OK");
 
@@ -2305,8 +2341,8 @@ public:
         String randomNum = String(random(0xFFFFFF), HEX);
         randomNum.toUpperCase();
 
-        portal_ssid = "NRF52_NINA_" + randomNum;
-        portal_pass = "MyNRF52_NINA_" + randomNum;
+        portal_ssid = "RP2040_NINA_" + randomNum;
+        portal_pass = "MyRP2040_NINA_" + randomNum;
       }
 
       WiFi.config(portal_apIP);
@@ -2381,11 +2417,11 @@ public:
 	  //space for indices array allocated on the heap and should be freed when no longer required  
 	  int scanWifiNetworks(int **indicesptr)
 	  {
-	    WN_LOGDEBUG(("Scanning Network"));
+	    WN_LOGDEBUG(F("Scanning Network"));
 
 	    int n = WiFi.scanNetworks();
 
-	    WN_LOGDEBUG1(("scanWifiNetworks: Done, Scanned Networks n = "), n); 
+	    WN_LOGDEBUG1(F("scanWifiNetworks: Done, Scanned Networks n = "), n); 
 
 	    //KH, Terrible bug here. WiFi.scanNetworks() returns n < 0 => malloc( negative == very big ) => crash!!!
 	    //In .../esp32/libraries/WiFi/src/WiFiType.h
@@ -2394,7 +2430,7 @@ public:
 	    //if (n == 0)
 	    if (n <= 0)
 	    {
-		    WN_LOGDEBUG(("No network found"));
+		    WN_LOGDEBUG(F("No network found"));
 		    return (0);
 	    }
 	    else
@@ -2405,7 +2441,7 @@ public:
 
 		    if (indices == NULL)
 		    {
-		      WN_LOGDEBUG(("ERROR: Out of memory"));
+		      WN_LOGDEBUG(F("ERROR: Out of memory"));
 		      *indicesptr = NULL;
 		      return (0);
 		    }
@@ -2418,7 +2454,7 @@ public:
 		      indices[i] = i;
 		    }
 
-		    WN_LOGDEBUG(("Sorting"));
+		    WN_LOGDEBUG(F("Sorting"));
 
 		    // RSSI SORT
 		    // old sort
@@ -2435,7 +2471,7 @@ public:
 		      }
 		    }
 
-		    WN_LOGDEBUG(("Removing Dup"));
+		    WN_LOGDEBUG(F("Removing Dup"));
 
 		    // remove duplicates ( must be RSSI sorted )
 		    if (_removeDuplicateAPs)
@@ -2470,11 +2506,11 @@ public:
 		      if (!(_minimumQuality == -1 || _minimumQuality < quality))
 		      {
 			      indices[i] = -1;
-			      WN_LOGDEBUG(("Skipping low quality"));
+			      WN_LOGDEBUG(F("Skipping low quality"));
 		      }
 		    }
 
-		    WN_LOGDEBUG(("WiFi networks found:"));
+		    WN_LOGDEBUG(F("WiFi networks found:"));
 		    
 		    for (int i = 0; i < n; i++)
 		    {
@@ -2525,4 +2561,4 @@ BlynkWifiCommon Blynk(_blynkTransport);
 
 #include <BlynkWidgets.h>
 
-#endif    //BlynkSimpleWiFiNINA_nRF52_WM_h
+#endif    //BlynkSimpleWiFiNINA_RP2040_WM_h

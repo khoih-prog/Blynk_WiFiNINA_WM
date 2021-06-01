@@ -1,32 +1,14 @@
 /****************************************************************************************************************************
-   defines.h for SAM_DUE_WiFiNINA.ino
-   For SAM DUE using WiFiNINA Shield/Module
+  defines.h
+  For SAM DUE boards using WiFiNINA Shields
 
-   Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32 and SAMD boards 
-   (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
-   autoconnect/autoreconnect of WiFiNINA/Blynk
+  Blynk_WiFiNINA_WM is a library for the Mega, Teensy, SAM DUE, nRF52, STM32, SAMD and RP2040 boards 
+  (https://github.com/khoih-prog/Blynk_WiFiNINA_WM) to enable easy configuration/reconfiguration and
+  autoconnect/autoreconnect of WiFiNINA/Blynk
 
-   Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
-   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
-   Licensed under MIT license
-   Version: 1.0.4
-
-   Original Blynk Library author:
-   @file       BlynkSimpleWiFiNINA.h
-   @author     Volodymyr Shymanskyy
-   @license    This project is released under the MIT License (MIT)
-   @copyright  Copyright (c) 2018 Volodymyr Shymanskyy
-   @date       Sep 2018
-   @brief
-
-   Version Modified By   Date        Comments
-   ------- -----------  ----------   -----------
-    1.0.0   K Hoang      07/04/2020  Initial coding
-    1.0.1   K Hoang      09/04/2020  Add support to SAM DUE, Teensy, STM32
-    1.0.2   K Hoang      15/04/2020  Fix bug. Add SAMD51 support.
-    1.0.3   K Hoang      05/05/2020  Add nRF52 support, MultiWiFi/Blynk, Configurable Config Portal Title, 
-                                     Default Config Data and DRD. Update examples.
-    1.0.4   K Hoang      13/05/2020 Add support to Arduino UNO WiFi R2 
+  Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
+  Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
+  Licensed under MIT license
  *****************************************************************************************************************************/
 
 #ifndef defines_h
@@ -41,6 +23,7 @@
 #define DRD_GENERIC_DEBUG         true
 #define WIFININA_DEBUG            true
 #define BLYNK_WM_DEBUG            3
+#define _WIFININA_LOGLEVEL_       3
 
 #if ( defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__) )
 #if defined(WIFININA_USE_SAM_DUE)
@@ -59,13 +42,17 @@
 
 #if defined(WIFININA_USE_SAM_DUE)
 
-#if defined(ARDUINO_SAM_DUE)
-#define BOARD_TYPE      "SAM DUE"
-#elif defined(__SAM3X8E__)
-#define BOARD_TYPE      "SAM SAM3X8E"
-#else
-#define BOARD_TYPE      "SAM Unknown"
+  #if defined(ARDUINO_SAM_DUE)
+    #define BOARD_TYPE      "SAM DUE"
+  #elif defined(__SAM3X8E__)
+    #define BOARD_TYPE      "SAM SAM3X8E"
+  #else
+    #define BOARD_TYPE      "SAM Unknown"
+  #endif
 #endif
+
+#if !defined(BOARD_NAME)
+  #define BOARD_NAME    BOARD_TYPE
 #endif
 
 // Start location in EEPROM to store config data. Default 0
@@ -78,28 +65,72 @@
 #define USE_SSL             false
 
 #if USE_BLYNK_WM
-#include <BlynkSimpleWiFiNINA_DUE_WM.h>
+
+  /////////////////////////////////////////////
+
+  /////////////////////////////////////////////
+
+  // Add customs headers from v1.1.0
+  #define USING_CUSTOMS_STYLE           true
+  #define USING_CUSTOMS_HEAD_ELEMENT    true
+  #define USING_CORS_FEATURE            true
+  
+  /////////////////////////////////////////////
+  
+  // Permit running CONFIG_TIMEOUT_RETRYTIMES_BEFORE_RESET times before reset hardware
+  // to permit user another chance to config. Only if Config Data is valid.
+  // If Config Data is invalid, this has no effect as Config Portal will persist
+  #define RESET_IF_CONFIG_TIMEOUT                   true
+  
+  // Permitted range of user-defined RETRY_TIMES_RECONNECT_WIFI between 2-5 times
+  #define RETRY_TIMES_RECONNECT_WIFI                3
+  
+  // Permitted range of user-defined CONFIG_TIMEOUT_RETRYTIMES_BEFORE_RESET between 2-100
+  #define CONFIG_TIMEOUT_RETRYTIMES_BEFORE_RESET    5
+  
+  // Config Timeout 120s (default 60s). Applicable only if Config Data is Valid
+  #define CONFIG_TIMEOUT                      120000L
+  
+  // Permit input only one set of WiFi SSID/PWD. The other can be "NULL or "blank"
+  // Default is false (if not defined) => must input 2 sets of SSID/PWD
+  #define REQUIRE_ONE_SET_SSID_PW             true
+  
+  #define USE_DYNAMIC_PARAMETERS              true
+  
+  /////////////////////////////////////////////
+  
+  #define SCAN_WIFI_NETWORKS                  true
+  
+  // To be able to manually input SSID, not from a scanned SSID lists
+  #define MANUAL_SSID_INPUT_ALLOWED           true
+  
+  // From 2-15
+  #define MAX_SSID_IN_LIST                    8
+  
+  /////////////////////////////////////////////
+  
+  #include <BlynkSimpleWiFiNINA_DUE_WM.h>
 
 #else
-#include <BlynkSimpleWiFiNINA_DUE.h>
-
-#define USE_LOCAL_SERVER      true
-
-#if USE_LOCAL_SERVER
-char auth[] = "****";
-String BlynkServer = "account.duckdns.org";
-
-//String BlynkServer = "192.168.2.112";
-#else
-char auth[] = "****";
-String BlynkServer = "blynk-cloud.com";
-#endif
-
-#define BLYNK_SERVER_HARDWARE_PORT    8080
-
-// Your WiFi credentials.
-char ssid[] = "****";
-char pass[] = "****";
+  #include <BlynkSimpleWiFiNINA_DUE.h>
+  
+  #define USE_LOCAL_SERVER      true
+  
+  #if USE_LOCAL_SERVER
+    char auth[] = "****";
+    String BlynkServer = "account.duckdns.org";
+    
+    //String BlynkServer = "192.168.2.112";
+  #else
+    char auth[] = "****";
+    String BlynkServer = "blynk-cloud.com";
+  #endif
+  
+  #define BLYNK_SERVER_HARDWARE_PORT    8080
+  
+  // Your WiFi credentials.
+  char ssid[] = "****";
+  char pass[] = "****";
 
 #endif
 
