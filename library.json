@@ -1,6 +1,6 @@
 {
   "name": "Blynk_WiFiNINA_WM",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Simple WiFi Manager for MultiBlynk for Teensy, SAM DUE, SAMD21, SAMD51, nRF52, ESP32, ESP8266, RP2040-based, etc. boards, with or without SSL, configuration data saved in nRF52/RP2040 LittleFS, EEPROM, DueFlashStorage or SAMD/STM32 FlashStorage. Library for configuring/auto(re)connecting WiFiNINA shields to MultiWiFi-MultiBlynk at runtime. New powerful-yet-simple-to-use feature to enable adding dynamic custom parameters from sketch and input using the same Config Portal. Config Portal will be auto-adjusted to match the number of dynamic parameters. DoubleDetectDetector is used to force Config Portal opening even if the Credentials are still valid. Build a smartphone app for your project in minutes. Blynk allows creating IoT solutions easily. Works with many boards like Mega, UNO WiFi Rev2, SAM DUE, SAMD, nRF52, Teensy, RP2040",
   "keywords": "blynk, control, device, communication, wifi, multi-wifi, multi-blynk, wifinina, samd, nrf52, stm32, rpi-pico, rp2040, nano-rp2040-connect, nano-33-iot, sam-due, eeprom, littlefs, flash-storage-stm32, flash-storage-samd",
   "authors":

@@ -16,6 +16,7 @@
   * [Currently supported Boards](#currently-supported-boards)
   * [Currently supported shields/modules](#currently-supported-shieldsmodules)
 * [Changelog](#changelog)
+  * [Releases v1.1.1](#releases-v111)
   * [Major Releases v1.1.0](#major-releases-v110)
   * [Releases v1.0.4](#releases-v104)
   * [Major Releases v1.0.3](#major-releases-v103)
@@ -173,6 +174,10 @@ This [**EthernetWebServer** library](https://github.com/khoih-prog/EthernetWebSe
 
 ## Changelog
 
+### Releases v1.1.1
+
+1. Add Blynk library Patches for **MBED RP2040-based (Nano_RP2040_Connect, etc.) boards**
+
 ### Major Releases v1.1.0
 
  1. Add support to RP2040-based boards, such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Earle Philhower's arduino-pico** v1.6.2+ core](https://github.com/earlephilhower/arduino-pico).
@@ -264,7 +269,7 @@ With version `v1.0.0` or later, you now can configure:
  **Warnings** : Use [`Adafruit nRF52 v0.22.0+`](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/tag/0.22.0) will create **compiler errors** to some boards. If so, please use the [`Adafruit nRF52 v0.21.0`](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/tag/0.21.0) until the issue fixed.
  
 10. [`Arduino mbed_rp2040 core 2.1.0+`](https://github.com/arduino/ArduinoCore-mbed) for Arduino RP2040-based boards, such as **Arduino Nano RP2040 Connect, RASPBERRY_PI_PICO, etc.**. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-mbed.svg)](https://github.com/arduino/ArduinoCore-mbed/releases/latest)
-11. [`Earle Philhower's arduino-pico core v1.6.2+`](https://github.com/earlephilhower/arduino-pico) for RP2040-based boards such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, etc. [![GitHub release](https://img.shields.io/github/release/earlephilhower/arduino-pico.svg)](https://github.com/earlephilhower/arduino-pico/releases/latest)
+11. [`Earle Philhower's arduino-pico core v1.8.0+`](https://github.com/earlephilhower/arduino-pico) for RP2040-based boards such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, etc. [![GitHub release](https://img.shields.io/github/release/earlephilhower/arduino-pico.svg)](https://github.com/earlephilhower/arduino-pico/releases/latest)
 12. [`Functional-VLPP library v1.0.2+`](https://github.com/khoih-prog/functional-vlpp) to use server's lambda function. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/Functional-Vlpp.svg?)](https://www.ardu-badge.com/Functional-Vlpp)
 13. [`WiFiNINA_Generic library v1.8.10-1+`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic)
 14. [`WiFiWebServer library v1.2.0+`](https://github.com/khoih-prog/WiFiWebServer) if necessary to use certain WiFi/WiFiNINA features. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiWebServer.svg?)](https://www.ardu-badge.com/WiFiWebServer)
@@ -272,7 +277,7 @@ With version `v1.0.0` or later, you now can configure:
 16. [`FlashStorage_STM32 library v1.1.0+`](https://github.com/khoih-prog/FlashStorage_STM32) for STM32F/L/H/G/WB/MP1 boards. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/FlashStorage_STM32.svg?)](https://www.ardu-badge.com/FlashStorage_STM32)
 17. [`DueFlashStorage library v1.0.0+`](https://github.com/sebnil/DueFlashStorage) for SAM DUE if necessary to use certain features. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/DueFlashStorage.svg?)](https://www.ardu-badge.com/DueFlashStorage).
 18. [`Adafruit's LittleFS/InternalFS`](https://www.adafruit.com) for nRF52. Already included if you already installed Adafruit **nRF52 board package** from Boards Manager.
-19. [`DoubleResetDetector_Generic v1.3.0+`](https://github.com/khoih-prog/DoubleResetDetector_Generic) if necessary to use some examples. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/DoubleResetDetector_Generic.svg?)](https://www.ardu-badge.com/DoubleResetDetector_Generic) if necessary to use certain features.
+19. [`DoubleResetDetector_Generic v1.4.0+`](https://github.com/khoih-prog/DoubleResetDetector_Generic) if necessary to use some examples. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/DoubleResetDetector_Generic.svg?)](https://www.ardu-badge.com/DoubleResetDetector_Generic) if necessary to use certain features.
 
 ---
 
@@ -283,6 +288,21 @@ With version `v1.0.0` or later, you now can configure:
 The best and easiest way is to use `Arduino Library Manager`. Search for [**Blynk_WiFiNINA_WM**](https://github.com/khoih-prog/Blynk_WiFiNINA_WM), then select / install the latest version.
 You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/badge/Blynk_WiFiNINA_WM.svg?)](https://www.ardu-badge.com/Blynk_WiFiNINA_WM) for more detailed instructions.
 
+Then copy
+
+#### For Blynk v0.6.1
+
+1. [BlynkDetectDevice.h](LibraryPatches/Blynk-0.6.1/Blynk/BlynkDetectDevice.h) to folder ~/Arduino/libraries/Blynk/src/Blynk to overwrite the original file `BlynkDetectDevice.h`.
+2. [BlynkProtocol.h](LibraryPatches/Blynk-0.6.1/Blynk/BlynkProtocol.h) to folder ~/Arduino/libraries/Blynk/src/Blynk to overwrite the original file `BlynkProtocol.h`.
+3. [BlynkDebug.cpp](LibraryPatches/Blynk-0.6.1/utility/BlynkDebug.cpp) to folder ~/Arduino/libraries/Blynk/src/utility to overwrite the original file `BlynkDebug.cpp`.
+
+#### For Blynk v1.0.0
+
+1. [BlynkDetectDevice.h](LibraryPatches/Blynk-1.0.0/Blynk/BlynkDetectDevice.h) to folder ~/Arduino/libraries/Blynk/src/Blynk to overwrite the original file `BlynkDetectDevice.h`.
+2. [BlynkDebug.cpp](LibraryPatches/Blynk-1.0.0/utility/BlynkDebug.cpp) to folder ~/Arduino/libraries/Blynk/src/utility to overwrite the original file `BlynkDebug.cpp`.
+
+---
+
 ### Manual Install
 
 1. Navigate to [**Blynk_WiFiNINA_WM**](https://github.com/khoih-prog/Blynk_WiFiNINA_WM) page.
@@ -291,6 +311,20 @@ You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/
 4. Copy the whole 
   - `Blynk_WiFiNINA_WM-master` folder to Arduino libraries' directory such as `~/Arduino/libraries/`.
 
+Then copy
+
+#### For Blynk v0.6.1
+
+1. [BlynkDetectDevice.h](LibraryPatches/Blynk-0.6.1/Blynk/BlynkDetectDevice.h) to folder ~/Arduino/libraries/Blynk/src/Blynk to overwrite the original file `BlynkDetectDevice.h`.
+2. [BlynkProtocol.h](LibraryPatches/Blynk-0.6.1/Blynk/BlynkProtocol.h) to folder ~/Arduino/libraries/Blynk/src/Blynk to overwrite the original file `BlynkProtocol.h`.
+3. [BlynkDebug.cpp](LibraryPatches/Blynk-0.6.1/utility/BlynkDebug.cpp) to folder ~/Arduino/libraries/Blynk/src/utility to overwrite the original file `BlynkDebug.cpp`.
+
+#### For Blynk v1.0.0
+
+1. [BlynkDetectDevice.h](LibraryPatches/Blynk-1.0.0/Blynk/BlynkDetectDevice.h) to folder ~/Arduino/libraries/Blynk/src/Blynk to overwrite the original file `BlynkDetectDevice.h`.
+2. [BlynkDebug.cpp](LibraryPatches/Blynk-1.0.0/utility/BlynkDebug.cpp) to folder ~/Arduino/libraries/Blynk/src/utility to overwrite the original file `BlynkDebug.cpp`.
+  
+  
 ### VS Code & PlatformIO
 
 1. Install [VS Code](https://code.visualstudio.com/)
@@ -1830,6 +1864,10 @@ Sometimes, the library will only work if you update the boatd's core to the newe
 ---
 
 ## Releases
+
+### Releases v1.1.1
+
+1. Add Blynk library Patches for **MBED RP2040-based (Nano_RP2040_Connect, etc.) boards**
 
 ### Major Releases v1.1.0
 
