@@ -1437,8 +1437,8 @@ No Config Data with **LOAD_DEFAULT_CONFIG_DATA = true** => Config Portal loads d
 
 ```
 Start SAMD_WiFiNINA_WM using WiFiNINA_Shield on SAMD_NANO_33_IOT
-Blynk_WiFiNINA_WM v1.1.0
-DoubleResetDetector_Generic v1.3.0
+Blynk_WiFiNINA_WM v1.1.1
+DoubleResetDetector_Generic v1.4.0
 Start Blynk_WM
 [WN] Hostname=SAMD-WiFiNINA
 Flag read = 0xd0d04321
@@ -1461,8 +1461,8 @@ ClearFlag write = 0xd0d04321
 FFFFFFFFF FFFFFFFFFF FFFFF
 Start SAMD_WiFiNINA_WM using WiFiNINA_Shield on 
 SAMD_NANO_33_IOT
-Blynk_WiFiNINA_WM v1.1.0
-DoubleResetDetector_Generic v1.3.0
+Blynk_WiFiNINA_WM v1.1.1
+DoubleResetDetector_Generic v1.4.0
 Start Blynk_WM
 [WN] Hostname=SAMD-WiFiNINA
 Flag read = 0xffffffff
@@ -1496,8 +1496,8 @@ Input valid credentials with **LOAD_DEFAULT_CONFIG_DATA = true** => reboot
 
 ```
 Start SAMD_WiFiNINA_WM using WiFiNINA_Shield on SAMD_NANO_33_IOT
-Blynk_WiFiNINA_WM v1.1.0
-DoubleResetDetector_Generic v1.3.0
+Blynk_WiFiNINA_WM v1.1.1
+DoubleResetDetector_Generic v1.4.0
 Start Blynk_WM
 [WN] Hostname=SAMD-WiFiNINA
 Flag read = 0xd0d04321
@@ -1637,8 +1637,8 @@ BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
 
 ```
 Start SAMD_WiFiNINA_WM using WiFiNINA_Shield on SAMD NANO_33_IOT
-Blynk_WiFiNINA_WM v1.1.0
-DoubleResetDetector_Generic v1.3.0
+Blynk_WiFiNINA_WM v1.1.1
+DoubleResetDetector_Generic v1.4.0
 doubleResetDetected
 ClearFlag write = 0xd0d04321
 [3358] Double Reset Detected
@@ -1722,8 +1722,8 @@ No Config Data with **LOAD_DEFAULT_CONFIG_DATA = true** => Config Portal loads d
 
 ```
 Start RP2040_WiFiNINA_WM using WiFiNINA_Shield on MBED NANO_RP2040_CONNECT
-Blynk_WiFiNINA_WM v1.1.0
-DoubleResetDetector_Generic v1.3.0
+Blynk_WiFiNINA_WM v1.1.1
+DoubleResetDetector_Generic v1.4.0
 Start Blynk_WM
 [WN] Hostname=nRF52-WiFiNINA
 LittleFS size (KB) = 64
@@ -1769,8 +1769,8 @@ Input valid credentials with **LOAD_DEFAULT_CONFIG_DATA = true** => reboot
 
 ```
 Start RP2040_WiFiNINA_WM using WiFiNINA_Shield on MBED NANO_RP2040_CONNECT
-Blynk_WiFiNINA_WM v1.1.0
-DoubleResetDetector_Generic v1.3.0
+Blynk_WiFiNINA_WM v1.1.1
+DoubleResetDetector_Generic v1.4.0
 Start Blynk_WM
 [WN] Hostname=nRF52-WiFiNINA
 LittleFS size (KB) = 64
@@ -1979,7 +1979,7 @@ Submit issues to: [Blynk_WiFiNINA_WM issues](https://github.com/khoih-prog/Blynk
 28. Add support to RP2040-based boards, such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Arduino-mbed RP2040** core](https://github.com/arduino/ArduinoCore-mbed)
 29. Use more efficient **FlashStorage_STM32**](https://github.com/khoih-prog/FlashStorage_STM32) and [**FlashStorage_SAMD**](https://github.com/khoih-prog/FlashStorage_SAMD) library versions.
 30. Add Table of Contents and Version String
-
+31. Add Blynk library Patches for **MBED RP2040-based (Nano_RP2040_Connect, etc.) boards**
 
 ---
 

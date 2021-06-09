@@ -18,7 +18,7 @@
   @date       Sep 2018
   @brief
 
-  Version: 1.1.0
+  Version: 1.1.1
 
   Version Modified By   Date        Comments
   ------- -----------  ----------   -----------
@@ -30,6 +30,7 @@
   1.0.4   K Hoang      13/05/2020  Add support to Arduino UNO WiFi R2 
   1.1.0   K Hoang      28/05/2021  Add support to Nano_RP2040_Connect, RASPBERRY_PI_PICO using Arduino mbed or pico core
                                    Enable scan of WiFi networks for selection in Configuration Portal
+  1.1.1   K Hoang      09/06/2020  Add Blynk library Patches for **MBED RP2040-based (Nano_RP2040_Connect, etc.) boards
  *****************************************************************************************************************************/
 #include "defines.h"
 #include "Credentials.h"

@@ -19,7 +19,7 @@
   @date       Sep 2018
   @brief
 
-  Version: 1.1.0
+  Version: 1.1.1
 
   Version Modified By   Date        Comments
   ------- -----------  ----------   -----------
@@ -31,6 +31,7 @@
   1.0.4   K Hoang      13/05/2020  Add support to Arduino UNO WiFi R2 
   1.1.0   K Hoang      28/05/2021  Add support to Nano_RP2040_Connect, RASPBERRY_PI_PICO using Arduino mbed or pico core
                                    Enable scan of WiFi networks for selection in Configuration Portal
+  1.1.1   K Hoang      09/06/2020  Add Blynk library Patches for **MBED RP2040-based (Nano_RP2040_Connect, etc.) boards
  *****************************************************************************************************************************/
 
 
@@ -46,7 +47,7 @@
   #error This code is intended to run on the SAM DUE platform! Please check your Tools->Board setting.  
 #endif
 
-#define BLYNK_WIFININA_WM_VERSION        "Blynk_WiFiNINA_WM v1.1.0"
+#define BLYNK_WIFININA_WM_VERSION        "Blynk_WiFiNINA_WM v1.1.1"
 
 //////////////////////////////////////////////
 // From v1.1.0 to display correct BLYNK_INFO_DEVICE
