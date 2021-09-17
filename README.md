@@ -15,14 +15,7 @@
   * [Features](#features)
   * [Currently supported Boards](#currently-supported-boards)
   * [Currently supported shields/modules](#currently-supported-shieldsmodules)
-* [Changelog](#changelog)
-  * [Releases v1.1.1](#releases-v111)
-  * [Major Releases v1.1.0](#major-releases-v110)
-  * [Releases v1.0.4](#releases-v104)
-  * [Major Releases v1.0.3](#major-releases-v103)
-  * [Releases v1.0.2](#releases-v102)
-  * [Releases v1.0.1](#releases-v101)
-  * [Releases v1.0.0](#releases-v100)
+* [Changelog](changelog.md)
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
   * [Use Arduino Library Manager](#use-arduino-library-manager)
@@ -96,7 +89,6 @@
     * [2.2. Input valid Credentials and Save => Exit Config Portal](#22-input-valid-credentials-and-save--exit-config-portal)
 * [Debug](#debug)
 * [Troubleshooting](#troubleshooting)
-* [Releases](#releases)
 * [Issues](#issues)
 * [TO DO](#to-do)
 * [DONE](#done)
@@ -176,112 +168,34 @@ This [**EthernetWebServer** library](https://github.com/khoih-prog/EthernetWebSe
 ---
 ---
 
-## Changelog
-
-### Releases v1.1.1
-
-1. Add Blynk library Patches for **MBED RP2040-based (Nano_RP2040_Connect, etc.) boards**
-
-### Major Releases v1.1.0
-
- 1. Add support to RP2040-based boards, such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Earle Philhower's arduino-pico** v1.6.2+ core](https://github.com/earlephilhower/arduino-pico).
- 2. Add support to RP2040-based boards, such as **Nano_RP2040_Connect, RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Arduino-mbed RP2040** v2.1.0+ core](https://github.com/arduino/ArduinoCore-mbed).
- 3. Enable scan of WiFi networks for selection in Configuration Portal. Check [PR for v1.3.0 - Enable scan of WiFi networks #10](https://github.com/khoih-prog/WiFiManager_NINA_Lite/pull/10). Now you can select optional **SCAN_WIFI_NETWORKS**, **MANUAL_SSID_INPUT_ALLOWED** to be able to manually input SSID, not only from a scanned SSID lists and **MAX_SSID_IN_LIST** (from 2-6 for ESP8266-AT or 2-15 for other)
- 4. Use more efficient [FlashStorage_SAMD v1.1.0](https://github.com/khoih-prog/FlashStorage_SAMD) and [FlashStorage_STM32 v1.0.0](https://github.com/khoih-prog/FlashStorage_STM32)
- 5. Add functions to control Config Portal from software or Virtual Switches. Check [How to trigger a Config Portal from code #25](https://github.com/khoih-prog/Blynk_WM/issues/25)
- 6. Configurable **Customs HTML Headers**, including Customs Style, Customs Head Elements, CORS Header.
- 7. Fix MultiWiFi connection bug. Check [SAMD MultiWiFi issues when first WiFi SSID configured in CP is invalid or not available #6](https://github.com/khoih-prog/WiFiManager_NINA_Lite/issues/6)
- 8. Fix invalid "blank" or NULL Config Data treated as Valid. Check [WiFiManager connection attempt to unconfigured ("blank") SSID after restart on SAMD #8](https://github.com/khoih-prog/WiFiManager_NINA_Lite/issues/8)
- 9. Permit optionally inputting one set of WiFi SSID/PWD by using `REQUIRE_ONE_SET_SSID_PW == true`
-10. Enforce WiFi Password minimum length of 8 chars
-11. Enhance MultiWiFi connection logic
-12. Minor enhancement to not display garbage when data is invalid
-13. Tested with new [Arduino Core for STM32 v2.0.0](https://github.com/stm32duino/Arduino_Core_STM32) and add support to new STM32L5 boards
-14. Optimize code. 
-15. Update examples
-16. Update `Packages' Patches
-17. Fix compiler warnings.
-
-### Releases v1.0.4
-
-1. Add support to **Arduino UNO WiFi R2**.
-
-### Major Releases v1.0.3
-
-1. Add support to **nRF52** boards, such as **AdaFruit Feather nRF52832, nRF52840 Express, BlueFruit Sense, Itsy-Bitsy nRF52840 Express, Metro nRF52840 Express, NINA_B30_ublox, etc.**
-2. **Multiple WiFi Credentials (SSID, Password)** and system will autoconnect to the available WiFi AP. It will then autoreconnect to the remaining WiFi AP if the current connection is lost.
-3. **Multiple Blynk Credentials (Server, Token)** and system will autoconnect to the available Blynk Servers.
-4. Configurable **Config Portal Title** to be either HostName, BoardName or default undistinguishable names.
-5. Optional default **Credentials as well as Dynamic parameters to be optionally autoloaded into Config Portal** to use or change instead of manually input.
-6. **DoubleDetectDetector** feature to force Config Portal when double reset is detected within predetermined time, default 10s.
-7. Examples are redesigned to separate Credentials / Defines / Dynamic Params / Code so that you can change Credentials / Dynamic Params quickly for each device.
-8. Add Board Name
-
-Thanks to [Miguel Wisintainer](https://github.com/tcpipchip) for initiating, inspriring, working with, developing, debugging and testing. Without that, support to nRF52, especially **U-Blox B302 running as nRF52840**, has never been started and finished.
-
-Thanks to [Thor Johnson](https://github.com/thorathome) to test, suggest and encourage to add those new features in [Blynk_WM](https://github.com/khoih-prog/Blynk_WM), such as Default Credentials/Dynamic Params, Configurable Config Portal Title, DRD. Now those features are speading fast into libraries having similar functionalities.
-
-### Releases v1.0.2
-
-1. Add support to **SAM51 (Itsy-Bitsy M4, Metro M4, Grand Central M4, Feather M4 Express, etc.)**.
-2. Fix bug
-
-### Releases v1.0.1
-
-1. Add support to **SAM DUE, Teensy (4.0, 3.x, LC), STM32.**
-2. AVR Mega can use dynamic parameters or not, depending on memory availability
-3. Support 63 chars WPA2 WiFi password
-4. Permit to input special chars such as **%** and **#** into data fields. Thanks to [brondolin](https://github.com/brondolin) to provide the amazing fix.
-
-### Releases v1.0.0
-
-1. This release of very-easy-to-use will help you to eliminate hardcoding your Wifi and Blynk credentials for Mega/Teensy boards running WiFiNINA shields, and updating/reflashing every time when you need to change them.
-2. Configuration data are stored in configurable location in EEPROM.
-3. When WiFi and/or Blynk connection is lost, the WM will try auto-reconnect.
-4. `Config Portal Static IP address, Name and Password.`
-5. `Static IP address, Gateway, Subnet Mask.`
-6. Currently support AVR Mega and SAMD (ZERO, MKR, **NANO_33_IOT**, M0, M0 Pro, AdaFruit CIRCUITPLAYGROUND_EXPRESS, etc.) boards
-7. Enhance GUI.
-
-This library is designed to help you eliminate `hardcoding` your Wifi and Blynk credentials for Mega/Teensy boards running WiFiNINA modules/shields, and updating/reflashing every time when you need to change them. Configuration data are saved in configurable location in EEPROM/Flash.
-
-With version `v1.0.0` or later, you now can configure:
-
-1. `Config Portal Static IP address, Name and Password.`
-2. `Static IP address, Gateway, Subnet Mask and 2 DNS Servers IP addresses.`
-
----
----
 
 ## Prerequisites
 
- 1. [`Arduino IDE v1.8.15+`](https://github.com/arduino/Arduino). Use [Arduino IDE v1.8.13](https://github.com/arduino/Arduino/releases/tag/1.8.13) for Teensy boards.
+ 1. [`Arduino IDE v1.8.16+`](https://github.com/arduino/Arduino). Use [Arduino IDE v1.8.13](https://github.com/arduino/Arduino/releases/tag/1.8.13) for Teensy boards.
  
  2. [`Blynk library 0.6.1`](https://github.com/blynkkk/blynk-library/releases/tag/v0.6.1). [![Latest release](https://img.shields.io/github/release/blynkkk/blynk-library.svg)](https://github.com/blynkkk/blynk-library/releases/latest/). Never use the `Blynk beta` versions.
  
- **Warnings** : Use [`Blynk library 1.0.0`](https://github.com/blynkkk/blynk-library/releases/tag/v1.0.0) will create **compiler errors** to some boards, such as RP2040-based boards (**Nano_RP1040_Connect, RASPBERRY_PI_PICO, etc**) using [`Arduino mbed_rp2040 core 2.1.0+`](https://github.com/arduino/ArduinoCore-mbed). Please use the [`Blynk library 0.6.1`](https://github.com/blynkkk/blynk-library/releases/tag/v0.6.1) until the issue fixed.
+ **Warnings** : Use [`Blynk library 1.0.0+`](https://github.com/blynkkk/blynk-library/releases/tag/v1.0.0) will create **compiler errors** to some boards, such as RP2040-based boards (**Nano_RP1040_Connect, RASPBERRY_PI_PICO, etc**) using [`Arduino mbed_rp2040 core 2.1.0+`](https://github.com/arduino/ArduinoCore-mbed). Please use the [`Blynk library 0.6.1`](https://github.com/blynkkk/blynk-library/releases/tag/v0.6.1) until the issue fixed.
  
- 3. [`Teensy core 1.53+`](https://www.pjrc.com/teensy/td_download.html) for Teensy (4.x, 3.6, 3.5, 3,2, 3.1, 3.0, LC) boards. To be used with Use [Arduino IDE v1.8.13](https://github.com/arduino/Arduino/releases/tag/1.8.13).
+ 3. [`Teensy core 1.54+`](https://www.pjrc.com/teensy/td_download.html) for Teensy (4.x, 3.6, 3.5, 3,2, 3.1, 3.0, LC) boards.
  4. [`Arduino SAM DUE core 1.6.12+`](https://github.com/arduino/ArduinoCore-sam) for SAM DUE ARM Cortex-M3 boards
  5. [`Arduino SAMD core 1.8.11+`](https://www.arduino.cc/en/Guide/ArduinoM0) for SAMD ARM Cortex-M0+ boards. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-samd.svg)](https://github.com/arduino/ArduinoCore-samd/releases/latest)
- 6. [`Adafruit SAMD core 1.7.2+`](https://www.adafruit.com/) for SAMD ARM Cortex-M0+ and M4 boards (Nano 33 IoT, etc.). [![GitHub release](https://img.shields.io/github/release/adafruit/ArduinoCore-samd.svg)](https://github.com/adafruit/ArduinoCore-samd/releases/latest)
+ 6. [`Adafruit SAMD core 1.7.5+`](https://www.adafruit.com/) for SAMD ARM Cortex-M0+ and M4 boards (Nano 33 IoT, etc.). [![GitHub release](https://img.shields.io/github/release/adafruit/ArduinoCore-samd.svg)](https://github.com/adafruit/ArduinoCore-samd/releases/latest)
  7. [`Seeeduino SAMD core 1.8.1+`](https://github.com/Seeed-Studio/ArduinoCore-samd) for SAMD21/SAMD51 boards (XIAO M0, Wio Terminal, etc.). [![Latest release](https://img.shields.io/github/release/Seeed-Studio/ArduinoCore-samd.svg)](https://github.com/Seeed-Studio/ArduinoCore-samd/releases/latest/)
  8. [`Arduino Core for STM32 v2.0.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32F/L/H/G/WB/MP1 boards. [![GitHub release](https://img.shields.io/github/release/stm32duino/Arduino_Core_STM32.svg)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest)
  
- 9. [`Adafruit nRF52 v0.21.0`](https://github.com/adafruit/Adafruit_nRF52_Arduino) for nRF52 boards such as Adafruit NRF52840_FEATHER, NRF52832_FEATHER, NRF52840_FEATHER_SENSE, NRF52840_ITSYBITSY, NRF52840_CIRCUITPLAY, NRF52840_CLUE, NRF52840_METRO, NRF52840_PCA10056, PARTICLE_XENON, **NINA_B302_ublox**, etc. [![GitHub release](https://img.shields.io/github/release/adafruit/Adafruit_nRF52_Arduino.svg)](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/latest)
+ 9. [`Adafruit nRF52 v1.0.0`](https://github.com/adafruit/Adafruit_nRF52_Arduino) for nRF52 boards such as Adafruit NRF52840_FEATHER, NRF52832_FEATHER, NRF52840_FEATHER_SENSE, NRF52840_ITSYBITSY, NRF52840_CIRCUITPLAY, NRF52840_CLUE, NRF52840_METRO, NRF52840_PCA10056, PARTICLE_XENON, **NINA_B302_ublox**, etc. [![GitHub release](https://img.shields.io/github/release/adafruit/Adafruit_nRF52_Arduino.svg)](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/latest)
  
- **Warnings** : Use [`Adafruit nRF52 v0.22.0+`](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/tag/0.22.0) will create **compiler errors** to some boards. If so, please use the [`Adafruit nRF52 v0.21.0`](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/tag/0.21.0) until the issue fixed.
- 
-10. [`Arduino mbed_rp2040 core 2.1.0+`](https://github.com/arduino/ArduinoCore-mbed) for Arduino RP2040-based boards, such as **Arduino Nano RP2040 Connect, RASPBERRY_PI_PICO, etc.**. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-mbed.svg)](https://github.com/arduino/ArduinoCore-mbed/releases/latest)
-11. [`Earle Philhower's arduino-pico core v1.8.0+`](https://github.com/earlephilhower/arduino-pico) for RP2040-based boards such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, etc. [![GitHub release](https://img.shields.io/github/release/earlephilhower/arduino-pico.svg)](https://github.com/earlephilhower/arduino-pico/releases/latest)
+10. [`Arduino mbed_rp2040 core 2.4.1+`](https://github.com/arduino/ArduinoCore-mbed) for Arduino RP2040-based boards, such as **Arduino Nano RP2040 Connect, RASPBERRY_PI_PICO, etc.**. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-mbed.svg)](https://github.com/arduino/ArduinoCore-mbed/releases/latest)
+11. [`Earle Philhower's arduino-pico core v1.9.4+`](https://github.com/earlephilhower/arduino-pico) for RP2040-based boards such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, etc. [![GitHub release](https://img.shields.io/github/release/earlephilhower/arduino-pico.svg)](https://github.com/earlephilhower/arduino-pico/releases/latest)
 12. [`Functional-VLPP library v1.0.2+`](https://github.com/khoih-prog/functional-vlpp) to use server's lambda function. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/Functional-Vlpp.svg?)](https://www.ardu-badge.com/Functional-Vlpp)
-13. [`WiFiNINA_Generic library v1.8.10-1+`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic)
-14. [`WiFiWebServer library v1.2.0+`](https://github.com/khoih-prog/WiFiWebServer) if necessary to use certain WiFi/WiFiNINA features. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiWebServer.svg?)](https://www.ardu-badge.com/WiFiWebServer)
-15. [`FlashStorage_SAMD library v1.1.0+`](https://github.com/khoih-prog/FlashStorage_SAMD) for SAMD21 and SAMD51 boards (ZERO, MKR, NANO_33_IOT, M0, M0 Pro, AdaFruit Itsy-Bitsy M4, etc.) if necessary to use certain features. [![GitHub release](https://img.shields.io/github/release/khoih-prog/FlashStorage_SAMD.svg)](https://github.com/khoih-prog/FlashStorage_SAMD/releases/latest)
+13. [`WiFiNINA_Generic library v1.8.13+`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic)
+14. [`WiFiWebServer library v1.4.0+`](https://github.com/khoih-prog/WiFiWebServer) if necessary to use certain WiFi/WiFiNINA features. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiWebServer.svg?)](https://www.ardu-badge.com/WiFiWebServer)
+15. [`FlashStorage_SAMD library v1.2.0+`](https://github.com/khoih-prog/FlashStorage_SAMD) for SAMD21 and SAMD51 boards (ZERO, MKR, NANO_33_IOT, M0, M0 Pro, AdaFruit Itsy-Bitsy M4, etc.) if necessary to use certain features. [![GitHub release](https://img.shields.io/github/release/khoih-prog/FlashStorage_SAMD.svg)](https://github.com/khoih-prog/FlashStorage_SAMD/releases/latest)
 16. [`FlashStorage_STM32 library v1.1.0+`](https://github.com/khoih-prog/FlashStorage_STM32) for STM32F/L/H/G/WB/MP1 boards. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/FlashStorage_STM32.svg?)](https://www.ardu-badge.com/FlashStorage_STM32)
 17. [`DueFlashStorage library v1.0.0+`](https://github.com/sebnil/DueFlashStorage) for SAM DUE if necessary to use certain features. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/DueFlashStorage.svg?)](https://www.ardu-badge.com/DueFlashStorage).
 18. [`Adafruit's LittleFS/InternalFS`](https://www.adafruit.com) for nRF52. Already included if you already installed Adafruit **nRF52 board package** from Boards Manager.
-19. [`DoubleResetDetector_Generic v1.4.0+`](https://github.com/khoih-prog/DoubleResetDetector_Generic) if necessary to use some examples. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/DoubleResetDetector_Generic.svg?)](https://www.ardu-badge.com/DoubleResetDetector_Generic) if necessary to use certain features.
+19. [`DoubleResetDetector_Generic v1.7.2+`](https://github.com/khoih-prog/DoubleResetDetector_Generic) if necessary to use some examples. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/DoubleResetDetector_Generic.svg?)](https://www.ardu-badge.com/DoubleResetDetector_Generic) if necessary to use certain features.
 
 ---
 
@@ -344,18 +258,16 @@ Then copy
 
 #### 1. For Adafruit nRF52840 and nRF52832 boards
 
-**Don't use v0.22.0+ yet because of compiler error. To be fixed.**
+**To be able to compile, run and automatically detect and display BOARD_NAME on nRF52840/nRF52832 boards**, you have to copy the whole [nRF52 1.0.0](Packages_Patches/adafruit/hardware/nrf52/1.0.0) directory into Adafruit nRF52 directory (~/.arduino15/packages/adafruit/hardware/nrf52/1.0.0). 
 
-**To be able to compile, run and automatically detect and display BOARD_NAME on nRF52840/nRF52832 boards**, you have to copy the whole [nRF52 0.21.0](Packages_Patches/adafruit/hardware/nrf52/0.21.0) directory into Adafruit nRF52 directory (~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0). 
-
-Supposing the Adafruit nRF52 version is 0.21.0. These files must be copied into the directory:
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/platform.txt`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/boards.txt`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/variants/NINA_B302_ublox/variant.h`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/variants/NINA_B302_ublox/variant.cpp`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/variants/NINA_B112_ublox/variant.h`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/variants/NINA_B112_ublox/variant.cpp`
-- **`~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/cores/nRF5/Udp.h`**
+Supposing the Adafruit nRF52 version is 1.0.0. These files must be copied into the directory:
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.0.0/platform.txt`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.0.0/boards.txt`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.0.0/variants/NINA_B302_ublox/variant.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.0.0/variants/NINA_B302_ublox/variant.cpp`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.0.0/variants/NINA_B112_ublox/variant.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.0.0/variants/NINA_B112_ublox/variant.cpp`
+- **`~/.arduino15/packages/adafruit/hardware/nrf52/1.0.0/cores/nRF5/Udp.h`**
 
 Whenever a new version is installed, remember to copy these files into the new version directory. For example, new version is x.yy.z
 These files must be copied into the directory:
@@ -370,14 +282,14 @@ These files must be copied into the directory:
 
 #### 2. For Teensy boards
  
- **To be able to compile and run on Teensy boards**, you have to copy the files in [**Packages_Patches for Teensy directory**](Packages_Patches/hardware/teensy/avr) into Teensy hardware directory (./arduino-1.8.13/hardware/teensy/avr/boards.txt). 
+ **To be able to compile and run on Teensy boards**, you have to copy the files in [**Packages_Patches for Teensy directory**](Packages_Patches/hardware/teensy/avr) into Teensy hardware directory (./arduino-1.8.15/hardware/teensy/avr/boards.txt). 
 
-Supposing the Arduino version is 1.8.13. These files must be copied into the directory:
+Supposing the Arduino version is 1.8.15. These files must be copied into the directory:
 
-- `./arduino-1.8.13/hardware/teensy/avr/boards.txt`
-- `./arduino-1.8.13/hardware/teensy/avr/cores/teensy/Stream.h`
-- `./arduino-1.8.13/hardware/teensy/avr/cores/teensy3/Stream.h`
-- `./arduino-1.8.13/hardware/teensy/avr/cores/teensy4/Stream.h`
+- `./arduino-1.8.15/hardware/teensy/avr/boards.txt`
+- `./arduino-1.8.15/hardware/teensy/avr/cores/teensy/Stream.h`
+- `./arduino-1.8.15/hardware/teensy/avr/cores/teensy3/Stream.h`
+- `./arduino-1.8.15/hardware/teensy/avr/cores/teensy4/Stream.h`
 
 Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
 These files must be copied into the directory:
@@ -441,11 +353,11 @@ Whenever the above-mentioned compiler error issue is fixed with the new Arduino 
 
 #### 5. For Adafruit SAMD boards
  
- ***To be able to automatically detect and display BOARD_NAME on Adafruit SAMD (Itsy-Bitsy M4, etc) boards***, you have to copy the file [Adafruit SAMD platform.txt](Packages_Patches/adafruit/hardware/samd/1.7.1) into Adafruit samd directory (~/.arduino15/packages/adafruit/hardware/samd/1.7.1). 
+ ***To be able to automatically detect and display BOARD_NAME on Adafruit SAMD (Itsy-Bitsy M4, etc) boards***, you have to copy the file [Adafruit SAMD platform.txt](Packages_Patches/adafruit/hardware/samd/1.7.5) into Adafruit samd directory (~/.arduino15/packages/adafruit/hardware/samd/1.7.5). 
 
-Supposing the Adafruit SAMD core version is 1.7.1. This file must be copied into the directory:
+Supposing the Adafruit SAMD core version is 1.7.5. This file must be copied into the directory:
 
-- `~/.arduino15/packages/adafruit/hardware/samd/1.7.1/platform.txt`
+- `~/.arduino15/packages/adafruit/hardware/samd/1.7.5/platform.txt`
 
 Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
 This file must be copied into the directory:
@@ -1867,75 +1779,6 @@ Sometimes, the library will only work if you update the boatd's core to the newe
 ---
 ---
 
-## Releases
-
-### Releases v1.1.1
-
-1. Add Blynk library Patches for **MBED RP2040-based (Nano_RP2040_Connect, etc.) boards**
-
-### Major Releases v1.1.0
-
- 1. Add support to RP2040-based boards, such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Earle Philhower's arduino-pico** v1.6.2+ core](https://github.com/earlephilhower/arduino-pico).
- 2. Add support to RP2040-based boards, such as **Nano_RP2040_Connect, RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Arduino-mbed RP2040** v2.1.0+ core](https://github.com/arduino/ArduinoCore-mbed).
- 3. Enable scan of WiFi networks for selection in Configuration Portal. Check [PR for v1.3.0 - Enable scan of WiFi networks #10](https://github.com/khoih-prog/WiFiManager_NINA_Lite/pull/10). Now you can select optional **SCAN_WIFI_NETWORKS**, **MANUAL_SSID_INPUT_ALLOWED** to be able to manually input SSID, not only from a scanned SSID lists and **MAX_SSID_IN_LIST** (from 2-6 for ESP8266-AT or 2-15 for other)
- 4. Use more efficient [FlashStorage_SAMD v1.1.0](https://github.com/khoih-prog/FlashStorage_SAMD) and [FlashStorage_STM32 v1.0.0](https://github.com/khoih-prog/FlashStorage_STM32)
- 5. Add functions to control Config Portal from software or Virtual Switches. Check [How to trigger a Config Portal from code #25](https://github.com/khoih-prog/Blynk_WM/issues/25)
- 6. Configurable **Customs HTML Headers**, including Customs Style, Customs Head Elements, CORS Header.
- 7. Fix MultiWiFi connection bug. Check [SAMD MultiWiFi issues when first WiFi SSID configured in CP is invalid or not available #6](https://github.com/khoih-prog/WiFiManager_NINA_Lite/issues/6)
- 8. Fix invalid "blank" or NULL Config Data treated as Valid. Check [WiFiManager connection attempt to unconfigured ("blank") SSID after restart on SAMD #8](https://github.com/khoih-prog/WiFiManager_NINA_Lite/issues/8)
- 9. Permit optionally inputting one set of WiFi SSID/PWD by using `REQUIRE_ONE_SET_SSID_PW == true`
-10. Enforce WiFi Password minimum length of 8 chars
-11. Enhance MultiWiFi connection logic
-12. Minor enhancement to not display garbage when data is invalid
-13. Tested with new [Arduino Core for STM32 v2.0.0](https://github.com/stm32duino/Arduino_Core_STM32) and add support to new STM32L5 boards
-14. Optimize code. 
-15. Update examples
-16. Update `Packages' Patches
-17. Fix compiler warnings.
-
-
-### Releases v1.0.4
-
-1. Add support to **Arduino UNO WiFi**.
-
-#### Major Releases v1.0.3
-
-1. Add support to **nRF52** boards, such as **AdaFruit Feather nRF52832, nRF52840 Express, BlueFruit Sense, Itsy-Bitsy nRF52840 Express, Metro nRF52840 Express, NINA_B30_ublox, etc.**
-2. **Multiple WiFi Credentials (SSID, Password)** and system will autoconnect to the available WiFi AP. It will then autoreconnect to the remaining WiFi AP if the current connection is lost.
-3. **Multiple Blynk Credentials (Server, Token)** and system will autoconnect to the available Blynk Servers.
-4. Configurable **Config Portal Title** to be either HostName, BoardName or default undistinguishable names.
-5. Optional default **Credentials as well as Dynamic parameters to be optionally autoloaded into Config Portal** to use or change instead of manually input.
-6. **DoubleDetectDetector** feature to force Config Portal when double reset is detected within predetermined time, default 10s.
-7. Examples are redesigned to separate Credentials / Defines / Dynamic Params / Code so that you can change Credentials / Dynamic Params quickly for each device.
-8. Add Board Name
-
-Thanks to [Miguel Alexandre Wisintainer](https://github.com/tcpipchip) for initiating, inspriring, working with, developing, debugging and testing. Without that, support to nRF52, especially **U-Blox B302 running as nRF52840**, has never been started and finished.
-
-Thanks to [Thor Johnson](https://github.com/thorathome) to test, suggest and encourage to add those new features in [Blynk_WM](https://github.com/khoih-prog/Blynk_WM), such as Default Credentials/Dynamic Params, Configurable Config Portal Title, DRD. Now those features are speading fast into libraries having similar functionalities.
-
-### Releases v1.0.2
-
-1. Add support to **SAM51 (Itsy-Bitsy M4, Metro M4, Grand Central M4, Feather M4 Express, etc.)**.
-2. Fix bug
-
-### Releases v1.0.1
-
-1. Add support to SAM DUE, Teensy (4.0, 3.x, LC), STM32.
-2. AVR Mega can select to use dynamic parameters or not, depending on memory availability
-3. Support 63 chars WPA2 WiFi password
-4. Permit to input special chars such as **%** and **#** into data fields. Thanks to [brondolin](https://github.com/brondolin) to provide the amazing fix.
-
-### Releases v1.0.0
-
-1. This release of very-easy-to-use will help you to eliminate hardcoding your Wifi and Blynk credentials for Mega/Teensy boards running WiFiNINA shields, and updating/reflashing every time when you need to change them.
-2. Configuration data are stored in configurable location in EEPROM.
-3. When WiFi and/or Blynk connection is lost, the WM will try auto-reconnect.
-4. `Config Portal Static IP address, Name and Password.`
-5. `Static IP address, Gateway, Subnet Mask.`
-6. Currently support AVR Mega and SAMD (ZERO, MKR, NANO_33_IOT, M0, M0 Pro, AdaFruit CIRCUITPLAYGROUND_EXPRESS, etc.) boards
-7. Enhance GUI.
-
----
 
 ### Issues
 
