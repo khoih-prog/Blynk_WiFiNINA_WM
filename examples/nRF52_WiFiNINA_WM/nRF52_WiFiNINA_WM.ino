@@ -9,29 +9,6 @@
   Modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
   Licensed under MIT license
-
-
-  Original Blynk Library author:
-  @file       BlynkSimpleWiFiNINA.h
-  @author     Volodymyr Shymanskyy
-  @license    This project is released under the MIT License (MIT)
-  @copyright  Copyright (c) 2018 Volodymyr Shymanskyy
-  @date       Sep 2018
-  @brief
-
-  Version: 1.1.1
-
-  Version Modified By   Date        Comments
-  ------- -----------  ----------   -----------
-  1.0.0   K Hoang      07/04/2020  Initial coding
-  1.0.1   K Hoang      09/04/2020  Add support to SAM DUE, Teensy, STM32
-  1.0.2   K Hoang      15/04/2020  Fix bug. Add SAMD51 support.
-  1.0.3   K Hoang      05/05/2020  Add nRF52 support, MultiWiFi/Blynk, Configurable Config Portal Title, 
-                                   Default Config Data and DRD. Update examples.
-  1.0.4   K Hoang      13/05/2020  Add support to Arduino UNO WiFi R2 
-  1.1.0   K Hoang      28/05/2021  Add support to Nano_RP2040_Connect, RASPBERRY_PI_PICO using Arduino mbed or pico core
-                                   Enable scan of WiFi networks for selection in Configuration Portal
-  1.1.1   K Hoang      09/06/2020  Add Blynk library Patches for **MBED RP2040-based (Nano_RP2040_Connect, etc.) boards
  *****************************************************************************************************************************/
 #include "defines.h"
 #include "Credentials.h"

@@ -10,7 +10,6 @@
   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WiFiNINA_WM
   Licensed under MIT license
 
-
   Original Blynk Library author:
   @file       BlynkSimpleWiFiNINA.h
   @author     Volodymyr Shymanskyy
@@ -19,7 +18,7 @@
   @date       Sep 2018
   @brief
 
-  Version: 1.1.1
+  Version: 1.1.2
 
   Version Modified By   Date        Comments
   ------- -----------  ----------   -----------
@@ -32,6 +31,7 @@
   1.1.0   K Hoang      28/05/2021  Add support to Nano_RP2040_Connect, RASPBERRY_PI_PICO using Arduino mbed or pico core
                                    Enable scan of WiFi networks for selection in Configuration Portal
   1.1.1   K Hoang      09/06/2020  Add Blynk library Patches for **MBED RP2040-based (Nano_RP2040_Connect, etc.) boards
+  1.1.2   K Hoang      09/06/2020  Update `platform.ini` and `library.json`
  *****************************************************************************************************************************/
 
 
@@ -49,7 +49,7 @@
   #error This code is intended to run on the STM32 platform! Please check your Tools->Board setting.  
 #endif
 
-#define BLYNK_WIFININA_WM_VERSION        "Blynk_WiFiNINA_WM v1.1.1"
+#define BLYNK_WIFININA_WM_VERSION        "Blynk_WiFiNINA_WM v1.1.2"
 
 #ifndef BLYNK_INFO_CONNECTION
 #define BLYNK_INFO_CONNECTION  "WiFiNINA"

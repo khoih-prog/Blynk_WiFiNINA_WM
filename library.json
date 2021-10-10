@@ -1,6 +1,6 @@
 {
   "name": "Blynk_WiFiNINA_WM",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Simple WiFi Manager for MultiBlynk for Teensy, SAM DUE, SAMD21, SAMD51, nRF52, ESP32, ESP8266, RP2040-based, etc. boards, with or without SSL, configuration data saved in nRF52/RP2040 LittleFS, EEPROM, DueFlashStorage or SAMD/STM32 FlashStorage. Library for configuring/auto(re)connecting WiFiNINA shields to MultiWiFi-MultiBlynk at runtime. New powerful-yet-simple-to-use feature to enable adding dynamic custom parameters from sketch and input using the same Config Portal. Config Portal will be auto-adjusted to match the number of dynamic parameters. DoubleDetectDetector is used to force Config Portal opening even if the Credentials are still valid. Build a smartphone app for your project in minutes. Blynk allows creating IoT solutions easily. Works with many boards like Mega, UNO WiFi Rev2, SAM DUE, SAMD, nRF52, Teensy, RP2040",
   "keywords": "blynk, control, device, communication, wifi, multi-wifi, multi-blynk, wifinina, samd, nrf52, stm32, rpi-pico, rp2040, nano-rp2040-connect, nano-33-iot, sam-due, eeprom, littlefs, flash-storage-stm32, flash-storage-samd",
   "authors":
@@ -27,17 +27,17 @@
     {
       "owner": "blynkkk",
       "name": "Blynk",
-      "version": "^0.6.1",
+      "version": "^1.0.1",
       "platforms": ["*"]
     },
     {
       "owner": "khoih-prog",
       "name": "WiFiWebServer",
-      "version": "^1.4.0",
+      "version": "^1.4.1",
       "platforms": ["*"]
     },
     {
-      "owner": "khoih.prog",
+      "owner": "khoih-prog",
       "name": "DoubleResetDetector_Generic",
       "version": "^1.7.2",
       "platforms": ["*"]
@@ -49,19 +49,19 @@
       "platforms": ["*"]
     },    
     {
-      "owner": "khoih.prog",
+      "owner": "khoih-prog",
       "name": "WiFiNINA_Generic",
       "version": "^1.8.13",
       "platforms": ["*"]
     },
     {
-      "owner": "khoih.prog",
+      "owner": "khoih-prog",
       "name": "FlashStorage_SAMD",
       "version": "^1.2.0",
       "platforms": ["*"]
     },
     {
-      "owner": "khoih.prog",
+      "owner": "khoih-prog",
       "name": "FlashStorage_STM32",
       "version": "^1.1.0",
       "platforms": ["*"]
